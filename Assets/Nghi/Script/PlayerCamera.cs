@@ -11,11 +11,17 @@ public class PlayerCamera : MonoBehaviour
 
     float xRotation;
     float yRotation;
+
+    //public float turnSpeed = 15f;
+    //Camera mainCamera;
+
+    //public Transform playerTransform;
     // Start is called before the first frame update
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        //mainCamera = Camera.main;
     }
 
     // Update is called once per frame
@@ -36,4 +42,10 @@ public class PlayerCamera : MonoBehaviour
         // Cập nhật rotation cho Orientation (xoay trái/phải)
         orientation.rotation = Quaternion.Euler(0, yRotation, 0);
     }
+
+    //private void FixedUpdate()
+    //{
+    //    float yawRotation = mainCamera.transform.rotation.eulerAngles.y;
+    //    transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yawRotation, 0), turnSpeed * Time.fixedDeltaTime);
+    //}
 }

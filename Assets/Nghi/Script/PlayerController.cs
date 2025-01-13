@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         UpdateAnimator();
         Move();
+        RotatePlayerToCamera(); // Gọi hàm xoay Player
     }
 
     public void ChangeState(PlayerState newState)
@@ -180,5 +181,20 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetFloat("VelocityZ", velocityZ);
         animator.SetFloat("VelocityX", velocityX);
+    }
+
+    // Hàm xoay hướng Player theo Camera
+    void RotatePlayerToCamera()
+    {
+        // Lấy hướng quay từ orientation (hướng Camera)
+        Vector3 targetDirection = orientation.forward;
+        targetDirection.y = 0; // Khóa trục Y để không xoay theo chiều dọc
+
+        // Nếu có hướng quay hợp lệ
+        if (targetDirection.magnitude > 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDirection); // Tính góc quay
+            transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f); // Quay mượt
+        }
     }
 }
