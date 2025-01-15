@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
     public PlayerState currentState;
 
-    private float velocity = 0.0f;
+    //private float velocity = 0.0f;
     private float acceleration = 0.2f;
     private float deceleration = 0.6f;
 
