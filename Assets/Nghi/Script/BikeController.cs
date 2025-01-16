@@ -6,6 +6,7 @@ public class BikeController : MonoBehaviour
 {
     RaycastHit hit;
     float moveInput, steerInput, rayLength, currentVelocityOffset;
+    //Giá trị vận tốc hiện tại của xe so với tốc độ tối đa (maxSpeed).
 
     [HideInInspector] public Vector3 velocity;
 
@@ -27,10 +28,12 @@ public class BikeController : MonoBehaviour
 
         rayLength = sphere.GetComponent<SphereCollider>().radius + 0.2f;
     }
-
+        
     // Update is called once per frame
     void Update()
     {
+        Movement();
+
         moveInput = Input.GetAxis("Vertical");
         steerInput = Input.GetAxis("Horizontal"); 
 
@@ -47,11 +50,11 @@ public class BikeController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Movement();
+        
 
         //visual
-        frontTyre.transform.Rotate(Vector3.right, Time.deltaTime * tyreRotationSpeed * currentVelocityOffset);
-        backTyre.transform.Rotate(Vector3.right, Time.deltaTime * tyreRotationSpeed * currentVelocityOffset);
+        frontTyre.transform.Rotate(Vector3.forward, Time.deltaTime * tyreRotationSpeed * currentVelocityOffset);
+        backTyre.transform.Rotate(Vector3.forward, Time.deltaTime * tyreRotationSpeed * currentVelocityOffset);
     }
 
     void Movement()
@@ -105,7 +108,7 @@ public class BikeController : MonoBehaviour
         
         Quaternion newRotation = Quaternion.Euler(targetRotation.eulerAngles.x, transform.eulerAngles.y, targetRotation.eulerAngles.z);
 
-        bikeBody.MoveRotation(newRotation);
+        //bikeBody.MoveRotation(newRotation);
     }
 
     private void Brake()
