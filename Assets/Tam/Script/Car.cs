@@ -42,7 +42,7 @@ public class Car : MonoBehaviour, IInteractable
         if (Input.GetKeyDown(KeyCode.F) && currentPlayer != null)
         {
             currentPlayer.transform.position = sitPosition.position + new Vector3(2,0,0);
-            currentPlayer.transform.SetParent(sitPosition.transform, false);
+            currentPlayer.transform.SetParent(null);
             currentPlayer.GetComponent<TPlayerController>().enabled = true;
             currentPlayer.GetComponent<CharacterController>().enabled = true;
             currentPlayer.GetComponent<Animator>().SetBool("Riding", false);

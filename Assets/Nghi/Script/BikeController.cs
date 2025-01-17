@@ -26,7 +26,7 @@ public class BikeController : MonoBehaviour
         sphereRb.transform.parent = null;
         bikeBody.transform.parent = null;
         
-        rayLength = sphereRb.GetComponent<SphereCollider>().radius + 0.2f;
+        rayLength = sphereRb.GetComponent<SphereCollider>().radius + 0.5f;
     }
 
     private void Update()
