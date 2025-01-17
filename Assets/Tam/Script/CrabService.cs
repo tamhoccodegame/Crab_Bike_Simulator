@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CrabService : MonoBehaviour
 {
@@ -20,7 +20,6 @@ public class CrabService : MonoBehaviour
 
     public Button dutyButton;
     public GameObject notificationPanel;
-    
 
     // Start is called before the first frame update
     void Start()
@@ -50,8 +49,8 @@ public class CrabService : MonoBehaviour
 			notificationPanel.SetActive(true);
             TextMeshProUGUI text = notificationPanel.transform.Find("Destination")
                                        .GetComponent<TextMeshProUGUI>();
-            text.text = $"{currentPickUpPoint.name} => {currentDropOffPoint.name} ({cashSystem.currentPayment} VND)"; 
-		}
+            text.text = $"{currentPickUpPoint.name} => {currentDropOffPoint.name} ({cashSystem.currentPayment} VND)";
+        }
 	}
 
     public void GetDestination()
