@@ -6,4 +6,5 @@ public interface IInteractable
 {
     void ShowPrompt();
     void OnInteract(PlayerInteractor player);
+    void OnExit();
 }

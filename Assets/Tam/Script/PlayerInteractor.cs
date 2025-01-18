@@ -7,6 +7,7 @@ public class PlayerInteractor : MonoBehaviour
     public Transform playerVisual;
     RaycastHit hit;
     public IInteractable currentInteractable;
+    private bool isInteracting = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,24 +20,37 @@ public class PlayerInteractor : MonoBehaviour
     {
         Ray ray = new Ray(playerVisual.position, playerVisual.forward);
 
-        if (Physics.Raycast(ray, out hit, 10f))
+        if (!isInteracting)
         {
-
-            IInteractable interactable = hit.transform.GetComponent<IInteractable>();
-            if(interactable != null)
+            if (Physics.Raycast(ray, out hit, 10f))
             {
-                currentInteractable = interactable;
-                interactable.ShowPrompt();
+
+                IInteractable interactable = hit.transform.GetComponent<IInteractable>();
+                if (interactable != null)
+                {
+                    currentInteractable = interactable;
+                    interactable.ShowPrompt();
+                }
+            }
+            else
+            {
+                currentInteractable = null;
             }
         }
-        else
-        {
-            currentInteractable = null;
-        }
+       
 
         if (currentInteractable != null && Input.GetKeyDown(KeyCode.F))
         {
-            currentInteractable.OnInteract(this);
+            if (!isInteracting)
+            {
+                currentInteractable.OnInteract(this);
+                isInteracting = true;
+            }
+            else
+            {
+                currentInteractable.OnExit();
+                isInteracting = false;
+            }
         }
 
         Debug.DrawRay(playerVisual.position, playerVisual.forward * 10, Color.red);
