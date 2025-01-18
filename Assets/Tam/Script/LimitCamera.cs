@@ -6,15 +6,24 @@ public class LimitCamera : MonoBehaviour
 {
     public Camera mainCamera;
     public float minX, maxX, minZ, maxZ;
+    private Quaternion initRotation;
+    public Transform player;
     // Start is called before the first frame update
     void Start()
     {
-        
+        initRotation = transform.rotation;
     }
 
     // Update is called once per frame
     void Update()
     {
+        transform.rotation = initRotation;
+        Vector3 position = player.position;
+        position.y = transform.position.y;
+
+        transform.position = position;
+
+
         // Lấy chiều rộng và chiều cao của camera trong không gian thế giới
         float cameraHeight = 2f * mainCamera.orthographicSize; // Chỉ áp dụng cho camera orthographic
         float cameraWidth = cameraHeight * mainCamera.aspect;

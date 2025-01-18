@@ -9,6 +9,7 @@ public class Car : MonoBehaviour, IInteractable
     public Transform leftHand;
     public Transform rightHand;
     public GameObject parent;
+    public bool isInputCoolDown = false;
 
     public void OnInteract(PlayerInteractor player)
     {
@@ -23,6 +24,14 @@ public class Car : MonoBehaviour, IInteractable
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = rightHand;
         parent.GetComponent<BikeController>().enabled = true;
+        StartCoroutine(InputCooldown());
+    }
+
+    IEnumerator InputCooldown()
+    {
+        isInputCoolDown = true;
+        yield return null;
+        isInputCoolDown = false;
     }
 
     public void ShowPrompt()
@@ -39,9 +48,10 @@ public class Car : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
+        if (isInputCoolDown) return;
         if (Input.GetKeyDown(KeyCode.F) && currentPlayer != null)
         {
-            currentPlayer.transform.position = sitPosition.position + new Vector3(2,0,0);
+            currentPlayer.transform.position = sitPosition.position + new Vector3(0, 0, -3);
             currentPlayer.transform.SetParent(null);
             currentPlayer.GetComponent<TPlayerController>().enabled = true;
             currentPlayer.GetComponent<CharacterController>().enabled = true;
@@ -50,6 +60,7 @@ public class Car : MonoBehaviour, IInteractable
             currentPlayer.GetComponent<PlayerInteractor>().enabled = true;
             currentPlayer.GetComponent<IKHandler>().leftHandTarget = null;
             currentPlayer.GetComponent<IKHandler>().rightHandTarget = null;
+            currentPlayer.currentInteractable = null;
             currentPlayer = null;
         }
     }

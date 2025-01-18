@@ -9,17 +9,20 @@ public class CrabService : MonoBehaviour
     private CashSystem cashSystem;
 
     public List<Transform> destinationList;
-    private Transform currentPickUpPoint;
-    private Transform currentDropOffPoint;
+    public Transform currentPickUpPoint;
+    public Transform currentDropOffPoint;
 
     public bool isOnDuty;
-    public bool isOnTrip;
+    public bool isAcceptTrip;
+    public bool isTripCompleted;
 
     public float customerCallCooldown;
     public float customerCallTimer;
 
     public Button dutyButton;
     public GameObject notificationPanel;
+
+    public ArrowPointer directionArrow;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +39,7 @@ public class CrabService : MonoBehaviour
     
     public void SendNotification()
     {
-		if (isOnDuty && !isOnTrip && customerCallTimer > 0 && !notificationPanel.activeSelf)
+		if (isOnDuty && !isAcceptTrip && customerCallTimer > 0 && !notificationPanel.activeSelf)
 		{
 			customerCallTimer -= Time.deltaTime;
 		}
@@ -55,39 +58,21 @@ public class CrabService : MonoBehaviour
 
     public void GetDestination()
     {
-        Transform pickUpPoint = destinationList[0];
-		float minDistance = Vector3.Distance(transform.position, destinationList[0].position);
-
-		for (int i = 1; i < destinationList.Count; i++)
-        {
-            float distance = Vector3.Distance(transform.position, destinationList[i].position);
-
-			if (distance < minDistance)
-            {
-                minDistance = distance;
-                pickUpPoint = destinationList[i];
-            }
-        }
+        Transform pickUpPoint = destinationList[Random.Range(0, destinationList.Count - 1)];
+		
         currentPickUpPoint = pickUpPoint;
+        currentPickUpPoint.gameObject.SetActive(true);
 
-        Transform dropOffPoint = destinationList[0];
-        float maxDistance = Vector3.Distance(pickUpPoint.position, dropOffPoint.position);
-
-        if(maxDistance <= 10f)
+        Transform dropOffPoint;
+        do
         {
-			for (int i = 1; i < destinationList.Count; i++)
-			{
-				float distance = Vector3.Distance(pickUpPoint.position, destinationList[i].position);
-                if (distance > 10) break;
-				if (distance > maxDistance)
-				{
-					maxDistance = distance;
-					dropOffPoint = destinationList[i];
-				}
-			}
-		}
+            dropOffPoint = destinationList[Random.Range(0, destinationList.Count - 1)];
+        }
+        while (dropOffPoint == pickUpPoint);
+
 
         currentDropOffPoint = dropOffPoint;
+        currentDropOffPoint.gameObject.SetActive(true);
 	}
 
     public void ChangeDuty()
@@ -112,15 +97,29 @@ public class CrabService : MonoBehaviour
         }
         else
         {
-            isOnTrip = true;
+            isAcceptTrip = true;
+            directionArrow.checkpoint = currentPickUpPoint;
+            isTripCompleted = false;
         }
 
         //Xử lý tạo GPS trên map
     }
 
+    public void SetDestination()
+    {
+        directionArrow.checkpoint = currentDropOffPoint;
+    }
+
     public void CompleteTrip()
     {
-        isOnTrip = false;
+        isAcceptTrip = false;
+        isTripCompleted = true;
+        currentPickUpPoint.gameObject.SetActive(false);
+        currentDropOffPoint.gameObject.SetActive(false);
+        currentPickUpPoint = null;
+        currentDropOffPoint = null;
+        directionArrow.checkpoint = null;
+
         //Cộng tiền cho player
     }
 }

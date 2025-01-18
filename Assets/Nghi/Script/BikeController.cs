@@ -8,7 +8,7 @@ public class BikeController : MonoBehaviour
     float moveInput, steerInput, rayLength, currentVelocityOffset;
     public Vector3 velocity;
 
-    public float maxSpeed, accelaration, steerStrength, gravity, bikeXTiltIncrement, zTiltAngle = 45f;
+    public float maxSpeed, accelaration, steerStrength, gravity, bikeXTiltIncrement, xTiltAngle = 45f;
     public GameObject handle;
     public float handleRotVal = 30f, handleRotSpeed = 0.15f;
     [Range(1f, 10f)]
@@ -33,18 +33,18 @@ public class BikeController : MonoBehaviour
     {
         moveInput = Input.GetAxisRaw("Vertical");
         steerInput = Input.GetAxisRaw("Horizontal");
-        Movement();
 
-        transform.position = sphereRb.transform.position;
-        bikeBody.MoveRotation(transform.rotation);
-
-        velocity = bikeBody.transform.InverseTransformDirection(bikeBody.velocity);
-        currentVelocityOffset = bikeBody.velocity.magnitude / maxSpeed;
+        
     }
 
     private void FixedUpdate()
     {
+        Movement();
         EngineSound();
+        transform.position = sphereRb.transform.position;
+
+        velocity = bikeBody.transform.InverseTransformDirection(bikeBody.velocity);
+        currentVelocityOffset = bikeBody.velocity.magnitude / maxSpeed;
     }
 
     void Movement()
@@ -79,12 +79,12 @@ public class BikeController : MonoBehaviour
 
     void BikeTilt()
     {
-        float xRot = (Quaternion.FromToRotation(bikeBody.transform.up, hit.normal) * bikeBody.transform.rotation).eulerAngles.x;
-        float zRot = 0;
-
+        float xRot = 0;
+        float zRot = (Quaternion.FromToRotation(bikeBody.transform.up, hit.normal) * bikeBody.transform.rotation).eulerAngles.z;
+        
         if (currentVelocityOffset > 0)
         {
-            zRot = -zTiltAngle * steerInput * currentVelocityOffset;
+            xRot = xTiltAngle * steerInput * currentVelocityOffset;
         }
 
         Quaternion targetRot = Quaternion.Slerp(bikeBody.transform.rotation, Quaternion.Euler(xRot, transform.eulerAngles.y, zRot), bikeXTiltIncrement);

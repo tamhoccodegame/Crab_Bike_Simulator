@@ -44,21 +44,23 @@ public class TPlayerController : MonoBehaviour
 
         ChangeSpeed();
         CalculateMove();
-
-		if (movement.magnitude > Mathf.Epsilon)
-		{
-			Quaternion targetRotation = Quaternion.LookRotation(movement);
-			animator.SetBool("Walking", true);
-			transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-		}
-		else
-		{
-			animator.SetBool("Walking", false);
-		}
-
-		controller.Move(movement * currentSpeed * Time.deltaTime);
-
 	}
+
+    private void FixedUpdate()
+    {
+        if (movement.magnitude > Mathf.Epsilon)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(movement);
+            animator.SetBool("Walking", true);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+        else
+        {
+            animator.SetBool("Walking", false);
+        }
+
+        controller.Move(movement * currentSpeed * Time.deltaTime);
+    }
 
     void OnGameStateChange(GameManager.GameState gameState)
     {

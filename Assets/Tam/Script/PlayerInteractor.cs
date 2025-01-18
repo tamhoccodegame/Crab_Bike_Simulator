@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerInteractor : MonoBehaviour
 {
+    public Transform playerVisual;
     RaycastHit hit;
     public IInteractable currentInteractable;
 
@@ -16,10 +17,11 @@ public class PlayerInteractor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
+        Ray ray = new Ray(playerVisual.position, playerVisual.forward);
 
         if (Physics.Raycast(ray, out hit, 10f))
         {
+
             IInteractable interactable = hit.transform.GetComponent<IInteractable>();
             if(interactable != null)
             {
@@ -27,12 +29,16 @@ public class PlayerInteractor : MonoBehaviour
                 interactable.ShowPrompt();
             }
         }
+        else
+        {
+            currentInteractable = null;
+        }
 
-        if(currentInteractable != null && Input.GetKeyDown(KeyCode.F))
+        if (currentInteractable != null && Input.GetKeyDown(KeyCode.F))
         {
             currentInteractable.OnInteract(this);
         }
 
-        Debug.DrawLine(transform.position, transform.forward * 10, Color.red);
+        Debug.DrawRay(playerVisual.position, playerVisual.forward * 10, Color.red);
     }
 }
