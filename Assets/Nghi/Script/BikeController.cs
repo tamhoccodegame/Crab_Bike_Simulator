@@ -32,7 +32,7 @@ public class BikeController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Movement();
+        
 
         moveInput = Input.GetAxis("Vertical");
         steerInput = Input.GetAxis("Horizontal"); 
@@ -46,11 +46,13 @@ public class BikeController : MonoBehaviour
 
         velocity = bikeBody.transform.InverseTransformDirection(bikeBody.velocity);
         currentVelocityOffset = velocity.z / maxSpeed;
+
     }
 
     private void FixedUpdate()
     {
-        
+
+        Movement();
 
         //visual
         frontTyre.transform.Rotate(Vector3.forward, Time.deltaTime * tyreRotationSpeed * currentVelocityOffset);
@@ -126,9 +128,9 @@ public class BikeController : MonoBehaviour
 
     bool Grounded()
     {
-        float radious = rayLength - 0.02f;
-        Vector3 origin = sphere.transform.position + radious * Vector3.up;
-        if (Physics.SphereCast(origin, radious + 0.02f, - transform.up , out hit, rayLength, surface))
+        float radius = rayLength - 0.02f;
+        Vector3 origin = sphere.transform.position + radius * Vector3.up;
+        if (Physics.SphereCast(origin, radius + 0.02f, - transform.up , out hit, rayLength, surface))
         {
             return true;
         }
