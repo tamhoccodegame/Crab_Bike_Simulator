@@ -7,10 +7,18 @@ public class Destination : MonoBehaviour
     public CrabService crabService;
     public bool isThisPickUpPoint;
     public GameObject customer;
+    private PlayerCash playerCash;
+
     // Start is called before the first frame update
     void Start()
     {
+        playerCash = FindObjectOfType<PlayerCash>();
+    }
+
+    private void OnEnable() 
+    {
         isThisPickUpPoint = Vector3.Distance(crabService.currentPickUpPoint.position, transform.position) <= 0.5f;
+        customer.gameObject.SetActive(isThisPickUpPoint);
     }
 
     // Update is called once per frame
@@ -25,25 +33,27 @@ public class Destination : MonoBehaviour
         {
             if(isThisPickUpPoint)
             {
-                customer.gameObject.SetActive(true);
                 crabService.SetDestination();
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
-                customer.transform.position = customerSitPosition.position;
-                customer.transform.rotation = customerSitPosition.rotation;
-                customer.GetComponent<Animator>().SetBool("isOnTrip", true);
-                customer.GetComponent<WaitingCustomer>().enabled = false;
-                customer.transform.SetParent(customerSitPosition, true);
+                Transform duplicatCustomer = Instantiate(customer, customer.transform.parent).transform;
+                customer.SetActive(false);
+                duplicatCustomer.GetComponent<Animator>().SetBool("isOnTrip", true);
+                duplicatCustomer.GetComponent<WaitingCustomer>().enabled = false;
+                duplicatCustomer.transform.SetParent(customerSitPosition, true);
+                duplicatCustomer.transform.localPosition = Vector3.zero;
+                duplicatCustomer.transform.localRotation = Quaternion.Euler(0,0,0);
             }
             else
-            {
-                customer.gameObject.SetActive(false);
+            { 
                 crabService.CompleteTrip();
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
-                Transform _customer = customerSitPosition.Find("NPC");
+                Transform _customer = customerSitPosition.Find("NPC(Clone)");
                 _customer.transform.SetParent(null);
                 _customer.transform.position += new Vector3(0, 0, 2);
+                _customer.transform.rotation = Quaternion.Euler(0,0,0);
                 _customer.GetComponent<Animator>().SetBool("isOnTrip", false);
                 _customer.GetComponent <WaitingCustomer>().enabled = true;
+                playerCash.AddMoney(crabService.GetPayment());
             }
             gameObject.SetActive(false);
         }

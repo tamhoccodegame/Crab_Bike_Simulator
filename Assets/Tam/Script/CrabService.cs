@@ -56,12 +56,16 @@ public class CrabService : MonoBehaviour
         }
 	}
 
+    public int GetPayment()
+    {
+        return (int)cashSystem.currentPayment;
+    }
+
     public void GetDestination()
     {
         Transform pickUpPoint = destinationList[Random.Range(0, destinationList.Count - 1)];
 		
         currentPickUpPoint = pickUpPoint;
-        currentPickUpPoint.gameObject.SetActive(true);
 
         Transform dropOffPoint;
         do
@@ -72,7 +76,6 @@ public class CrabService : MonoBehaviour
 
 
         currentDropOffPoint = dropOffPoint;
-        currentDropOffPoint.gameObject.SetActive(true);
 	}
 
     public void ChangeDuty()
@@ -97,21 +100,33 @@ public class CrabService : MonoBehaviour
         }
         else
         {
+            directionArrow.gameObject.SetActive(true);
             isAcceptTrip = true;
             directionArrow.checkpoint = currentPickUpPoint;
+            currentPickUpPoint.gameObject.SetActive(true);
             isTripCompleted = false;
         }
 
         //Xử lý tạo GPS trên map
     }
 
+    public void CancelTrip()
+    {
+        currentPickUpPoint.gameObject.SetActive(false);
+        currentDropOffPoint.gameObject.SetActive(false);
+        currentPickUpPoint = null;
+        currentDropOffPoint = null;
+    }
+
     public void SetDestination()
     {
         directionArrow.checkpoint = currentDropOffPoint;
+        currentDropOffPoint.gameObject.SetActive(true);
     }
 
     public void CompleteTrip()
     {
+        directionArrow.gameObject.SetActive(false);
         isAcceptTrip = false;
         isTripCompleted = true;
         currentPickUpPoint.gameObject.SetActive(false);

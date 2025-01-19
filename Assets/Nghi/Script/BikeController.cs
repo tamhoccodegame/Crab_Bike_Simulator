@@ -5,7 +5,8 @@ using UnityEngine;
 public class BikeController : MonoBehaviour
 {
     RaycastHit hit;
-    float moveInput, steerInput, rayLength, currentVelocityOffset;
+    float moveInput, steerInput, rayLength;
+    public float currentVelocityOffset;
     public Vector3 velocity;
 
     public float maxSpeed, accelaration, steerStrength, gravity, bikeXTiltIncrement, xTiltAngle = 45f;
@@ -25,6 +26,7 @@ public class BikeController : MonoBehaviour
     {
         sphereRb.transform.parent = null;
         bikeBody.transform.parent = null;
+        this.enabled = false;
         
         rayLength = sphereRb.GetComponent<SphereCollider>().radius + 0.5f;
     }
@@ -33,8 +35,6 @@ public class BikeController : MonoBehaviour
     {
         moveInput = Input.GetAxisRaw("Vertical");
         steerInput = Input.GetAxisRaw("Horizontal");
-
-        
     }
 
     private void FixedUpdate()
@@ -67,12 +67,12 @@ public class BikeController : MonoBehaviour
 
     void Accelaration()
     {
-        sphereRb.velocity = Vector3.Lerp(sphereRb.velocity, maxSpeed * moveInput * -transform.right, Time.fixedDeltaTime * accelaration);
+        sphereRb.velocity = Vector3.Lerp(sphereRb.velocity, maxSpeed * moveInput * -transform.right, Time.deltaTime * accelaration);
     }
 
     void Rotation()
     {
-        transform.Rotate(0, steerInput * moveInput * steerStrength  * Time.fixedDeltaTime, 0, Space.World);
+        transform.Rotate(0, steerInput * moveInput * steerStrength  * Time.deltaTime, 0, Space.World);
 
         handle.transform.localRotation = Quaternion.Slerp(handle.transform.localRotation, Quaternion.Euler(handle.transform.localRotation.eulerAngles.x, handleRotVal * steerInput, handle.transform.localRotation.eulerAngles.z), handleRotSpeed);
     }

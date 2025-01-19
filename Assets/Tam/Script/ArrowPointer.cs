@@ -28,9 +28,5 @@ public class ArrowPointer : MonoBehaviour
                 transform.rotation = Quaternion.Euler(transform.rotation.x, targetRotation.eulerAngles.y, transform.rotation.z);
             }
         }
-        else
-        {
-
-        }
     }
 }

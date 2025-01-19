@@ -15,10 +15,10 @@ public class Car : MonoBehaviour, IInteractable
         currentPlayer = player;
         currentPlayer.GetComponent<TPlayerController>().enabled = false;
         currentPlayer.GetComponent<CharacterController>().enabled = false;
-        currentPlayer.transform.position = sitPosition.position;
-        currentPlayer.transform.rotation = sitPosition.rotation;
         currentPlayer.transform.SetParent(sitPosition.transform, true);
-        currentPlayer.GetComponent<Animator>().SetBool("Riding", true);
+        currentPlayer.transform.localPosition = Vector3.zero;
+        currentPlayer.transform.rotation = sitPosition.rotation;
+        currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 1);
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = rightHand;
         parent.GetComponent<BikeController>().enabled = true;
@@ -38,7 +38,15 @@ public class Car : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-
+        if (currentPlayer == null) return;
+        if (parent.GetComponent<BikeController>().currentVelocityOffset > 0.01f)
+        {
+            currentPlayer.GetComponent<Animator>().SetBool("Stopping", false);
+        }
+        else
+        {
+            currentPlayer.GetComponent<Animator>().SetBool("Stopping", true);
+        }
     }
 
     public void OnExit()
@@ -47,8 +55,8 @@ public class Car : MonoBehaviour, IInteractable
         currentPlayer.transform.SetParent(null);
         currentPlayer.GetComponent<TPlayerController>().enabled = true;
         currentPlayer.GetComponent<CharacterController>().enabled = true;
-        currentPlayer.GetComponent<Animator>().SetBool("Riding", false);
         parent.GetComponent<BikeController>().enabled = false;
+        currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 0);
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = null;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = null;
         currentPlayer.currentInteractable = null;
