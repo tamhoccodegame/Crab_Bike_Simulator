@@ -20,26 +20,53 @@ public class LightingManager : MonoBehaviour
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI dayText;
 
+    public bool isNight = false;
+
     private void Start()
     {
         timeText.text = "Time: " + TimeOfDay;
         dayText.text = "Day: " + day;
-        Debug.Log(RenderSettings.skybox);
     }
 
     private void Update()
     {
-        UpdateTimeOnUI();   
+        UpdateTimeOnUI();
         if (Preset == null)
             return;
 
         if (Application.isPlaying)
         {
             //(Replace with a reference to the game time)
-            TimeOfDay += Time.deltaTime/secondsPerGameHour;
+            TimeOfDay += Time.deltaTime / secondsPerGameHour;
             //TimeOfDay %= 24; //Modulus to ensure always between 0-24
-            
-            if (TimeOfDay >=24f)
+
+            if (TimeOfDay >= 8.5f && TimeOfDay < 18)
+            {
+                GameObject[] go = GameObject.FindGameObjectsWithTag("Light");
+                foreach(var g in go)
+                {
+                    g.SetActive(false);
+                }
+
+            }
+            else if (TimeOfDay >= 18 && TimeOfDay < 24)
+            {
+                GameObject[] go = GameObject.FindGameObjectsWithTag("Light");
+                foreach (var g in go)
+                {
+                    g.SetActive(true);
+                }
+            }
+            else if (TimeOfDay > 0 && TimeOfDay < 8.5f)
+            {
+                GameObject[] go = GameObject.FindGameObjectsWithTag("Light");
+                foreach (var g in go)
+                {
+                    g.SetActive(true);
+                }
+            }
+
+            if (TimeOfDay >= 24f)
             {
                 // Đưa thời gian về khoảng 0-24 (reset khi qua ngày mới)
                 TimeOfDay -= 24f;
