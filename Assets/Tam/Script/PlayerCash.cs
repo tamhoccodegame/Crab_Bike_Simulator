@@ -29,9 +29,12 @@ public class PlayerCash : MonoBehaviour
         playerCashText.text = currentCash.ToString();
     }
 
-    public void CostMoney(int amount)
+    public bool CostMoney(int amount)
     {
+        if (currentCash < amount) return false;
+        
         currentCash -= amount;
         playerCashText.text = currentCash.ToString();
+        return true;
     }
 }

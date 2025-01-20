@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +28,8 @@ public class Inventory
 
     public void UseItem(IShopItem item)
     {
+        //Hàm này chưa hoàn thiện, hiện tại chỉ là use food nên
+        //mới remove hẵn như này. Mai mốt làm thêm build nội thất sẽ khác.
         inventoryItems.Remove(item);
         onItemUsed?.Invoke(item);
         onInventoryChanged?.Invoke();

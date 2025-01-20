@@ -16,7 +16,7 @@ public class Car : MonoBehaviour, IInteractable
         currentPlayer.GetComponent<TPlayerController>().enabled = false;
         currentPlayer.GetComponent<CharacterController>().enabled = false;
         currentPlayer.transform.SetParent(sitPosition.transform, true);
-        currentPlayer.transform.localPosition = Vector3.zero;
+        currentPlayer.transform.position = sitPosition.position;
         currentPlayer.transform.rotation = sitPosition.rotation;
         currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 1);
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;

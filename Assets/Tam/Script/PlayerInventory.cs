@@ -8,11 +8,14 @@ public class PlayerInventory : MonoBehaviour
     public UIInventory UIInventory;
     public UIShop UIShop;
 
+    private PlayerState playerState;
+
     // Start is called before the first frame update
     void Start()
     {
         inventory = new Inventory();
         inventory.onItemUsed += OnItemUsed;
+        playerState = GetComponent<PlayerState>();
         UIInventory.SetInventory(inventory);
         UIShop.SetPlayerInventory(inventory);
     }
@@ -25,8 +28,10 @@ public class PlayerInventory : MonoBehaviour
             {
                 //Call To Player Stat Reference
                 case Food.FoodType.Burger:
+                    playerState.AddHunger(5);
                     break;
                 case Food.FoodType.Soda:
+                    playerState.AddStrength(5);
                     break;
             }
         }

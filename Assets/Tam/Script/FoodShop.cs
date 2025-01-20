@@ -12,9 +12,9 @@ public class FoodShop : MonoBehaviour, IShop
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        foodList.Add(new Food { foodType = Food.FoodType.Burger });
+        foodList.Add(new Food { foodType = Food.FoodType.Burger } as IShopItem);
     }
 
     // Update is called once per frame

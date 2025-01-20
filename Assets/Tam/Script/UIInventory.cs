@@ -8,7 +8,7 @@ public class UIInventory : MonoBehaviour
     private Inventory inventory;
     public Transform itemSlotTemplate;
     public Transform itemSlotContainer;
-
+    public Button useButton;
 
 
     // Start is called before the first frame update
@@ -39,6 +39,7 @@ public class UIInventory : MonoBehaviour
                 continue;
             }
             Destroy(child.gameObject);
+            useButton.gameObject.SetActive(false);
         }
 
 
@@ -47,9 +48,17 @@ public class UIInventory : MonoBehaviour
             RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
             itemSlotRectTransform.gameObject.SetActive(true);
             itemSlotRectTransform.GetComponent<Image>().sprite = item.GetSprite();
+
+            itemSlotRectTransform.GetComponent<Button>().onClick.RemoveAllListeners();
+            useButton.onClick.RemoveAllListeners();
+
             itemSlotRectTransform.GetComponent<Button>().onClick.AddListener(() =>
             {
-                inventory.UseItem(item);
+                useButton.gameObject.SetActive(true);
+                useButton.onClick.AddListener(() =>
+                {
+                    inventory.UseItem(item);
+                });
             });
         }
     }

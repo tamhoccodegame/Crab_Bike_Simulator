@@ -1,5 +1,6 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -64,12 +65,14 @@ public class UIShop : MonoBehaviour, IInteractable
         }
 
 
-        foreach(IShopItem shopItem in shop.GetShopItems())
+        foreach (IShopItem shopItem in shop.GetShopItems())
         {
             RectTransform itemRectTransform = Instantiate(shopItemTemplate, shopItemContainer).GetComponent<RectTransform>();
             itemRectTransform.gameObject.SetActive(true);
             itemRectTransform.GetComponent<Image>().sprite = shopItem.GetSprite();
+            itemRectTransform.Find("Price").GetComponent<TextMeshProUGUI>().text = shopItem.GetPrice().ToString();
             itemRectTransform.GetComponent<Button>().onClick.RemoveAllListeners();
+
             buyButton.onClick.RemoveAllListeners();
             itemRectTransform.GetComponent<Button>().onClick.AddListener(() =>
             {
@@ -77,8 +80,12 @@ public class UIShop : MonoBehaviour, IInteractable
                 buyButton.onClick.AddListener(() =>
                 {
                     Debug.Log($"Buy {shopItem.GetSprite().name}");
-                    playerCash.CostMoney(shopItem.GetPrice());
+                    if(playerCash.CostMoney(shopItem.GetPrice()))
                     playerInventory.AddItem(shopItem);
+                    else
+                    {
+                        Debug.Log("Không đủ tiền");
+                    }
                 });
             });
         }

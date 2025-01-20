@@ -23,8 +23,8 @@ public class PlayerState : MonoBehaviour
         InvokeRepeating(nameof(DecreaseHunger), 1f, 1f);
         InvokeRepeating(nameof(DecreaseHygiene), 2f, 2f);
 
-        OnHealthChange(currentHealth);
-        OnStrengthChange(currentStrength);
+        OnHealthChange?.Invoke(currentHealth);
+        OnStrengthChange?.Invoke(currentStrength);
     }
 
     // Update is called once per frame
@@ -83,10 +83,27 @@ public class PlayerState : MonoBehaviour
         currentStrength = Mathf.Clamp(currentStrength, 0, 100);
 
         OnStrengthChange?.Invoke(currentStrength);
+    }
 
-        if (currentStrength == 0)
-        {
-            DecreaseHealth(5);
-        }
+    public void AddHunger(float amount)
+    {
+        currentHunger += amount;
+        currentHunger = Mathf.Clamp(currentHunger, 0, 100);
+        OnHungerChange?.Invoke(currentHunger);
+    }
+
+    public void AddHygiene(float amount)
+    {
+        
+    }
+
+    public void AddHealth(float amount)
+    {
+
+    }
+
+    public void AddStrength(float amount)
+    {
+        
     }
 }
