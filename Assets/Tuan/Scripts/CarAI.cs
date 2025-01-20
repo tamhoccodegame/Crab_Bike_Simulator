@@ -5,50 +5,113 @@ using UnityEngine.AI;
 
 public class CarAI : MonoBehaviour
 {
-    public Transform[] waypoints;
+    public List<GameObject> waypointsContainer;
     public TrafficLight trafficLight;
     public float speed = 10f;
     private int currentWaypointIndex = 0;
-
+    private bool TrafficZone = false;
+    private bool isTrafficSystemActive = true;
     private NavMeshAgent agent;
-    
+    private Transform[] waypoints;
+
+
+
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
-        MoveToNextWaypoint();
-    }
-
-    void Update()
-    {
-       
-
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        if (waypointsContainer.Count > 0)
         {
-            MoveToNextWaypoint();
-        }
-        if (trafficLight.currentLightState == TrafficLight.LightState.Green)
-        {
-
-            return;
+            GameObject selectContainer = waypointsContainer[Random.Range(0, waypointsContainer.Count)];
+            waypoints = selectContainer.GetComponentsInChildren<Transform>();
+            List<Transform> waypointsList = new List<Transform>(waypoints);
+            waypointsList.Remove(selectContainer.transform);
+            waypoints = waypointsList.ToArray();
         }
         else
         {
-
             MoveToNextWaypoint();
+        }
+    }
+        
+
+    void Update()
+    {
+
+        if (TrafficZone && isTrafficSystemActive  == true)
+        {
+            
+            TrafficSystem();
+        }
+        else
+        {
+            
+            MoveToNextWaypointIfNeeded();
         }
 
     }
+    public void SetTrafficSystemActive(bool isActive)
+    {
+        isTrafficSystemActive = isActive;
+    }
 
-   
+    public void TrafficSystem()
+    {
+       
+        if (trafficLight != null && trafficLight.currentLightState == TrafficLight.LightState.Red)
+        {
+            agent.isStopped = true;
+        }
+        else
+        {
+            agent.isStopped = false;
+            MoveToNextWaypointIfNeeded();
+        }
+    }
+    
+    public void MoveToNextWaypointIfNeeded()
+    {
+       
+        if (!agent.isStopped && !agent.pathPending && agent.remainingDistance < 0.5f)
+        {
+            MoveToNextWaypoint();
+        }
+    }
     void MoveToNextWaypoint()
     {
         if (waypoints.Length == 0)
-            return;
+           return;
 
         agent.destination = waypoints[currentWaypointIndex].position;
         currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
     }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("TrafficLight"))
+        {
+            
+            TrafficZone = true;
+        }
+
+    }
+
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("TrafficLight"))
+        {
+            
+            TrafficZone = false;
+        }
+
+    }
+
+
+    
+
+   
 }
 
 

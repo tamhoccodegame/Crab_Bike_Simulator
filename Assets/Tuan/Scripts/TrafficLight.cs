@@ -11,7 +11,6 @@ public class TrafficLight : MonoBehaviour
     public float yellowTime = 3f;
 
     private float timer = 0f;
-
     void Update()
     {
         timer += Time.deltaTime;
@@ -58,6 +57,7 @@ public class TrafficLight : MonoBehaviour
             }
         }
     }
+  
 
 }
 
