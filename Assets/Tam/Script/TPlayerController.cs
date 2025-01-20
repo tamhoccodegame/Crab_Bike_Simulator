@@ -9,6 +9,7 @@ public class TPlayerController : MonoBehaviour
     public float rotationSpeed;
     public float walkSpeed;
     public float runSpeed;
+    public float accelaration;
     private float currentSpeed;
 
     private Vector3 movement;
@@ -27,8 +28,6 @@ public class TPlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         cam = Camera.main;
-
-
 
         gameManager.onGameStateChange += OnGameStateChange;
         currentSpeed = walkSpeed;
@@ -67,23 +66,25 @@ public class TPlayerController : MonoBehaviour
         if(gameState == GameManager.GameState.Menu)
         {
             canMove = false;
-            cam.GetComponent<CinemachineBrain>().enabled = false;
         }
         else if(gameState == GameManager.GameState.Playing)
         {
             canMove = true;
-			cam.GetComponent<CinemachineBrain>().enabled = true;
 		}
 	}
 
     void ChangeSpeed()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift) && movement.magnitude > 0.1f)
         {
-            currentSpeed = runSpeed;
+            if(currentSpeed < runSpeed)
+            {
+                currentSpeed += Time.deltaTime * accelaration;
+            }
+
             animator.SetBool("Running", true);
         }
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
+        else if (Input.GetKeyUp(KeyCode.LeftShift) || movement.magnitude < 0.1f)
         {
             currentSpeed = walkSpeed;
             animator.SetBool("Running", false);

@@ -13,7 +13,7 @@ public class PlayerCash : MonoBehaviour
     void Start()
     {
         currentCash = 10000;
-        playerCashText.text = currentCash.ToString();
+        playerCashText.text = currentCash.ToString("N0");
         UIShop.SetPlayerCash(this);
     }
 
@@ -26,7 +26,7 @@ public class PlayerCash : MonoBehaviour
     public void AddMoney(int amount)
     {
         currentCash += amount;
-        playerCashText.text = currentCash.ToString();
+        playerCashText.text = currentCash.ToString("N0");
     }
 
     public bool CostMoney(int amount)
@@ -34,7 +34,7 @@ public class PlayerCash : MonoBehaviour
         if (currentCash < amount) return false;
         
         currentCash -= amount;
-        playerCashText.text = currentCash.ToString();
+        playerCashText.text = currentCash.ToString("N0");
         return true;
     }
 }

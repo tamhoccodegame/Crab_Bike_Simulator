@@ -7,12 +7,10 @@ public class Destination : MonoBehaviour
     public CrabService crabService;
     public bool isThisPickUpPoint;
     public GameObject customer;
-    private PlayerCash playerCash;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerCash = FindObjectOfType<PlayerCash>();
     }
 
     private void OnEnable() 
@@ -53,7 +51,6 @@ public class Destination : MonoBehaviour
                 _customer.transform.rotation = Quaternion.Euler(0,0,0);
                 _customer.GetComponent<Animator>().SetBool("isOnTrip", false);
                 _customer.GetComponent <WaitingCustomer>().enabled = true;
-                playerCash.AddMoney(crabService.GetPayment());
             }
             gameObject.SetActive(false);
         }

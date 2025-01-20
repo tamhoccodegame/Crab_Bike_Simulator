@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Cinemachine.Utility;
 
 public class CrabService : MonoBehaviour
 {
+    public Transform player;
     private CashSystem cashSystem;
+    private PlayerCash playerCash;
+
 
     public List<Transform> destinationList;
     public Transform currentPickUpPoint;
@@ -23,48 +27,63 @@ public class CrabService : MonoBehaviour
     public GameObject notificationPanel;
 
     public ArrowPointer directionArrow;
+    public Slider progressTripSlider;
+
+    private Vector3 currentDestination;
+    private float tripLong;
 
     // Start is called before the first frame update
     void Start()
     {
         cashSystem = new CashSystem();
+        playerCash = FindObjectOfType<PlayerCash>();
         customerCallTimer = customerCallCooldown;
     }
 
     // Update is called once per frame
     void Update()
     {
+        UpdateTripProgress();
         SendNotification();
     }
-    
+
+    void UpdateTripProgress()
+    {
+        if (!progressTripSlider.gameObject.activeSelf) return;
+
+
+        float currentDistance = Vector3.Distance(player.position, currentDestination);
+
+        float sliderValue = 1 - (currentDistance / tripLong);
+
+        progressTripSlider.value = sliderValue;
+    }
+
     public void SendNotification()
     {
-		if (isOnDuty && !isAcceptTrip && customerCallTimer > 0 && !notificationPanel.activeSelf)
-		{
-			customerCallTimer -= Time.deltaTime;
-		}
-		if (customerCallTimer <= 0)
-		{
+        if (isOnDuty && !isAcceptTrip && customerCallTimer > 0 && !notificationPanel.activeSelf)
+        {
+            customerCallTimer -= Time.deltaTime;
+        }
+        if (customerCallTimer <= 0)
+        {
             GetDestination();
             cashSystem.CalculatePayment(currentPickUpPoint.position, currentDropOffPoint.position);
-			//Gửi thông báo có khách
-			customerCallTimer = customerCallCooldown;
-			notificationPanel.SetActive(true);
+            //Gửi thông báo có khách
+            customerCallTimer = customerCallCooldown;
+            notificationPanel.SetActive(true);
             TextMeshProUGUI text = notificationPanel.transform.Find("Destination")
                                        .GetComponent<TextMeshProUGUI>();
             text.text = $"{currentPickUpPoint.name} => {currentDropOffPoint.name} ({cashSystem.currentPayment} VND)";
         }
-	}
-
-    public int GetPayment()
-    {
-        return (int)cashSystem.currentPayment;
     }
+
+
 
     public void GetDestination()
     {
         Transform pickUpPoint = destinationList[Random.Range(0, destinationList.Count - 1)];
-		
+
         currentPickUpPoint = pickUpPoint;
 
         Transform dropOffPoint;
@@ -76,30 +95,33 @@ public class CrabService : MonoBehaviour
 
 
         currentDropOffPoint = dropOffPoint;
-	}
+    }
 
     public void ChangeDuty()
     {
         if (isOnDuty)
         {
-			isOnDuty = false;
-			dutyButton.GetComponent<Image>().color = Color.red;
-		}
+            isOnDuty = false;
+            dutyButton.GetComponent<Image>().color = Color.red;
+        }
         else
         {
-			isOnDuty = true;
-			dutyButton.GetComponent<Image>().color = Color.green;
-		}
+            isOnDuty = true;
+            dutyButton.GetComponent<Image>().color = Color.green;
+        }
     }
 
     public void AcceptTrip()
     {
-        if(!isOnDuty)
+        if (!isOnDuty)
         {
             Debug.LogError("You must be on duty first");
         }
         else
         {
+            progressTripSlider.gameObject.SetActive(true);
+            currentDestination = currentPickUpPoint.position;
+            tripLong = Vector3.Distance(player.position, currentDestination);
             directionArrow.gameObject.SetActive(true);
             isAcceptTrip = true;
             directionArrow.checkpoint = currentPickUpPoint;
@@ -121,11 +143,14 @@ public class CrabService : MonoBehaviour
     public void SetDestination()
     {
         directionArrow.checkpoint = currentDropOffPoint;
+        currentDestination = currentDropOffPoint.position;
+        tripLong = Vector3.Distance(player.position, currentDestination);
         currentDropOffPoint.gameObject.SetActive(true);
     }
 
     public void CompleteTrip()
     {
+        
         directionArrow.gameObject.SetActive(false);
         isAcceptTrip = false;
         isTripCompleted = true;
@@ -134,7 +159,8 @@ public class CrabService : MonoBehaviour
         currentPickUpPoint = null;
         currentDropOffPoint = null;
         directionArrow.checkpoint = null;
-
+        progressTripSlider.gameObject.SetActive(false);
         //Cộng tiền cho player
+        playerCash.AddMoney((int)cashSystem.currentPayment);
     }
 }

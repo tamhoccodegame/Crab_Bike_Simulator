@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,19 +10,21 @@ public class LightingManager : MonoBehaviour
     //Scene References
     [SerializeField] private Light DirectionalLight;
     [SerializeField] private LightingPreset Preset;
+    //[SerializeField] private Mater
     //Variables
     [SerializeField, Range(0, 24)] public float TimeOfDay;
     private int day = 1;
 
-    private float secondsPerGameHour = 10f; // 10 giây thực tế = 1 giờ trong game
+    private float secondsPerGameHour = 60f; // 60 giây thực tế = 1 giờ trong game
 
-    public Text timeText;
-    public Text dayText;
+    public TextMeshProUGUI timeText;
+    public TextMeshProUGUI dayText;
 
     private void Start()
     {
         timeText.text = "Time: " + TimeOfDay;
         dayText.text = "Day: " + day;
+        Debug.Log(RenderSettings.skybox);
     }
 
     private void Update()
@@ -63,7 +66,7 @@ public class LightingManager : MonoBehaviour
         {
             DirectionalLight.color = Preset.DirectionalColor.Evaluate(timePercent);
 
-            DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, 170f, 0));
+            DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 120f, 90f, 0));
         }
 
     }
