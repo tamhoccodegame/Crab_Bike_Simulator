@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public GameObject phoneUI;
+    public GameObject inventoryUI;
 
     public enum GameState
     {
@@ -66,6 +67,18 @@ public class GameManager : MonoBehaviour
                 phoneUI.SetActive(true);
 			}
 		}
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            if (inventoryUI.activeSelf)
+            {
+                inventoryUI.SetActive(false);
+            }
+            else
+            {
+                inventoryUI.SetActive(true);
+            }
+        }
     }
 
     public void ChangeGameState(GameState newState)

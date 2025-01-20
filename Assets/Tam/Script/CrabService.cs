@@ -69,12 +69,16 @@ public class CrabService : MonoBehaviour
         {
             GetDestination();
             cashSystem.CalculatePayment(currentPickUpPoint.position, currentDropOffPoint.position);
+            float distance = Vector3.Distance(player.position, currentPickUpPoint.position);
             //Gửi thông báo có khách
             customerCallTimer = customerCallCooldown;
             notificationPanel.SetActive(true);
-            TextMeshProUGUI text = notificationPanel.transform.Find("Destination")
-                                       .GetComponent<TextMeshProUGUI>();
-            text.text = $"{currentPickUpPoint.name} => {currentDropOffPoint.name} ({cashSystem.currentPayment} VND)";
+            notificationPanel.transform.Find("PickUp")
+                                       .GetComponent<TextMeshProUGUI>().text = $"Điểm đón: {currentPickUpPoint.name} ({(int)(distance/100)}km)";
+            notificationPanel.transform.Find("DropOff")
+                                       .GetComponent<TextMeshProUGUI>().text = $"Điểm đến: {currentDropOffPoint.name}";
+            notificationPanel.transform.Find("Price")
+                                       .GetComponent<TextMeshProUGUI>().text = $"Phí cuốc: {cashSystem.currentPayment.ToString("N0")} VND";
         }
     }
 
@@ -103,6 +107,7 @@ public class CrabService : MonoBehaviour
         {
             isOnDuty = false;
             dutyButton.GetComponent<Image>().color = Color.red;
+            CancelTrip();
         }
         else
         {
@@ -134,6 +139,7 @@ public class CrabService : MonoBehaviour
 
     public void CancelTrip()
     {
+        if (currentPickUpPoint == null || currentDropOffPoint == null) return;
         currentPickUpPoint.gameObject.SetActive(false);
         currentDropOffPoint.gameObject.SetActive(false);
         currentPickUpPoint = null;

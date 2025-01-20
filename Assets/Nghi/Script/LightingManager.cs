@@ -20,12 +20,15 @@ public class LightingManager : MonoBehaviour
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI dayText;
 
+    private GameObject[] lights;
+
     public bool isNight = false;
 
     private void Start()
     {
         timeText.text = "Time: " + TimeOfDay;
         dayText.text = "Day: " + day;
+        lights = GameObject.FindGameObjectsWithTag("Light");
     }
 
     private void Update()
@@ -40,29 +43,28 @@ public class LightingManager : MonoBehaviour
             TimeOfDay += Time.deltaTime / secondsPerGameHour;
             //TimeOfDay %= 24; //Modulus to ensure always between 0-24
 
-            if (TimeOfDay >= 8.5f && TimeOfDay < 18)
+            if (TimeOfDay >= 7.5f && TimeOfDay < 20)
             {
-                GameObject[] go = GameObject.FindGameObjectsWithTag("Light");
-                foreach(var g in go)
+                // Tắt đèn vào ban ngày
+                foreach (var light in lights)
                 {
-                    g.SetActive(false);
-                }
-
-            }
-            else if (TimeOfDay >= 18 && TimeOfDay < 24)
-            {
-                GameObject[] go = GameObject.FindGameObjectsWithTag("Light");
-                foreach (var g in go)
-                {
-                    g.SetActive(true);
+                    if (light.activeSelf) // Chỉ tắt nếu đèn đang bật
+                    {
+                        Debug.Log("Tắt đèn: " + light.name);
+                        light.SetActive(false);
+                    }
                 }
             }
-            else if (TimeOfDay > 0 && TimeOfDay < 8.5f)
+            else
             {
-                GameObject[] go = GameObject.FindGameObjectsWithTag("Light");
-                foreach (var g in go)
+                // Bật đèn vào ban đêm
+                foreach (var light in lights)
                 {
-                    g.SetActive(true);
+                    if (!light.activeSelf) // Chỉ bật nếu đèn đang tắt
+                    {
+                        Debug.Log("Bật đèn: " + light.name);
+                        light.SetActive(true);
+                    }
                 }
             }
 
@@ -93,7 +95,7 @@ public class LightingManager : MonoBehaviour
         {
             DirectionalLight.color = Preset.DirectionalColor.Evaluate(timePercent);
 
-            DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 120f, 90f, 0));
+            DirectionalLight.transform.localRotation = Quaternion.Euler(new Vector3((timePercent * 360f) - 90f, 170f, 0));
         }
 
     }

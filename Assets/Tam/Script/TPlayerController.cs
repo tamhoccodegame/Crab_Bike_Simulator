@@ -73,6 +73,11 @@ public class TPlayerController : MonoBehaviour
 		}
 	}
 
+    public void Footstep()
+    {
+        GetComponent<AudioSource>().Play();
+    }
+
     void ChangeSpeed()
     {
         if (Input.GetKey(KeyCode.LeftShift) && movement.magnitude > 0.1f)
