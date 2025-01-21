@@ -7,16 +7,28 @@ public class Destination : MonoBehaviour
     public CrabService crabService;
     public bool isThisPickUpPoint;
     public GameObject customer;
+    public List<GameObject> customerVisual = new List<GameObject>();
+    private int currentCustomerIndex;
 
     // Start is called before the first frame update
     void Start()
     {
+        foreach(Transform c in customer.transform)
+        {
+            if (c.name == "Root") continue;
+            customerVisual.Add(c.gameObject);
+        }
+        gameObject.SetActive(false);
     }
 
     private void OnEnable() 
     {
+        if (customerVisual.Count == 0) return;
         isThisPickUpPoint = Vector3.Distance(crabService.currentPickUpPoint.position, transform.position) <= 0.5f;
-        customer.gameObject.SetActive(isThisPickUpPoint);
+        customerVisual[currentCustomerIndex].gameObject.SetActive(false);
+        currentCustomerIndex = Random.Range(0, customerVisual.Count);
+        Debug.Log(customerVisual.Count);
+        customerVisual[currentCustomerIndex].gameObject.SetActive(isThisPickUpPoint);
     }
 
     // Update is called once per frame
@@ -34,7 +46,7 @@ public class Destination : MonoBehaviour
                 crabService.SetDestination();
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
                 Transform duplicatCustomer = Instantiate(customer, customer.transform.parent).transform;
-                customer.SetActive(false);
+                customerVisual[currentCustomerIndex].gameObject.SetActive(false);
                 duplicatCustomer.GetComponent<Animator>().SetBool("isOnTrip", true);
                 duplicatCustomer.GetComponent<WaitingCustomer>().enabled = false;
                 duplicatCustomer.transform.SetParent(customerSitPosition, true);
