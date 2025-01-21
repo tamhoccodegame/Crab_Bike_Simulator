@@ -5,7 +5,7 @@ using UnityEngine.AI;
 
 public class CarAI : MonoBehaviour
 {
-    public List<GameObject> waypointsContainer;
+    public GameObject waypointsContainer;
     public TrafficLight trafficLight;
     public float speed = 10f;
     private int currentWaypointIndex = 0;
@@ -21,17 +21,21 @@ public class CarAI : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
-        if (waypointsContainer.Count > 0)
+
+        if (waypointsContainer != null)
         {
-            GameObject selectContainer = waypointsContainer[Random.Range(0, waypointsContainer.Count)];
-            waypoints = selectContainer.GetComponentsInChildren<Transform>();
-            List<Transform> waypointsList = new List<Transform>(waypoints);
-            waypointsList.Remove(selectContainer.transform);
-            waypoints = waypointsList.ToArray();
-        }
-        else
-        {
-            MoveToNextWaypoint();
+            Transform[] allWaypoints = waypointsContainer.GetComponentsInChildren<Transform>();
+
+            List<Transform> childWaypoints = new List<Transform>();
+
+            foreach (Transform waypoint in allWaypoints)
+            {
+                if (waypoint != waypointsContainer.transform)
+                {
+                    childWaypoints.Add(waypoint);
+                }
+            }
+            waypoints = childWaypoints.ToArray();
         }
     }
         
@@ -39,7 +43,7 @@ public class CarAI : MonoBehaviour
     void Update()
     {
 
-        if (TrafficZone && isTrafficSystemActive  == true)
+        if (TrafficZone && isTrafficSystemActive)
         {
             
             TrafficSystem();
