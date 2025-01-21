@@ -9,8 +9,10 @@ public class BikeController : MonoBehaviour
     public float currentVelocityOffset;
     public Vector3 velocity;
 
-    public float maxSpeed, accelaration, steerStrength, gravity, bikeXTiltIncrement, xTiltAngle = 45f;
+    public float maxSpeed, accelaration, steerStrength, gravity, bikeXTiltIncrement, xTiltAngle = 45f, tyreRotSpeed = 1000f;
     public GameObject handle;
+    public GameObject frontTyre;
+    public GameObject backTyre;
     public float handleRotVal = 30f, handleRotSpeed = 0.15f;
     [Range(1f, 10f)]
     public float brakingFactor;
@@ -45,6 +47,10 @@ public class BikeController : MonoBehaviour
 
         velocity = bikeBody.transform.InverseTransformDirection(bikeBody.velocity);
         currentVelocityOffset = bikeBody.velocity.magnitude / maxSpeed;
+
+        //frontTyre.transform.Rotate(Vector3.forward, Time.deltaTime * tyreRotSpeed * currentVelocityOffset,Space.Self);
+        //backTyre.transform.Rotate(Vector3.forward, Time.deltaTime * tyreRotSpeed * currentVelocityOffset, Space.Self);
+
     }
 
     void Movement()
