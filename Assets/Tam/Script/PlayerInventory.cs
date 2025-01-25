@@ -7,6 +7,7 @@ public class PlayerInventory : MonoBehaviour
     private Inventory inventory;
     public UIInventory UIInventory;
     public UIShop UIShop;
+    public ObjectPlacement objectPlacement;
 
     private PlayerState playerState;
 
@@ -18,6 +19,7 @@ public class PlayerInventory : MonoBehaviour
         playerState = GetComponent<PlayerState>();
         UIInventory.SetInventory(inventory);
         UIShop.SetPlayerInventory(inventory);
+        objectPlacement.SetInventory(inventory);
     }
 
     void OnItemUsed(IShopItem item)
@@ -36,7 +38,10 @@ public class PlayerInventory : MonoBehaviour
             }
         }
         //Weapon and Furniture
-        
+        else if(item is Furniture furniture)
+        {
+            GetComponent<ObjectPlacement>().SetObjectToPlace(item.GetPrefab());
+        }
     }
 
     // Update is called once per frame

@@ -37,4 +37,16 @@ public class Food : IShopItem
                 return 0;
         }
     }
+
+    public GameObject GetPrefab()
+    {
+        switch(foodType)
+        {
+            case FoodType.Burger:
+                return ItemSpriteAssets.instance.burgerPrefab;
+            case FoodType.Soda:
+                return ItemSpriteAssets.instance.sodaPrefab;
+            default: return null;
+        }
+    }
 }

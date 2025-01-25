@@ -5,5 +5,6 @@ using UnityEngine;
 public interface IShopItem
 {
     Sprite GetSprite();
+    GameObject GetPrefab();
     int GetPrice();
 }
