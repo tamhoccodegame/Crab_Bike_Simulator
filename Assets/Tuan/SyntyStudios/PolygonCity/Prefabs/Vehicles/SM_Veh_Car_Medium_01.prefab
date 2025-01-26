@@ -410,15 +410,21 @@ GameObject:
   - component: {fileID: 3321018}
   - component: {fileID: 2324734}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   - component: {fileID: 5397538985122117650}
   - component: {fileID: 3355066874625570378}
   - component: {fileID: 8428935687683276394}
   - component: {fileID: 6232465446515195738}
 =======
+=======
+>>>>>>> Stashed changes
   - component: {fileID: 152939164345049378}
   - component: {fileID: 2713128298243101927}
   - component: {fileID: 5090134934146096862}
   - component: {fileID: 1922348382446864839}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   m_Layer: 0
   m_Name: SM_Veh_Car_Medium_01
@@ -438,15 +444,21 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_LocalScale: {x: 1.5271, y: 1.5271, z: 1.5271}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 693635881363009368}
 =======
+=======
+>>>>>>> Stashed changes
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1415870819554898118}
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   - {fileID: 444414}
   - {fileID: 408926}
@@ -456,8 +468,11 @@ Transform:
   - {fileID: 410608}
   - {fileID: 414136}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   - {fileID: 6381956100526643909}
   - {fileID: 3535901823059329938}
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
   m_Father: {fileID: 0}
@@ -513,7 +528,11 @@ MeshRenderer:
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!114 &5397538985122117650
+=======
+--- !u!114 &152939164345049378
+>>>>>>> Stashed changes
 =======
 --- !u!114 &152939164345049378
 >>>>>>> Stashed changes
@@ -529,11 +548,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   waypointsContainer: {fileID: 0}
   trafficLight: {fileID: 0}
   speed: 10
 --- !u!195 &3355066874625570378
 =======
+=======
+>>>>>>> Stashed changes
   waypointsContainer:
   - {fileID: 0}
   - {fileID: 0}
@@ -541,6 +563,9 @@ MonoBehaviour:
   trafficLight: {fileID: 0}
   speed: 10
 --- !u!195 &2713128298243101927
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -562,9 +587,15 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: -0.21
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
 --- !u!54 &8428935687683276394
+=======
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!54 &5090134934146096862
+>>>>>>> Stashed changes
 =======
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -597,7 +628,11 @@ Rigidbody:
   m_Constraints: 0
   m_CollisionDetection: 0
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!65 &6232465446515195738
+=======
+--- !u!65 &1922348382446864839
+>>>>>>> Stashed changes
 =======
 --- !u!65 &1922348382446864839
 >>>>>>> Stashed changes
@@ -893,7 +928,11 @@ SphereCollider:
   m_Radius: 0.41863042
   m_Center: {x: 0.092294686, y: 0, z: 0}
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!1 &355619310096159270
+=======
+--- !u!1 &6162188401308795232
+>>>>>>> Stashed changes
 =======
 --- !u!1 &6162188401308795232
 >>>>>>> Stashed changes
@@ -905,25 +944,35 @@ GameObject:
   serializedVersion: 6
   m_Component:
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   - component: {fileID: 6381956100526643909}
   - component: {fileID: 6293998512777589411}
   m_Layer: 0
   m_Name: Spot Light
   m_TagString: Light
 =======
+=======
+>>>>>>> Stashed changes
   - component: {fileID: 1415870819554898118}
   - component: {fileID: 5293624561238389554}
   - component: {fileID: 8690057577054120326}
   m_Layer: 0
   m_Name: ZoneStopCar
   m_TagString: Untagged
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 --- !u!4 &6381956100526643909
+=======
+--- !u!4 &1415870819554898118
+>>>>>>> Stashed changes
 =======
 --- !u!4 &1415870819554898118
 >>>>>>> Stashed changes
@@ -932,6 +981,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   m_GameObject: {fileID: 355619310096159270}
   serializedVersion: 2
@@ -943,10 +993,17 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
 >>>>>>> Stashed changes
+=======
+  m_GameObject: {fileID: 6162188401308795232}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+>>>>>>> Stashed changes
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 477648}
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   m_LocalEulerAnglesHint: {x: 15.837, y: 0, z: 0}
 --- !u!108 &6293998512777589411
@@ -956,10 +1013,16 @@ Light:
 --- !u!65 &5293624561238389554
 BoxCollider:
 >>>>>>> Stashed changes
+=======
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &5293624561238389554
+BoxCollider:
+>>>>>>> Stashed changes
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
   m_GameObject: {fileID: 355619310096159270}
   m_Enabled: 1
@@ -1197,13 +1260,43 @@ MonoBehaviour:
   m_GameObject: {fileID: 6162188401308795232}
   m_Enabled: 1
 >>>>>>> Stashed changes
+=======
+  m_GameObject: {fileID: 6162188401308795232}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.822998, y: 1.1767731, z: 3.588997}
+  m_Center: {x: -0.11315918, y: 0.5897293, z: 7.617058}
+--- !u!114 &8690057577054120326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6162188401308795232}
+  m_Enabled: 1
+>>>>>>> Stashed changes
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5d7057ba25a07e647a00f8e880be4adf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
   agent: {fileID: 3355066874625570378}
   carAI: {fileID: 5397538985122117650}
+=======
+  agent: {fileID: 2713128298243101927}
+  carAI: {fileID: 152939164345049378}
+>>>>>>> Stashed changes
 =======
   agent: {fileID: 2713128298243101927}
   carAI: {fileID: 152939164345049378}
