@@ -11,6 +11,10 @@ public class ObjectPlacement : MonoBehaviour
     public LayerMask groundLayer;
     public bool canPlace = false;
 
+    public float previewDistance;
+    public float scrollSpeed;
+    public float rotationSpeed;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -30,34 +34,8 @@ public class ObjectPlacement : MonoBehaviour
             previewPlacement = null;
         }
 
-        Vector3 rayOrigin = transform.position + transform.forward * 3;
-        
-        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, Mathf.Infinity, groundLayer))
-        {
-            if(previewPlacement == null && objectToPlace != null)
-            {
-                previewPlacement = Instantiate(objectToPlace);
-                SetTransparency(previewPlacement, 0.5f);
-            }
-
-            Collider previewCollider = previewPlacement.GetComponent<Collider>();
-            Vector3 extents = previewCollider.bounds.extents;
-            
-            Vector3 colliderCenter = previewCollider.bounds.center;
-            Vector3 offset = colliderCenter - previewCollider.transform.position;
-
-            Vector3 placementPosition = hitInfo.point;
-            previewPlacement.transform.position = placementPosition;
-            Collider[] colliders = Physics.OverlapBox(placementPosition + offset, extents);
-
-            if (colliders.Length > 1) canPlace = false;
-            else if (colliders.Length > 0 && colliders[0].gameObject == previewPlacement.gameObject) canPlace = true;
-       
-
-            //previewPlacement.GetComponent<Renderer>().material.color = canPlace ? Color.green : Color.red;
-            DrawDebugBox(placementPosition + offset, extents, canPlace ? Color.green : Color.red);
-
-        }
+        PlacePreview();
+        AdjustPreviewPosition();
 
         if (Input.GetMouseButtonDown(0) && canPlace)
         {
@@ -66,15 +44,57 @@ public class ObjectPlacement : MonoBehaviour
             previewPlacement = null;
             objectToPlace = null;
         }
-
-        if (Input.GetKeyDown(KeyCode.R) && previewPlacement != null)
-        {
-            previewPlacement.transform.Rotate(0, 90, 0);
-        }
-
-
     }
 
+    void PlacePreview()
+    {
+        Vector3 rayOrigin = transform.position + transform.forward * previewDistance;
+
+        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, Mathf.Infinity, groundLayer))
+        {
+            if (previewPlacement == null && objectToPlace != null)
+            {
+                previewPlacement = Instantiate(objectToPlace);
+            }
+
+            Collider previewCollider = previewPlacement.GetComponent<Collider>();
+            Vector3 extents = previewCollider.bounds.extents;
+
+            Vector3 colliderCenter = previewCollider.bounds.center;
+            Vector3 offset = colliderCenter - previewCollider.transform.position;
+
+            Vector3 placementPosition = hitInfo.point;
+
+            previewPlacement.transform.position = placementPosition;
+            Collider[] colliders = Physics.OverlapBox(placementPosition + offset, extents);
+
+            if (colliders.Length > 1) canPlace = false;
+            else if (colliders.Length > 0 && colliders[0].gameObject == previewPlacement.gameObject) canPlace = true;
+
+            SetTransparency(previewPlacement, canPlace ? Color.green : Color.red);
+
+            //previewPlacement.GetComponent<Renderer>().material.color = canPlace ? Color.green : Color.red;
+            DrawDebugBox(placementPosition + offset, extents, canPlace ? Color.green : Color.red);
+
+        }
+    }
+
+    void AdjustPreviewPosition()
+    {
+        if (previewPlacement == null) return;
+
+        float mouseScroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if (mouseScroll != 0)
+        {
+            previewDistance += mouseScroll * scrollSpeed;
+            previewDistance = Mathf.Clamp(previewDistance, 1, 10f);
+        }
+
+        int rotateDirection = Input.GetKey(KeyCode.R) ? 1 : Input.GetKey(KeyCode.Q) ? -1 : 0;
+        previewPlacement.transform.Rotate(0, rotationSpeed * rotateDirection * Time.deltaTime, 0);
+        
+    }
 
     private void DrawDebugBox(Vector3 center, Vector3 halfExtents, Color color)
     {
@@ -107,14 +127,12 @@ public class ObjectPlacement : MonoBehaviour
         Debug.DrawLine(corners[2], corners[6], color); // Left-Front
     }
 
-    void SetTransparency(GameObject obj, float alpha)
+    void SetTransparency(GameObject obj, Color color)
     {
         foreach (var renderer in obj.GetComponentsInChildren<Renderer>())
         {
             foreach (var mat in renderer.materials)
             {
-                Color color = mat.color;
-                color.a = alpha;
                 mat.color = color;
             }
         }
