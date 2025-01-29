@@ -11,10 +11,11 @@ GameObject:
   - component: {fileID: 446466}
   - component: {fileID: 3303064}
   - component: {fileID: 2333516}
+  - component: {fileID: 3805814464661106030}
   - component: {fileID: 64377836311606602}
   m_Layer: 0
   m_Name: SM_Prop_LightPole_Arm_01
-  m_TagString: Untagged
+  m_TagString: TrafficLight
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -59,8 +60,6 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -86,6 +85,22 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &3805814464661106030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffbbaf03ef381c147b8dff4020ebb14a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentLightState: 1
+  greenTime: 10
+  redTime: 10
+  yellowTime: 3
 --- !u!64 &64377836311606602
 MeshCollider:
   m_ObjectHideFlags: 0

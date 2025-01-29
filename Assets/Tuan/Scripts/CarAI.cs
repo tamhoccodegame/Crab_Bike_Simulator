@@ -22,7 +22,11 @@ public class CarAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
 
+<<<<<<< Updated upstream
         if (waypointsContainer != null)
+=======
+        if (waypointsContainer.Count > 0)
+>>>>>>> Stashed changes
         {
             Transform[] allWaypoints = waypointsContainer.GetComponentsInChildren<Transform>();
 
