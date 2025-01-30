@@ -10,6 +10,8 @@ public class CarGetOn : MonoBehaviour, IInteractable
     public Transform rightHand;
     public GameObject parent;
 
+    private bool hasPlayer = false;
+
     public void OnInteract(PlayerInteractor player)
     {
         currentPlayer = player;
@@ -22,6 +24,13 @@ public class CarGetOn : MonoBehaviour, IInteractable
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = rightHand;
         parent.GetComponent<BikeController>().enabled = true;
+        StartCoroutine(DelaySetPlayer());
+    }
+
+    IEnumerator DelaySetPlayer()
+    {
+        yield return null;
+        hasPlayer = true;
     }
 
     public void ShowPrompt()
@@ -47,12 +56,19 @@ public class CarGetOn : MonoBehaviour, IInteractable
         {
             currentPlayer.GetComponent<Animator>().SetBool("Stopping", true);
         }
+
+        if (Input.GetKeyDown(KeyCode.F) && hasPlayer)
+        {
+            ExitCar();
+        }
     }
 
-    public void OnExit()
+    public void ExitCar()
     {
-        currentPlayer.transform.position = sitPosition.position + new Vector3(0, 0, -3);
+        hasPlayer = false;
+        currentPlayer.QuitInteracting();
         currentPlayer.transform.SetParent(null);
+        currentPlayer.transform.position += -currentPlayer.transform.right * 1.5f;
         currentPlayer.GetComponent<TPlayerController>().enabled = true;
         currentPlayer.GetComponent<CharacterController>().enabled = true;
         parent.GetComponent<BikeController>().enabled = false;

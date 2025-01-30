@@ -39,20 +39,17 @@ public class PlayerInteractor : MonoBehaviour
         }
        
 
-        if (currentInteractable != null && Input.GetKeyDown(KeyCode.F))
+        if (currentInteractable != null && Input.GetKeyDown(KeyCode.F) && !isInteracting)
         {
-            if (!isInteracting)
-            {
-                currentInteractable.OnInteract(this);
-                isInteracting = true;
-            }
-            else
-            {
-                currentInteractable.OnExit();
-                isInteracting = false;
-            }
+            currentInteractable.OnInteract(this);
+            isInteracting = true;
         }
 
         Debug.DrawRay(playerVisual.position, playerVisual.forward * 10, Color.red);
+    }
+
+    public void QuitInteracting()
+    {
+        isInteracting = false;
     }
 }
