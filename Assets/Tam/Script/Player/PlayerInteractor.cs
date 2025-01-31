@@ -18,7 +18,9 @@ public class PlayerInteractor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Ray ray = new Ray(playerVisual.position, playerVisual.forward);
+        float rayHeight = playerVisual.GetComponent<Renderer>().bounds.size.y / 2;
+        Vector3 offset = new Vector3(0, rayHeight, 0);
+        Ray ray = new Ray(playerVisual.position + offset, playerVisual.forward);
 
         if (!isInteracting)
         {
