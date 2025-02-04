@@ -13,6 +13,7 @@ public class BubbleChat : MonoBehaviour
         chatBubbleTransform.localPosition = localPosition;
         chatBubbleTransform.GetComponent<BubbleChat>().SetUp(iconType, text);
     }
+
     public enum IconType
     {
         Happy, 
@@ -37,7 +38,7 @@ public class BubbleChat : MonoBehaviour
 
     private void Start()
     {
-        //SetUp(IconType.Happy, "Hello everybody! Say hello to my little friends!");
+        SetUp(IconType.Happy, "Hello everybody! Say hello to my little friends!");
     }
 
     private void SetUp(IconType iconType, string text)
