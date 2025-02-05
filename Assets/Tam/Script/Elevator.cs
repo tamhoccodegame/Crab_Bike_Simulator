@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Autodesk.Fbx;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class Elevator : MonoBehaviour
     public float elevatorSpeed;
 
     private Transform currentFloor;
+    private bool isElevatorMoving = false;  
 
     // Start is called before the first frame update
     void Start()
@@ -23,33 +25,56 @@ public class Elevator : MonoBehaviour
         
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(collision.gameObject.tag);
-        if (collision.gameObject.CompareTag("Player"))
+        if (isElevatorMoving) return;
+        Debug.Log(other.gameObject.name);
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            if (currentFloor == groundFloor)
+            {
+                elevatorSpeed = Mathf.Abs(elevatorSpeed);
+            }
+            else
+            {
+                elevatorSpeed = -Mathf.Abs(elevatorSpeed);
+            }
+
             currentFloor = currentFloor == groundFloor ? secondFloor : groundFloor;
-            CharacterController playerController = collision.gameObject.GetComponent<CharacterController>();
-            if(playerController != null)
+
+            CharacterController characterController = other.gameObject.GetComponent<CharacterController>();
+            TPlayerController tPlayerController = other.gameObject.GetComponent<TPlayerController>();
+            if (tPlayerController != null)
             {
                 StopAllCoroutines();  // Dừng bất kỳ coroutine nào trước đó (tránh lỗi xung đột)
-                StartCoroutine(MoveElevator(currentFloor.position, playerController));
+                StartCoroutine(MoveElevator(currentFloor.position, tPlayerController, characterController));
             }
         }
     }
 
-    private IEnumerator MoveElevator(Vector3 targetPosition, CharacterController playerController)
+    private IEnumerator MoveElevator(Vector3 targetPosition, TPlayerController t, CharacterController c)
     {
-        playerController.enabled = false;
-        playerController.transform.SetParent(transform, true);
-        while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
+        isElevatorMoving = true;
+        t.canMove = false;
+        t.transform.SetParent(transform, true);
+        c.enabled = false;
+
+        yield return new WaitForSeconds(.5f);
+        while (Vector3.Distance(transform.position, targetPosition) > .1f)
         {
             Vector3 newPosition = transform.position;
             newPosition.y += Time.deltaTime * elevatorSpeed;
             transform.position = newPosition;
+            Vector3 playerPosition = t.transform.position;
+            playerPosition.y = transform.position.y;
+            t.transform.position = playerPosition;
             yield return null; // Đợi 1 frame rồi tiếp tục (tránh treo game)
         }
-        playerController.enabled = true;
-        playerController.transform.SetParent(null);
+
+        t.canMove = true;
+        c.enabled = true;
+        t.transform.SetParent(null);
+        yield return new WaitForSeconds(1f);
+        isElevatorMoving = false;
     }
 }

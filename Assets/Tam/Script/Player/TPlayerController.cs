@@ -39,7 +39,12 @@ public class TPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!canMove) return;
+        if (!canMove)
+        {
+            animator.SetBool("Walking", false);
+            animator.SetBool("Running", false);
+            return;
+        }
 
         ChangeSpeed();
         CalculateMove();

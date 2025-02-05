@@ -50,7 +50,6 @@ public class LightingManager : MonoBehaviour
                 {
                     if (light.activeSelf) // Chỉ tắt nếu đèn đang bật
                     {
-                        Debug.Log("Tắt đèn: " + light.name);
                         light.SetActive(false);
                     }
                 }
@@ -62,7 +61,6 @@ public class LightingManager : MonoBehaviour
                 {
                     if (!light.activeSelf) // Chỉ bật nếu đèn đang tắt
                     {
-                        Debug.Log("Bật đèn: " + light.name);
                         light.SetActive(true);
                     }
                 }
