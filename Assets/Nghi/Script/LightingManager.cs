@@ -10,6 +10,12 @@ public class LightingManager : MonoBehaviour
     //Scene References
     [SerializeField] private Light DirectionalLight;
     [SerializeField] private LightingPreset Preset;
+    [SerializeField] private Material sunriseSkyBox;
+    [SerializeField] private Material morningSkyBox;
+    [SerializeField] private Material afternoonSkyBox;
+    [SerializeField] private Material sunsetSkyBox;
+    [SerializeField] private Material nightSkyBox;
+
     //[SerializeField] private Mater
     //Variables
     [SerializeField, Range(0, 24)] public float TimeOfDay;
@@ -43,28 +49,8 @@ public class LightingManager : MonoBehaviour
             TimeOfDay += Time.deltaTime / secondsPerGameHour;
             //TimeOfDay %= 24; //Modulus to ensure always between 0-24
 
-            if (TimeOfDay >= 7.5f && TimeOfDay < 20)
-            {
-                // Tắt đèn vào ban ngày
-                foreach (var light in lights)
-                {
-                    if (light.activeSelf) // Chỉ tắt nếu đèn đang bật
-                    {
-                        light.SetActive(false);
-                    }
-                }
-            }
-            else
-            {
-                // Bật đèn vào ban đêm
-                foreach (var light in lights)
-                {
-                    if (!light.activeSelf) // Chỉ bật nếu đèn đang tắt
-                    {
-                        light.SetActive(true);
-                    }
-                }
-            }
+            UpdateLight();
+            UpdateSkyBox();
 
             if (TimeOfDay >= 24f)
             {
@@ -78,6 +64,61 @@ public class LightingManager : MonoBehaviour
         else
         {
             UpdateLighting(TimeOfDay / 24f);
+        }
+    }
+
+    private void UpdateLight()
+    {
+        if (TimeOfDay >= 7.5f && TimeOfDay < 20)
+        {
+            // Tắt đèn vào ban ngày
+            foreach (var light in lights)
+            {
+                if (light.activeSelf) // Chỉ tắt nếu đèn đang bật
+                {
+                    light.SetActive(false);
+                }
+            }
+        }
+        else
+        {
+            // Bật đèn vào ban đêm
+            foreach (var light in lights)
+            {
+                if (!light.activeSelf) // Chỉ bật nếu đèn đang tắt
+                {
+                    light.SetActive(true);
+                }
+            }
+        }
+    }
+
+    private void UpdateSkyBox()
+    {
+        //Bình minh
+        if(TimeOfDay >= 5.5f && TimeOfDay < 7f)
+        {
+            RenderSettings.skybox = sunriseSkyBox;
+        }
+        //Sáng
+        else if(TimeOfDay >= 7f && TimeOfDay < 11f)
+        {
+            RenderSettings.skybox = morningSkyBox;
+        }
+        //Trưa
+        else if(TimeOfDay >= 11f && TimeOfDay < 17.5f)
+        {
+            RenderSettings.skybox = afternoonSkyBox;
+        }
+        //Hoàng hôn
+        else if(TimeOfDay >= 17.5f && TimeOfDay < 19f)
+        {
+            RenderSettings.skybox = sunsetSkyBox;
+        }
+        //Tối
+        else
+        {
+            RenderSettings.skybox = nightSkyBox; 
         }
     }
 
