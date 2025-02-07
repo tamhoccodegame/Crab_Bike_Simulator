@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,14 +7,16 @@ using UnityEngine;
 public class VehicleManager : MonoBehaviour
 {
     public static VehicleManager instance;
-
-    public GameObject[] ownVehicles;
+    public UIVehicleManager uIVehicleManager;
+    public GameObject[] ownVehicles; //Prefab của những chiếc xe có component Vehicle
     public GameObject activeVehicle;
+    public Action onVehicleChange;
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
+        uIVehicleManager.SetVehicleManager(this);
     }
 
     // Update is called once per frame
