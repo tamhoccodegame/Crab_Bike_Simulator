@@ -3,7 +3,17 @@ guid: 0999ff4c865ea7a43b9a586da5953d65
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: NEON_pink
+    second: {fileID: 2100000, guid: fde37bdf798ad0a4a9a271da6cced23a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Scuffed Plastic with Rough Marks.001
+    second: {fileID: 2100000, guid: 6d3d8828a98c1344d932340c1078b513, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
