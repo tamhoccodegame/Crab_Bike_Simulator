@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BikeController : MonoBehaviour
 {
@@ -24,8 +25,23 @@ public class BikeController : MonoBehaviour
     [Range(0, 1)] public float minPitch;
     [Range(1, 5)] public float maxPitch;
 
+    public GameObject headlight;
+
     private void Start()
     {
+        LightingManager light = FindObjectOfType<LightingManager>();
+        if(light != null)
+        {
+            if (light.TimeOfDay >= 7.5f && light.TimeOfDay < 20)
+            {
+                headlight.SetActive(false);
+            }
+            else
+            {
+                headlight.SetActive(true);
+            }
+        }
+
         sphereRb.transform.parent = null;
         bikeBody.transform.parent = null;
         this.enabled = false;
@@ -37,6 +53,10 @@ public class BikeController : MonoBehaviour
     {
         moveInput = Input.GetAxisRaw("Vertical");
         steerInput = Input.GetAxisRaw("Horizontal");
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            headlight.SetActive(!headlight.activeSelf);
+        }
     }
 
     private void FixedUpdate()
@@ -128,5 +148,11 @@ public class BikeController : MonoBehaviour
     void EngineSound()
     {
         engineSound.pitch = Mathf.Lerp(minPitch, maxPitch, Mathf.Abs(currentVelocityOffset));
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(bikeBody.gameObject);
+        Destroy(sphereRb.gameObject);
     }
 }

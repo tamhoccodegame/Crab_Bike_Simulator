@@ -145,11 +145,11 @@ GameObject:
   - component: {fileID: 3336099619296164058}
   m_Layer: 6
   m_Name: Headlight
-  m_TagString: Light
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1279568594391704371
 Transform:
   m_ObjectHideFlags: 0
@@ -240,7 +240,7 @@ GameObject:
   - component: {fileID: 8713246825836537973}
   m_Layer: 6
   m_Name: Light
-  m_TagString: Light
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -425,6 +425,7 @@ MonoBehaviour:
   engineSound: {fileID: 5841108557360613100}
   minPitch: 0.081
   maxPitch: 1
+  headlight: {fileID: 3133767502335908548}
 --- !u!82 &5841108557360613100
 AudioSource:
   m_ObjectHideFlags: 0
@@ -554,7 +555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf7ce6d6584d53e4aaa8933186feea28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  price: 0
+  price: 500
   speed: 0
 --- !u!1001 &5714448197963441199
 PrefabInstance:
@@ -578,7 +579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 177466, guid: 44e7f5e473d61e144bfb79b854a743c4, type: 3}
       propertyPath: m_TagString
-      value: Light
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 420820, guid: 44e7f5e473d61e144bfb79b854a743c4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -711,10 +712,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.33
+  m_Radius: 0.51169086
   m_Height: 1.75
   m_Direction: 0
-  m_Center: {x: -0.31, y: 0.19, z: 0}
+  m_Center: {x: -0.30999997, y: 0.37169054, z: -0.0000001144171}
 --- !u!4 &5714448197963499423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 467888, guid: 44e7f5e473d61e144bfb79b854a743c4, type: 3}

@@ -47,11 +47,12 @@ public class PlayerInteractor : MonoBehaviour
             isInteracting = true;
         }
 
-        Debug.DrawRay(playerVisual.position + offset    , playerVisual.forward * 10, Color.red);
+        Debug.DrawRay(playerVisual.position + offset, playerVisual.forward * 10, Color.red);
     }
 
     public void QuitInteracting()
     {
         isInteracting = false;
+        currentInteractable = null;
     }
 }

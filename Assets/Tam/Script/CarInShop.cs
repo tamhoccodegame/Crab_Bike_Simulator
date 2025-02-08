@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -7,21 +7,23 @@ using UnityEngine;
 
 public class CarInShop : MonoBehaviour, IInteractable
 {
-    private Vehicle vehicle;
     public GameObject informPanelPrefab;
+    public GameObject carToDrivePrefab;
     private GameObject informPanel;
     private PlayerInteractor currentPlayer;
 
-    public Action<GameObject> onCarBought;
+    public string carName;
+    public int carPrice;
+
+    public Action<CarInShop> onCarBought;
     // Start is called before the first frame update
     void Start()
     {
-        vehicle = GetComponent<Vehicle>();
         informPanel = Instantiate(informPanelPrefab);
         informPanel.transform.SetParent(transform, true);
         informPanel.transform.position = transform.position;
         informPanel.transform.localPosition = informPanelPrefab.transform.position;
-        informPanel.transform.Find("Panel").Find("Price").GetComponent<TextMeshProUGUI>().text = vehicle.price.ToString("N0");
+        informPanel.transform.Find("Panel").Find("Price").GetComponent<TextMeshProUGUI>().text = carPrice.ToString();
         informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(false);
     }
 
@@ -37,12 +39,13 @@ public class CarInShop : MonoBehaviour, IInteractable
 
         if(Input.GetKeyDown(KeyCode.F) && currentPlayer != null)
         {
+            if (!PlayerCash.instance.CostMoney(carPrice)) return;
             Debug.Log("Bought A Car");
-            onCarBought?.Invoke(gameObject);
             //Logic Mua xe
-            informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(false);
+            informPanel.SetActive(false);
             StopAllCoroutines();
             currentPlayer.QuitInteracting();
+            onCarBought?.Invoke(this);
         }
     }
 
@@ -67,4 +70,5 @@ public class CarInShop : MonoBehaviour, IInteractable
         informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(false);
         player.QuitInteracting();
     }
+
 }

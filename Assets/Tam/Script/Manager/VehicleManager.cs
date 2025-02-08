@@ -8,7 +8,7 @@ public class VehicleManager : MonoBehaviour
 {
     public static VehicleManager instance;
     public UIVehicleManager uIVehicleManager;
-    public GameObject[] ownVehicles; //Prefab của những chiếc xe có component Vehicle
+    public List<GameObject> ownVehicles; //Prefab của những chiếc xe có component Vehicle
     public GameObject activeVehicle;
     public Action onVehicleChange;
 
@@ -25,6 +25,12 @@ public class VehicleManager : MonoBehaviour
         
     }
 
+    public void AddCar(GameObject vehicle)
+    {
+        ownVehicles.Add(vehicle);
+        onVehicleChange?.Invoke();
+    }
+
     public void DeliVehicle(GameObject vehicle, Vector3 position)
     {
         if (!ownVehicles.Contains(vehicle)) return;
@@ -33,13 +39,25 @@ public class VehicleManager : MonoBehaviour
             Debug.Log("Hãy cất xe của bạn trước");
             return;
         }
-        Instantiate(vehicle, position, Quaternion.identity);
-        activeVehicle = vehicle;
+        activeVehicle = Instantiate(vehicle, position, Quaternion.identity);
+        onVehicleChange?.Invoke();
     }
 
     public void DepositVehicle()
     {
+        if (activeVehicle == null)
+        {
+            Debug.Log("Có xe đâu mà gửi?");
+            return;
+        }
+       
         Destroy(activeVehicle.gameObject);
         activeVehicle = null;
+        onVehicleChange?.Invoke();
+    }
+
+    public bool HasActiveVehicle()
+    {
+        return activeVehicle != null;
     }
 }

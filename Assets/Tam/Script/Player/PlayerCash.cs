@@ -5,16 +5,16 @@ using UnityEngine;
 
 public class PlayerCash : MonoBehaviour
 {
+    public static PlayerCash instance;
     public int currentCash;
-    public UIShop UIShop;
     public TextMeshProUGUI playerCashText;
 
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
         currentCash = 10000;
         playerCashText.text = currentCash.ToString("N0");
-        UIShop.SetPlayerCash(this);
     }
 
     // Update is called once per frame

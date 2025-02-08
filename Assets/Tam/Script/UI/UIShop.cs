@@ -14,7 +14,6 @@ public class UIShop : MonoBehaviour, IInteractable
 
     private PlayerInteractor currentPlayer;
     private Inventory playerInventory;
-    private PlayerCash playerCash;
 
     public void OnExit()
     {
@@ -48,11 +47,6 @@ public class UIShop : MonoBehaviour, IInteractable
         playerInventory = _playerInventory;
     }
 
-    public void SetPlayerCash(PlayerCash _playerCash)
-    {
-        playerCash = _playerCash;
-    }
-
     void RefreshShopUI()
     {
         foreach(Transform child in shopItemContainer)
@@ -80,7 +74,7 @@ public class UIShop : MonoBehaviour, IInteractable
                 buyButton.onClick.AddListener(() =>
                 {
                     Debug.Log($"Buy {shopItem.GetSprite().name}");
-                    if(playerCash.CostMoney(shopItem.GetPrice()))
+                    if(PlayerCash.instance.CostMoney(shopItem.GetPrice()))
                     playerInventory.AddItem(shopItem);
                     else
                     {

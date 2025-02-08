@@ -39,19 +39,30 @@ public class VehicleShop : MonoBehaviour
     }
 
     //Sẽ được gọi bởi xe được mua
-    public void TryBuyVeh(GameObject veh)
+    public void TryBuyVeh(CarInShop carInShop)
     {
         for (int i = 0; i < vehSpawnPoints.Length; i++)
         {
             if (vehSpawnPoints[i].childCount == 0) continue;
             GameObject child = vehSpawnPoints[i].GetChild(0).gameObject;
-            if (child == veh)
+            if (child == carInShop.gameObject)
             {
                 carsInShop[i].onCarBought -= TryBuyVeh;
+                VehicleManager.instance.AddCar(carInShop.carToDrivePrefab);
                 Destroy(child);
                 break;
             }
         }
-        
+    }
+
+    private GameObject GetPrefab(GameObject veh)
+    {
+        string nameToFind = veh.name.Replace("(Clone)","").Trim();
+        foreach (GameObject p in vehPrefabs)
+        {
+            p.name = nameToFind;
+            return p;
+        }
+        return null;
     }
 }
