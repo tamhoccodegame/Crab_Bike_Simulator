@@ -12,7 +12,10 @@ public class BubbleChat : MonoBehaviour
         Transform chatBubbleTransform = Instantiate(bubbleChatPrefab, parent);
         chatBubbleTransform.localPosition = localPosition;
         chatBubbleTransform.GetComponent<BubbleChat>().SetUp(iconType, text);
+
+        Destroy(chatBubbleTransform.gameObject, 5f);
     }
+   
     public enum IconType
     {
         Happy, 
@@ -37,7 +40,7 @@ public class BubbleChat : MonoBehaviour
 
     private void Start()
     {
-        //SetUp(IconType.Happy, "Hello everybody! Say hello to my little friends!");
+        SetUp(IconType.Happy, "Hello everybody! Say hello to my little friends!");
     }
 
     private void SetUp(IconType iconType, string text)

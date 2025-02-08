@@ -23,5 +23,6 @@ public class NPCInteractable : MonoBehaviour
 
         float playerHeight = 1.7f;
         npcHeadLookAt.LookAtPosition(interactorTransform.position + Vector3.up * playerHeight);
+        
     }
 }
