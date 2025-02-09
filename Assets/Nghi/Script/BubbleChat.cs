@@ -38,10 +38,10 @@ public class BubbleChat : MonoBehaviour
         chatText = transform.Find("TextMP").GetComponent<TextMeshPro>();
     }
 
-    private void Start()
-    {
-        SetUp(IconType.Happy, "Hello everybody! Say hello to my little friends!");
-    }
+    //private void Start()
+    //{
+    //    SetUp(IconType.Happy, "Hello everybody! Say hello to my little friends!");
+    //}
 
     private void SetUp(IconType iconType, string text)
     {
@@ -68,6 +68,14 @@ public class BubbleChat : MonoBehaviour
             case IconType.Sad: return sadIconSprite;
             case IconType.Angry: return angryIconSprite;
                 
+        }
+    }
+
+    void Update()
+    {
+        if (Camera.main != null)
+        {
+            transform.LookAt(transform.position + Camera.main.transform.forward);
         }
     }
 

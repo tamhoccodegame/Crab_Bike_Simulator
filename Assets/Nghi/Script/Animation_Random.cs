@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stripper : MonoBehaviour
+public class Animation_Random : MonoBehaviour
 {
-    public List<Animator> dancers; // Danh sách animator của các dancer
+    public List<Animator> people; // Danh sách animator 
     private List<int> usedAnimations = new List<int>(); // Danh sách animation đang được sử dụng
-    private int totalAnimations = 20; // Giả sử có 5 animation nhảy múa khác nhau
+    [SerializeField] private int totalAnimations; // Giả sử có 5 animation khác nhau
+
 
     void Start()
     {
@@ -17,13 +18,13 @@ public class Stripper : MonoBehaviour
     {
         usedAnimations.Clear(); // Xóa danh sách các animation đã sử dụng
 
-        foreach (Animator dancer in dancers)
+        foreach (Animator person in people)
         {
-            StartCoroutine(AssignDance(dancer));
+            StartCoroutine(AssignDance(person));
         }
     }
 
-    IEnumerator AssignDance(Animator dancer)
+    IEnumerator AssignDance(Animator people)
     {
         while (true)
         {
@@ -38,22 +39,20 @@ public class Stripper : MonoBehaviour
             usedAnimations.Add(randomAnimation);
 
             // Gán animation cho dancer
-            dancer.SetInteger("DanceIndex", randomAnimation);
+            people.SetInteger("Index", randomAnimation);
 
             // Chờ animation hiện tại hoàn thành
-            yield return new WaitForSeconds(GetAnimationLength(dancer, randomAnimation));
+            yield return new WaitForSeconds(GetAnimationLength(people, randomAnimation));
 
             // Xóa animation này khỏi danh sách để dancer khác có thể sử dụng
             usedAnimations.Remove(randomAnimation);
         }
     }
 
-    float GetAnimationLength(Animator animator, int danceIndex)
+    float GetAnimationLength(Animator animator, int index)
     {
         // Lấy thông tin clip dựa trên danceIndex
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         return stateInfo.length;
     }
-    
-
 }

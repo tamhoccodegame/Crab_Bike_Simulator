@@ -16,7 +16,7 @@ public class PlayerInteract : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            float interactRange = 2f;
+            float interactRange = 3f;
             Collider [] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
             foreach(Collider collider in colliderArray)
             {
@@ -26,5 +26,42 @@ public class PlayerInteract : MonoBehaviour
                 }
             }
         }
+    }
+
+
+    public NPCInteractable GetInteractableObject()
+    {
+        List<NPCInteractable> npcInteractableList = new List<NPCInteractable>();    
+        float interactRange = 3f;
+        Collider[] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
+        foreach(Collider collider in colliderArray)
+        {
+            if(collider.TryGetComponent(out NPCInteractable npcInteractable))
+            {
+                npcInteractableList.Add(npcInteractable);
+                //return npcInteractable;
+            }
+        }
+
+        NPCInteractable closetNPCInteractable = null;
+        foreach(NPCInteractable npcInteractable in npcInteractableList)
+        {
+            if (closetNPCInteractable == null)
+            {
+                closetNPCInteractable = npcInteractable;
+            }
+            else
+            {
+                if(Vector3.Distance(transform.position, npcInteractable.transform.position)<
+                    Vector3.Distance(transform.position, closetNPCInteractable.transform.position))
+                {
+                    //Closer
+                    closetNPCInteractable = npcInteractable;
+                }
+            }
+        }
+        
+        
+        return closetNPCInteractable;
     }
 }
