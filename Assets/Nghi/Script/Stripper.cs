@@ -6,7 +6,7 @@ public class Stripper : MonoBehaviour
 {
     public List<Animator> dancers; // Danh sách animator của các dancer
     private List<int> usedAnimations = new List<int>(); // Danh sách animation đang được sử dụng
-    private int totalAnimations = 8; // Giả sử có 5 animation nhảy múa khác nhau
+    private int totalAnimations = 20; // Giả sử có 5 animation nhảy múa khác nhau
 
     void Start()
     {
