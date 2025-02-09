@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - TrafficLight
+  - Car
+  - Light
+  - Yellow
   layers:
   - Default
   - TransparentFX
@@ -11,9 +15,9 @@ TagManager:
   - Ground
   - Water
   - UI
-  - BikeBody
-  - Sphere
-  - 
+  - GPS
+  - Light
+  - Player
   - 
   - 
   - 
@@ -38,9 +42,6 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: UI
-    uniqueID: 2727064357
-    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
