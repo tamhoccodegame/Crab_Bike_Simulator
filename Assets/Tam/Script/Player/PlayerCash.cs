@@ -9,10 +9,14 @@ public class PlayerCash : MonoBehaviour
     public int currentCash;
     public TextMeshProUGUI playerCashText;
 
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
         currentCash = 10000;
         playerCashText.text = currentCash.ToString("N0");
     }

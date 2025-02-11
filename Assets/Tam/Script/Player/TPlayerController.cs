@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class TPlayerController : MonoBehaviour
 {
+    public static TPlayerController instance;
     public float rotationSpeed;
     public float walkSpeed;
     public float runSpeed;
@@ -19,17 +20,19 @@ public class TPlayerController : MonoBehaviour
     private Camera cam;
 
     private Animator animator;
-    private GameManager gameManager;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameManager.instance;
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         cam = Camera.main;
 
-        gameManager.onGameStateChange += OnGameStateChange;
         currentSpeed = walkSpeed;
 
         //Cursor.lockState = CursorLockMode.Locked;
@@ -66,17 +69,6 @@ public class TPlayerController : MonoBehaviour
         controller.Move(movement * currentSpeed * Time.deltaTime);
     }
 
-    void OnGameStateChange(GameManager.GameState gameState)
-    {
-        if(gameState == GameManager.GameState.Menu)
-        {
-            canMove = false;
-        }
-        else if(gameState == GameManager.GameState.Playing)
-        {
-            canMove = true;
-		}
-	}
 
     public void Footstep()
     {

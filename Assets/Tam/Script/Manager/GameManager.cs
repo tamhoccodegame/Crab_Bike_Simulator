@@ -12,10 +12,9 @@ public class GameManager : MonoBehaviour
     public enum GameState
     {
         Playing,
-        Menu,
+        Sleeping,
+        Texting,
     }
-
-    public Action<GameState> onGameStateChange;
 
     public GameState currentState;
 
@@ -85,6 +84,11 @@ public class GameManager : MonoBehaviour
     {
         currentState = newState;
 
-        onGameStateChange?.Invoke(currentState);
+        switch(currentState)
+        {
+            case GameState.Sleeping:
+                TPlayerController.instance.canMove = false;
+                break;
+        }
     }
 }
