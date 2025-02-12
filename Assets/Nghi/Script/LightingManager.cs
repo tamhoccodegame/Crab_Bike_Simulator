@@ -7,6 +7,7 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class LightingManager : MonoBehaviour
 {
+    public static LightingManager instance;
     //Scene References
     [SerializeField] private Light DirectionalLight;
     [SerializeField] private LightingPreset Preset;
@@ -28,8 +29,10 @@ public class LightingManager : MonoBehaviour
 
     private GameObject[] lights;
 
-    public bool isNight = false;
-
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         timeText.text = "Time: " + TimeOfDay;
@@ -98,6 +101,7 @@ public class LightingManager : MonoBehaviour
         //Bình minh
         if(TimeOfDay >= 5.5f && TimeOfDay < 7f)
         {
+            GameManager.instance.ChangeGameState(GameManager.GameState.Texting);
             RenderSettings.skybox = sunriseSkyBox;
         }
         //Sáng
@@ -172,5 +176,10 @@ public class LightingManager : MonoBehaviour
 
         timeText.text = $"Time: {hours:D2}:{minutes:D2}";
         dayText.text = "Day: " + day;
+    }
+
+    public void SetDaySpeed(float speed)
+    {
+        secondsPerGameHour = speed;
     }
 }

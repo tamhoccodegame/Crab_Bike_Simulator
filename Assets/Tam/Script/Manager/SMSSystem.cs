@@ -7,19 +7,26 @@ public class SMSSystem : MonoBehaviour
 {
     public static SMSSystem instance;
 
+    public GameObject SMSUI;
+
     public Dictionary<string, string> smsContents;
 
     public GameObject SMSPrefab;
     public Transform SMSCConatainer;
     public GameObject transferSuccessfulPrefab;
-
+    private List<GameObject> spawnedSMS = new List<GameObject>();
     public float smsDelay;
     public bool hasDebt = false;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
 
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
         smsContents = new Dictionary<string, string>
         {
             { "HasPayOpening", "Hôm nay mày cần trả tao 300,000VND" },
@@ -32,13 +39,18 @@ public class SMSSystem : MonoBehaviour
             { "CannotDonePayment", "Mày tiêu đời rồi" },
         };
 
-        StartCoroutine(ShowSMS());
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void StartShowSMS()
+    {
+        SMSUI.SetActive(true);
+        StartCoroutine(ShowSMS());
     }
 
     IEnumerator ShowSMS()
@@ -61,6 +73,7 @@ public class SMSSystem : MonoBehaviour
             sms.gameObject.SetActive(true);
             sms.transform.Find("MessageBubble").Find("Background").Find("SMSText").GetComponent<TextMeshProUGUI>().text = smsContents["HasnotReceiveEnoughMoneyOpening"];
             sms.transform.Find("CreditorAvatar").gameObject.SetActive(true);
+            spawnedSMS.Add(sms);
 
             yield return new WaitForSeconds(1f);
 
@@ -68,6 +81,18 @@ public class SMSSystem : MonoBehaviour
             sms.gameObject.SetActive(true);
             sms.transform.Find("MessageBubble").Find("Background").Find("SMSText").GetComponent<TextMeshProUGUI>().text = smsContents["HasnotEnoughMoneyReply"];
             sms.transform.Find("PlayerAvatar").gameObject.SetActive(true);
+            spawnedSMS.Add(sms);
+
+            yield return new WaitForSeconds(3f);
+            foreach(var go in spawnedSMS)
+            {
+                Destroy(go.gameObject);
+            }
+            spawnedSMS.Clear();
+
+            GameManager.instance.SetCanChangeGameState(true);
+            GameManager.instance.ChangeGameState(GameManager.GameState.Playing);
+            SMSUI.SetActive(false);
         }
         yield return null;
     }

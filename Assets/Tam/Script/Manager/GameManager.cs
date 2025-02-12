@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
     }
 
     public GameState currentState;
-
+    public bool canChangeGameState = true;
 
 	private void Awake()
 	{
@@ -82,13 +82,30 @@ public class GameManager : MonoBehaviour
 
     public void ChangeGameState(GameState newState)
     {
+        if (!canChangeGameState) return;
+        canChangeGameState = false;
         currentState = newState;
 
         switch(currentState)
         {
             case GameState.Sleeping:
                 TPlayerController.instance.canMove = false;
+                LightingManager.instance.SetDaySpeed(5);
+                break;
+            case GameState.Texting:
+                TPlayerController.instance.canMove = false;
+                LightingManager.instance.SetDaySpeed(3600);
+                SMSSystem.instance.StartShowSMS();
+                break;
+            case GameState.Playing:
+                LightingManager.instance.SetDaySpeed(60);
+                TPlayerController.instance.canMove = true;
                 break;
         }
+    }
+
+    public void SetCanChangeGameState(bool _canChangeGameState)
+    {
+        canChangeGameState = _canChangeGameState;
     }
 }
