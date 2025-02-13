@@ -1,6 +1,4 @@
-﻿using Autodesk.Fbx;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Elevator : MonoBehaviour
@@ -54,9 +52,11 @@ public class Elevator : MonoBehaviour
 
     private IEnumerator MoveElevator(Vector3 targetPosition, TPlayerController t, CharacterController c)
     {
+        Vector3 tLocalScale = t.transform.localScale;
         isElevatorMoving = true;
         t.canMove = false;
-        t.transform.SetParent(transform, true);
+        t.transform.SetParent(transform);
+
         c.enabled = false;
 
         yield return new WaitForSeconds(.5f);
@@ -74,6 +74,7 @@ public class Elevator : MonoBehaviour
         t.canMove = true;
         c.enabled = true;
         t.transform.SetParent(null);
+        t.transform.localScale = tLocalScale;
         yield return new WaitForSeconds(1f);
         isElevatorMoving = false;
     }

@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 0.102
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1464655751}
-  m_IndirectSpecularColor: {r: 0.018747775, g: 0.023369959, b: 0.031021453, a: 0.102}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4326,6 +4325,99 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464366990}
   m_CullTransparentMesh: 1
+--- !u!1 &477948406
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 477948409}
+  - component: {fileID: 477948408}
+  - component: {fileID: 477948407}
+  m_Layer: 0
+  m_Name: Terrain (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!154 &477948407
+TerrainCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477948406}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_TerrainData: {fileID: 15600000, guid: 6656f4b229d32374da7d52bcda93d503, type: 2}
+  m_EnableTreeColliders: 1
+--- !u!218 &477948408
+Terrain:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477948406}
+  m_Enabled: 1
+  serializedVersion: 6
+  m_TerrainData: {fileID: 15600000, guid: 6656f4b229d32374da7d52bcda93d503, type: 2}
+  m_TreeDistance: 5000
+  m_TreeBillboardDistance: 50
+  m_TreeCrossFadeLength: 5
+  m_TreeMaximumFullLODCount: 50
+  m_DetailObjectDistance: 80
+  m_DetailObjectDensity: 1
+  m_HeightmapPixelError: 5
+  m_SplatMapDistance: 1000
+  m_HeightmapMinimumLODSimplification: 0
+  m_HeightmapMaximumLOD: 0
+  m_ShadowCastingMode: 2
+  m_DrawHeightmap: 1
+  m_DrawInstanced: 0
+  m_DrawTreesAndFoliage: 1
+  m_StaticShadowCaster: 0
+  m_IgnoreQualitySettings: 0
+  m_ReflectionProbeUsage: 1
+  m_MaterialTemplate: {fileID: 10652, guid: 0000000000000000f000000000000000, type: 0}
+  m_BakeLightProbesForTrees: 1
+  m_PreserveTreePrototypeLayers: 0
+  m_DeringLightProbesForTrees: 1
+  m_ReceiveGI: 1
+  m_ScaleInLightmap: 0.0256
+  m_LightmapParameters: {fileID: 15203, guid: 0000000000000000f000000000000000, type: 0}
+  m_GroupingID: 0
+  m_RenderingLayerMask: 1
+  m_AllowAutoConnect: 1
+  m_EnableHeightmapRayTracing: 1
+  m_EnableTreesAndDetailsRayTracing: 0
+  m_TreeMotionVectorModeOverride: 3
+--- !u!4 &477948409
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477948406}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &492850786
 GameObject:
   m_ObjectHideFlags: 0
@@ -7270,9 +7362,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c9d8521306e0a458778caccb8dd2c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  motorForce: 1000
-  brakeForce: 3000
-  maxSteeringAngle: 30
+  motorForce: 5000
+  brakeForce: 8000
+  maxSteeringAngle: 45
   frontLeftWheelCollider: {fileID: 219901130}
   frontRightWheelCollider: {fileID: 708338797}
   rearLeftWheelCollider: {fileID: 1910157289}
@@ -10896,7 +10988,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1280869609
 Transform:
   m_ObjectHideFlags: 0
@@ -12779,7 +12871,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1485040950
 Transform:
   m_ObjectHideFlags: 0
@@ -12809,28 +12901,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab675d711c963d7438d49a2d4dfcb739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentVelocityOffset: 0
   velocity: {x: 0, y: 0, z: 0}
-  sphere: {fileID: 151759594}
-  bikeBody: {fileID: 540868741}
+  maxSpeed: 50
+  accelaration: 0
+  steerStrength: 50
+  gravity: 25
+  bikeXTiltIncrement: 0
+  xTiltAngle: 45
+  tyreRotSpeed: 1000
   handle: {fileID: 1814164451}
   frontTyre: {fileID: 608496758}
   backTyre: {fileID: 1924144924}
-  maxSpeed: 50
-  acceleration: 0.1
-  steerStrength: 50
-  tiltAngle: 30
-  gravity: 25
-  bikeXTiltIncreament: 0.09
-  zTiltAngle: 45
-  handleRotationValue: 30
-  handleRotationSpeed: 0.15
-  tyreRotationSpeed: 10000
-  normalDrag: 2
-  driftDrag: 0.5
+  handleRotVal: 30
+  handleRotSpeed: 0.15
   brakingFactor: 6.22
-  surface:
+  derivableSurface:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
+  sphereRb: {fileID: 0}
+  bikeBody: {fileID: 540868741}
+  engineSound: {fileID: 0}
+  minPitch: 0
+  maxPitch: 1
+  headlight: {fileID: 0}
 --- !u!1 &1498981679
 GameObject:
   m_ObjectHideFlags: 0
@@ -16624,6 +16718,7 @@ Terrain:
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 1000
+  m_HeightmapMinimumLODSimplification: 0
   m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
@@ -21639,6 +21734,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TimeDayNightManager
       objectReference: {fileID: 0}
+    - target: {fileID: 685055205428642392, guid: ab60c051ba6a39445b3d8be53d36b577, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7614518514907990218, guid: ab60c051ba6a39445b3d8be53d36b577, type: 3}
       propertyPath: m_LocalPosition.x
       value: 215.33595
@@ -23619,7 +23718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &4146829405312620715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23632,28 +23731,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab675d711c963d7438d49a2d4dfcb739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentVelocityOffset: 0
   velocity: {x: 0, y: 0, z: 0}
-  sphere: {fileID: 1545321492}
-  bikeBody: {fileID: 875055454}
+  maxSpeed: 50
+  accelaration: 0
+  steerStrength: 50
+  gravity: 25
+  bikeXTiltIncrement: 0
+  xTiltAngle: 45
+  tyreRotSpeed: 1000
   handle: {fileID: 1689808292}
   frontTyre: {fileID: 1271469579}
   backTyre: {fileID: 2141775478}
-  maxSpeed: 50
-  acceleration: 0.1
-  steerStrength: 50
-  tiltAngle: 30
-  gravity: 25
-  bikeXTiltIncreament: 0.09
-  zTiltAngle: 45
-  handleRotationValue: 30
-  handleRotationSpeed: 0.15
-  tyreRotationSpeed: 10000
-  normalDrag: 2
-  driftDrag: 0.5
+  handleRotVal: 30
+  handleRotSpeed: 0.15
   brakingFactor: 6.22
-  surface:
+  derivableSurface:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 0
+  sphereRb: {fileID: 0}
+  bikeBody: {fileID: 875055454}
+  engineSound: {fileID: 0}
+  minPitch: 0
+  maxPitch: 0
+  headlight: {fileID: 0}
 --- !u!1 &4146829405312621200
 GameObject:
   m_ObjectHideFlags: 0
@@ -30473,3 +30574,4 @@ SceneRoots:
   - {fileID: 84277073}
   - {fileID: 879284838}
   - {fileID: 1080508724}
+  - {fileID: 477948409}

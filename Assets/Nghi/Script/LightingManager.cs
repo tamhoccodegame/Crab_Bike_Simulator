@@ -54,6 +54,7 @@ public class LightingManager : MonoBehaviour
 
             UpdateLight();
             UpdateSkyBox();
+            //TriggerSpecialEvent();
 
             if (TimeOfDay >= 24f)
             {
@@ -67,6 +68,22 @@ public class LightingManager : MonoBehaviour
         else
         {
             UpdateLighting(TimeOfDay / 24f);
+        }
+    }
+
+    void TriggerSpecialEvent()
+    {
+        int hours = Mathf.FloorToInt(TimeOfDay);
+        if (Mathf.FloorToInt((TimeOfDay - hours) * 60) > 0) return;
+        if (5 == hours)
+        {
+            GameManager.instance.ChangeGameState(GameManager.GameState.Texting);
+            return;
+        }
+        if(24 == hours)
+        {
+            GameManager.instance.ChangeGameState(GameManager.GameState.Sleeping);
+            return;
         }
     }
 
@@ -101,7 +118,6 @@ public class LightingManager : MonoBehaviour
         //Bình minh
         if(TimeOfDay >= 5.5f && TimeOfDay < 7f)
         {
-            GameManager.instance.ChangeGameState(GameManager.GameState.Texting);
             RenderSettings.skybox = sunriseSkyBox;
         }
         //Sáng
@@ -124,6 +140,7 @@ public class LightingManager : MonoBehaviour
         {
             RenderSettings.skybox = nightSkyBox; 
         }
+        
     }
 
 

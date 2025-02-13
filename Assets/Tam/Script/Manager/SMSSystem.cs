@@ -1,22 +1,111 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SMSSystem : MonoBehaviour
 {
     public static SMSSystem instance;
 
     public GameObject SMSUI;
-
-    public Dictionary<string, string> smsContents;
-
     public GameObject SMSPrefab;
     public Transform SMSCConatainer;
     public GameObject transferSuccessfulPrefab;
     private List<GameObject> spawnedSMS = new List<GameObject>();
     public float smsDelay;
-    public bool hasDebt = false;
+
+    public int payDay;
+    public int debtDays;
+    public int debtLimit;
+  
+    public enum SMSType
+    {
+        HasDebtAndTodayCanPay,
+        HasDebtAndTodayCanPayAPart,
+        HasDebtAndTodayCannotPay,
+        TodayCanPay,
+        TodayCannotPay,
+        DonePayday,
+        BadEnd,
+    }
+
+    public SMSType smsType;
+
+    public Dictionary<SMSType, List<string>> smsContents = new Dictionary<SMSType, List<string>>
+    {
+        {
+            SMSType.HasDebtAndTodayCanPay,
+            new List<string>
+            {
+                "[C] Mày còn nợ tao {b} VND",
+                "[P] Ok, tiền của mày đây",
+                "[C] Tốt lắm, mai lại thế nhé!"
+            }
+        },
+
+        {
+            SMSType.HasDebtAndTodayCanPayAPart,
+            new List<string>
+            {
+                "[C] Mày còn nợ tao {b} VND",
+                "[P] Hôm nay tao chỉ trả trước cho mày được {a} VND thôi",
+                "[C] Vậy mày còn nợ tạo {b} VND"
+            }
+        },
+
+        {
+            SMSType.HasDebtAndTodayCannotPay,
+            new List<string>
+            {
+                "[C] Mày còn nợ tao {b} VND",
+                "[P] Hôm nay tao vẫn chưa có đủ tiền....",
+                "[C] Tao cho mày tới ngày mai..."
+            }
+        },
+
+        { 
+            SMSType.TodayCanPay, 
+            new List<string>
+            {
+                "[C] Hôm nay mày cần trả tao {a} VND",
+                "[P] Ok, tiền của mày đây",
+                "[C] Tốt lắm, mai lại thế nhé!"
+            }
+        },
+
+        { 
+            SMSType.TodayCannotPay, 
+            new List<string>
+            {
+                "[C] Hôm nay mày cần trả tao {a} VND",
+                "[P] Hôm nay tao không có đủ tiền...",
+                "[C] Được. Tao cho mày tới ngày mai!"
+            }
+        },
+
+        {
+            SMSType.DonePayday,
+            new List<string>
+            {
+                "[C] Hôm nay mày cần trả tao {a} VND nữa là xong",
+                "[P] Ok, tiền của mày đây",
+                "[C] Tốt lắm! Chúng ta xong nhé!"
+            }
+        },
+
+        {
+            SMSType.BadEnd,
+            new List<string>
+            {
+                "[C] Tiền của tao mày tính thế nào?",
+                "[P] Tao vẫn chưa có tiền....",
+                "[C] Kết thúc! Chuẩn bị gặp đàn em của tao đi!!!"
+            }
+        },
+    };
 
     private void Awake()
     {
@@ -26,18 +115,7 @@ public class SMSSystem : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        smsContents = new Dictionary<string, string>
-        {
-            { "HasPayOpening", "Hôm nay mày cần trả tao 300,000VND" },
-            { "HasnotReceiveEnoughMoneyOpening", "Mày còn thiếu tao..." },
-            { "HasEnoughMoneyReply", "Của mày đây" },
-            { "ReceiveEnoughMoneyReply", "Tốt lắm, mai lại thế nhé" },
-            { "HasnotEnoughMoneyReply", "Hôm nay tao chưa có đủ tiền" },
-            { "HasnotReceiveEnoughMoney", "Được, tao cho mày tới ngày mai" },
-            { "HasDonePayment", "Ok, chúng ta xong" },
-            { "CannotDonePayment", "Mày tiêu đời rồi" },
-        };
+    { 
 
     }
 
@@ -50,51 +128,87 @@ public class SMSSystem : MonoBehaviour
     public void StartShowSMS()
     {
         SMSUI.SetActive(true);
-        StartCoroutine(ShowSMS());
+        GetComponent<Image>().enabled = false;
+        List<string> setenceList = new List<string>();
+
+        setenceList = smsContents[GetSMSType()].ToList();
+
+        StartCoroutine(ShowSMS(setenceList));
     }
 
-    IEnumerator ShowSMS()
+    SMSType GetSMSType()
     {
-        if(hasDebt)
+        if(debtDays > 0)
         {
+            if (PlayerCash.instance.CostMoney(payDay * debtDays))
+                return SMSType.HasDebtAndTodayCanPay;
 
+            if (PlayerCash.instance.CostMoney(payDay))
+                return SMSType.HasDebtAndTodayCanPayAPart;
+
+            debtDays++;
+            return debtDays == 5 ? SMSType.BadEnd : SMSType.HasDebtAndTodayCannotPay;
         }
-        else
-        if (PlayerCash.instance.CostMoney(300000))
+
+        return PlayerCash.instance.CostMoney(payDay) ? SMSType.TodayCanPay : SMSType.TodayCannotPay;
+    }
+
+    IEnumerator ShowSMS(List<string> setences)
+    {
+        foreach(var s in setences)
         {
-            var sms = Instantiate(SMSPrefab, SMSCConatainer);
-            sms.gameObject.SetActive(true);
-            sms.transform.Find("MessageBubble").Find("Background").Find("SMSText").GetComponent<TextMeshProUGUI>().text = smsContents["HasPayOpening"];
-            sms.transform.Find("CreditorAvatar").gameObject.SetActive(true);
-        }
-        else
-        {
-            var sms = Instantiate(SMSPrefab, SMSCConatainer);
-            sms.gameObject.SetActive(true);
-            sms.transform.Find("MessageBubble").Find("Background").Find("SMSText").GetComponent<TextMeshProUGUI>().text = smsContents["HasnotReceiveEnoughMoneyOpening"];
-            sms.transform.Find("CreditorAvatar").gameObject.SetActive(true);
-            spawnedSMS.Add(sms);
+            bool isPlayer = false;
+            StringBuilder sb = new StringBuilder(s);
+
+            if (s.Contains("[C]"))
+            {
+                sb.Replace("[C]", "");
+                isPlayer = false;
+            }
+            else if (s.Contains("[P]"))
+            {
+                sb.Replace("[P]", "");
+                isPlayer = true;
+            }
+
+            if (s.Contains("{a}"))
+            {
+                sb.Replace("{a}", payDay.ToString());
+            }
+            if (s.Contains("{b}"))
+            {
+                sb.Replace("{b}", (payDay * debtDays).ToString());
+            }
+
+            SpawnSMS(sb.ToString(), isPlayer);
 
             yield return new WaitForSeconds(1f);
-
-            sms = Instantiate(SMSPrefab, SMSCConatainer);
-            sms.gameObject.SetActive(true);
-            sms.transform.Find("MessageBubble").Find("Background").Find("SMSText").GetComponent<TextMeshProUGUI>().text = smsContents["HasnotEnoughMoneyReply"];
-            sms.transform.Find("PlayerAvatar").gameObject.SetActive(true);
-            spawnedSMS.Add(sms);
-
-            yield return new WaitForSeconds(3f);
-            foreach(var go in spawnedSMS)
-            {
-                Destroy(go.gameObject);
-            }
-            spawnedSMS.Clear();
-
-            GameManager.instance.SetCanChangeGameState(true);
-            GameManager.instance.ChangeGameState(GameManager.GameState.Playing);
-            SMSUI.SetActive(false);
         }
-        yield return null;
+
+
+        while (!Input.GetMouseButtonDown(0))
+        {
+            yield return null;
+        }
+
+        foreach (var go in spawnedSMS)
+        {
+            Destroy(go.gameObject);
+        }
+        spawnedSMS.Clear();
+
+        GameManager.instance.ChangeGameState(GameManager.GameState.Playing);
+        SMSUI.SetActive(false);
+        GetComponent<Image>().enabled = false;
+    }
+
+    void SpawnSMS(string text, bool isPlayer)
+    {
+        var sms = Instantiate(SMSPrefab, SMSCConatainer);
+        sms.gameObject.SetActive(true);
+        sms.transform.Find("MessageBubble").Find("Background").Find("SMSText").GetComponent<TextMeshProUGUI>().text = text;
+        sms.transform.Find(isPlayer ? "PlayerAvatar" : "CreditorAvatar").gameObject.SetActive(true);
+        spawnedSMS.Add(sms);
     }
 
 }

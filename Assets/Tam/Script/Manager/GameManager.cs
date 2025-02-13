@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -8,6 +9,8 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameObject phoneUI;
     public GameObject inventoryUI;
+
+    public GameObject blackScreen;
 
     public enum GameState
     {
@@ -18,6 +21,8 @@ public class GameManager : MonoBehaviour
 
     public GameState currentState;
     public bool canChangeGameState = true;
+
+    public TextMeshProUGUI fpsText;
 
 	private void Awake()
 	{
@@ -35,7 +40,12 @@ public class GameManager : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
     {
-        
+        InvokeRepeating(nameof(UpdateFPS), 1f, 1f);
+    }
+
+    void UpdateFPS()
+    {
+        fpsText.text = (1f / Time.deltaTime).ToString();
     }
 
     // Update is called once per frame
@@ -82,22 +92,27 @@ public class GameManager : MonoBehaviour
 
     public void ChangeGameState(GameState newState)
     {
-        if (!canChangeGameState) return;
-        canChangeGameState = false;
+        if (newState == currentState) return;
         currentState = newState;
 
         switch(currentState)
         {
             case GameState.Sleeping:
                 TPlayerController.instance.canMove = false;
+                ShowBlackScreen();
                 LightingManager.instance.SetDaySpeed(5);
                 break;
             case GameState.Texting:
                 TPlayerController.instance.canMove = false;
-                LightingManager.instance.SetDaySpeed(3600);
+                HideBlackScreen();
+                LightingManager.instance.SetDaySpeed(80);
+                phoneUI.SetActive(true);
                 SMSSystem.instance.StartShowSMS();
                 break;
             case GameState.Playing:
+                if(phoneUI.activeSelf)
+                phoneUI.SetActive(false);
+                HideBlackScreen();
                 LightingManager.instance.SetDaySpeed(60);
                 TPlayerController.instance.canMove = true;
                 break;
@@ -108,4 +123,27 @@ public class GameManager : MonoBehaviour
     {
         canChangeGameState = _canChangeGameState;
     }
+
+    public void ShowBlackScreen()
+    {
+        blackScreen.SetActive(true);
+    }
+
+    public void HideBlackScreen()
+    {
+        blackScreen.SetActive(false);
+    }
+
+    public void ShowBlackScreen(float time)
+    {
+        blackScreen.SetActive(true);
+    }
+
+    IEnumerator BlackScreenCoroutine(float time)
+    {
+        blackScreen.SetActive(true);
+        yield return new WaitForSeconds(time);
+        blackScreen.SetActive(false);
+    }
+
 }

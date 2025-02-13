@@ -44,6 +44,7 @@ public class TPlayerController : MonoBehaviour
     {
         if (!canMove)
         {
+            movement = Vector3.zero;    
             animator.SetBool("Walking", false);
             animator.SetBool("Running", false);
             return;
