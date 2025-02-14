@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     {
         //Idle,
         Move,
-        Dash,
+        Attack,
     }
 
 
@@ -40,6 +40,15 @@ public class PlayerController : MonoBehaviour
 
     public Transform orientation; // Gắn Empty Object giữ hướng Player
 
+    //Attack
+    public int attackAnimationCount; // Số lượng animations có trong Animator
+    public Transform attackPoint;
+    public float attackRange;
+    public LayerMask npcLayer;
+    public float attackDamage;
+
+    
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -52,6 +61,11 @@ public class PlayerController : MonoBehaviour
         UpdateAnimator();
         Move();
         RotatePlayerToCamera(); // Gọi hàm xoay Player
+
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    ChangeState(PlayerState.Attack);
+        //}
     }
 
     public void ChangeState(PlayerState newState)
@@ -62,6 +76,8 @@ public class PlayerController : MonoBehaviour
             //    break;
             case PlayerState.Move:
                 break;
+            case PlayerState.Attack:
+                break;
         }
 
         switch (newState)
@@ -70,6 +86,9 @@ public class PlayerController : MonoBehaviour
             //    break;
             case PlayerState.Move:
                 Move();
+                break;
+            case PlayerState.Attack:
+                //Attack();
                 break;
         }
 
@@ -197,4 +216,32 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f); // Quay mượt
         }
     }
+
+    //public void Attack()
+    //{
+    //    int randomAttackAnimation = Random.Range(0, attackAnimationCount);
+
+    //    animator.SetInteger("Index", randomAttackAnimation);
+    //    animator.SetTrigger("isAttack");
+
+    //    //Check va cham
+    //    Collider[] hitNPC = Physics.OverlapSphere(attackPoint.position, attackRange, npcLayer);
+
+    //    foreach (Collider npc in hitNPC)
+    //    {
+    //        //Tru mau
+    //        if (npc != null)//Bi danh trung
+    //        {
+    //            NPC_Health npc_Health = npc.GetComponent<NPC_Health>();
+    //            npc_Health.TakeDamage(attackDamage);
+    //        }
+    //    }
+    //}
+
+    ////Hien thi attackRange trong Scene
+    //private void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.red;
+    //    Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    //}
 }
