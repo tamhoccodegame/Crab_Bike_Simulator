@@ -106,17 +106,46 @@ public class BubbleChat : MonoBehaviour
 
     private void SetUp(IconType iconType, string text)
     {
+        //chatText.SetText(text);
+        //chatText.ForceMeshUpdate();
+        //Vector2 textSize = chatText.GetRenderedValues(false);
+
+        //Vector2 padding = new Vector2(5f, 2f);
+        //background.size = textSize + padding;
+
+        //Vector3 offset = new Vector2(-5f, 0f);
+        //background.transform.localPosition = new Vector3(background.size.x / 2f, 0f) + offset;
+
         chatText.SetText(text);
         chatText.ForceMeshUpdate();
         Vector2 textSize = chatText.GetRenderedValues(false);
 
-        Vector2 padding = new Vector2(5f, 2f);
-        background.size = textSize + padding;
+        Vector2 padding = new Vector2(2f, 1f); // Padding nhỏ để tránh dư thừa
+        float iconSize = 1.5f; // Kích thước icon (có thể điều chỉnh nếu icon to)
+        float spacing = 0.5f; // Khoảng cách giữa icon và text
 
-        Vector3 offset = new Vector2(-5f, 0f);
-        background.transform.localPosition = new Vector3(background.size.x / 2f, 0f) + offset;
+        // Tính toán tổng chiều rộng của Bubble Chat (icon + khoảng cách + text + padding)
+        float totalWidth = iconSize + spacing + textSize.x + padding.x;
+        float totalHeight = Mathf.Max(textSize.y, iconSize) + padding.y;
+
+        // Cập nhật kích thước background
+        background.size = new Vector2(totalWidth, totalHeight);
+
+        // Căn giữa hộp thoại trên đầu NPC
+        background.transform.localPosition = Vector3.zero;
+
+        // Căn icon sang bên trái hộp thoại
+        float iconOffsetX = -totalWidth / 2f + iconSize / 2f;
+        icon.transform.localPosition = new Vector3(iconOffsetX, 0f, 0f);
+
+        // Căn text sang bên phải của icon
+        float textOffsetX = iconOffsetX + iconSize / 2f + spacing;
+        chatText.transform.localPosition = new Vector3(textOffsetX, 0f, 0f);
 
         icon.sprite = GetIconSprite(iconType);
+
+        // Đặt toàn bộ bubble chat trên đầu NPC
+        transform.localPosition = new Vector3(0f, 2.5f, 0f);
 
     }
 
@@ -137,9 +166,10 @@ public class BubbleChat : MonoBehaviour
         if (Camera.main != null)
         {
             float distance = Vector3.Distance(transform.position, Camera.main.transform.position);
-            float scaleFactor = Mathf.Clamp(distance * 0.05f, 0.1f, 0.5f); // Giới hạn scale từ 0.5 đến 1.5
 
+            float scaleFactor = Mathf.Clamp(distance * 0.05f, 0.1f, 0.5f); // Giới hạn scale
             transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);
+
             transform.LookAt(transform.position + Camera.main.transform.forward);
         }
     }

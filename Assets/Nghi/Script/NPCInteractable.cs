@@ -39,6 +39,8 @@ public class NPCInteractable : MonoBehaviour
     private bool isInteracting; // Kiểm tra có đang tương tác không
     private bool canShowDialogueBoxChat = true; // Điều khiển việc hiển thị Dialogue Box Chat
     private bool isPlayerInRange = false; // Kiểm tra player có đang trong detectRange không
+    //*************
+    private float detectBuffer = 0.3f; // Thêm một khoảng buffer để tránh chớp nháy
 
     // Start is called before the first frame update
     void Start()
@@ -70,7 +72,8 @@ public class NPCInteractable : MonoBehaviour
                 }
             }
         }
-        else
+        //****************************
+        else if (distance > detectRange + detectBuffer) // Chỉ tắt khi Player đi ra xa hơn một chút
         {
             // Khi player rời khỏi detectRange
             if (isPlayerInRange)
@@ -78,6 +81,8 @@ public class NPCInteractable : MonoBehaviour
                 isPlayerInRange = false;
                 isShowingBoxChat = false;
                 canShowDialogueBoxChat = false; // Ngăn chặn hiển thị hộp thoại khi player đang đi ra ngoài
+                //***
+                HideDialogBoxChat(14f);
             }
         }
     }
@@ -166,7 +171,7 @@ public class NPCInteractable : MonoBehaviour
             isShowingBoxChat = true;
             lastChatTime = Time.deltaTime;
 
-            StartCoroutine(HideDialogBoxChat(4f));
+            StartCoroutine(HideDialogBoxChat(14f));
         }
     }
 
