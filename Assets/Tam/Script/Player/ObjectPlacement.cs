@@ -32,6 +32,7 @@ public class ObjectPlacement : MonoBehaviour
             Destroy(previewPlacement.gameObject);
             objectToPlace = null;
             previewPlacement = null;
+            return;
         }
 
         PlacePreview();

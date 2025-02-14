@@ -9,7 +9,8 @@ public class Elevator : MonoBehaviour
     public float elevatorSpeed;
 
     private Transform currentFloor;
-    private bool isElevatorMoving = false;  
+    private bool isElevatorMoving = false;
+    public GameObject elevatorCam;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +53,9 @@ public class Elevator : MonoBehaviour
 
     private IEnumerator MoveElevator(Vector3 targetPosition, TPlayerController t, CharacterController c)
     {
+        elevatorCam.SetActive(true);
+        Camera cam = Camera.main;
+        cam.gameObject.SetActive(false);
         Vector3 tLocalScale = t.transform.localScale;
         isElevatorMoving = true;
         t.canMove = false;
@@ -75,6 +79,8 @@ public class Elevator : MonoBehaviour
         c.enabled = true;
         t.transform.SetParent(null);
         t.transform.localScale = tLocalScale;
+        elevatorCam.SetActive(false);
+        cam.gameObject.SetActive(true);
         yield return new WaitForSeconds(1f);
         isElevatorMoving = false;
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class Furniture : MonoBehaviour, IShopItem
 {
     public enum FurnitureType
@@ -28,6 +29,11 @@ public class Furniture : MonoBehaviour, IShopItem
         return ItemSpriteAssets.instance.sodaSprite;
     }
 
+    public GameObject GetPrefab()
+    {
+        return ItemSpriteAssets.instance.bedPrefab;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,15 +46,4 @@ public class Furniture : MonoBehaviour, IShopItem
         
     }
 
-    public GameObject GetPrefab()
-    {
-        switch (type)
-        {
-            case FurnitureType.Bed:
-                return ItemSpriteAssets.instance.bedPrefab;
-            case FurnitureType.Wardrobe:
-                return ItemSpriteAssets.instance.wardrobePrefab;
-            default: return null;
-        }
-    }
 }

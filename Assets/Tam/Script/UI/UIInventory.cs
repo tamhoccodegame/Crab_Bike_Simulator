@@ -55,6 +55,7 @@ public class UIInventory : MonoBehaviour
             itemSlotRectTransform.GetComponent<Button>().onClick.AddListener(() =>
             {
                 useButton.gameObject.SetActive(true);
+                useButton.onClick.RemoveAllListeners();
                 useButton.onClick.AddListener(() =>
                 {
                     inventory.UseItem(item);

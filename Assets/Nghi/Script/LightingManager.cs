@@ -54,7 +54,7 @@ public class LightingManager : MonoBehaviour
 
             UpdateLight();
             UpdateSkyBox();
-            //TriggerSpecialEvent();
+            TriggerSpecialEvent();
 
             if (TimeOfDay >= 24f)
             {
@@ -89,7 +89,7 @@ public class LightingManager : MonoBehaviour
 
     private void UpdateLight()
     {
-        if (TimeOfDay >= 7.5f && TimeOfDay < 20)
+        if (TimeOfDay >= 7.5f && TimeOfDay < 18f)
         {
             // Tắt đèn vào ban ngày
             foreach (var light in lights)

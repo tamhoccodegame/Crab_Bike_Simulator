@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIShop : MonoBehaviour, IInteractable
+public class UIShop : MonoBehaviour
 {
     public GameObject shopUI;
     private IShop shop;
@@ -15,6 +15,7 @@ public class UIShop : MonoBehaviour, IInteractable
     private PlayerInteractor currentPlayer;
     private Inventory playerInventory;
 
+
     public void OnExit()
     {
         shopUI.SetActive(false);
@@ -22,16 +23,23 @@ public class UIShop : MonoBehaviour, IInteractable
         currentPlayer = null;
     }
 
-    public void OnInteract(PlayerInteractor player)
+    private void OnTriggerEnter(Collider other)
     {
-        shopUI.SetActive(true);
-        currentPlayer = player;
-        currentPlayer.GetComponent<Animator>().SetBool("Shopping", true);
+        PlayerInteractor p = other.GetComponent<PlayerInteractor>();
+        if(p != null)
+        {
+            currentPlayer = p;
+        }
+
     }
 
-    public void ShowPrompt()
+    private void OnTriggerExit(Collider other)
     {
-    
+        PlayerInteractor p = other.GetComponent<PlayerInteractor>();
+        if (p != null && p == currentPlayer)
+        {
+            currentPlayer = null;
+        }
     }
 
     // Start is called before the first frame update
@@ -89,6 +97,11 @@ public class UIShop : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        
+        if(currentPlayer != null && Input.GetKeyDown(KeyCode.F))
+        {
+            TPlayerController.instance.ChangePlayerMode(shopUI.activeSelf ? TPlayerController.PlayerMode.Normal : TPlayerController.PlayerMode.Shopping);
+            shopUI.SetActive(!shopUI.activeSelf);
+            currentPlayer.GetComponent<Animator>().SetBool("Shopping", shopUI.activeSelf);
+        }
     }
 }

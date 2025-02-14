@@ -1,15 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
+    public static PlayerInventory instance;
     private Inventory inventory;
     public UIInventory UIInventory;
     public UIShop UIShop;
     public ObjectPlacement objectPlacement;
 
     private PlayerState playerState;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +27,11 @@ public class PlayerInventory : MonoBehaviour
         UIInventory.SetInventory(inventory);
         UIShop.SetPlayerInventory(inventory);
         objectPlacement.SetInventory(inventory);
+    }
+
+    public void AddItem(IShopItem item)
+    {
+        inventory.AddItem(item);
     }
 
     void OnItemUsed(IShopItem item)
@@ -40,7 +52,7 @@ public class PlayerInventory : MonoBehaviour
         //Weapon and Furniture
         else if(item is Furniture furniture)
         {
-            GetComponent<ObjectPlacement>().SetObjectToPlace(item.GetPrefab());
+            GetComponent<ObjectPlacement>().SetObjectToPlace(furniture.GetPrefab());
         }
     }
 

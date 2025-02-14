@@ -21,6 +21,14 @@ public class TPlayerController : MonoBehaviour
 
     private Animator animator;
 
+    public enum PlayerMode
+    {
+        Normal,
+        Shopping,
+    }
+
+    public PlayerMode playerMode = PlayerMode.Normal;
+
     private void Awake()
     {
         instance = this;
@@ -70,6 +78,22 @@ public class TPlayerController : MonoBehaviour
         controller.Move(movement * currentSpeed * Time.deltaTime);
     }
 
+    public void ChangePlayerMode(PlayerMode newMode)
+    {
+        if(playerMode != newMode)
+        {
+            playerMode = newMode;
+            switch(playerMode)
+            {
+                case PlayerMode.Normal:
+                    canMove = true;
+                    break;
+                case PlayerMode.Shopping:
+                    canMove = false; 
+                    break;
+            }
+        }
+    }
 
     public void Footstep()
     {
