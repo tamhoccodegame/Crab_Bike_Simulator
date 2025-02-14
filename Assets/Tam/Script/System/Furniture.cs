@@ -8,7 +8,8 @@ public class Furniture : MonoBehaviour, IShopItem
     public enum FurnitureType
     {
         Bed,
-        Wardrobe,
+        Desk,
+        Chair,
     }
     public FurnitureType type;
 
@@ -18,8 +19,9 @@ public class Furniture : MonoBehaviour, IShopItem
         {
             case FurnitureType.Bed:
                 return 50000;
-            case FurnitureType.Wardrobe:
+            case FurnitureType.Desk:
                 return 80000;
+            case FurnitureType.Chair:
             default: return 0;
         }
     }
@@ -31,7 +33,16 @@ public class Furniture : MonoBehaviour, IShopItem
 
     public GameObject GetPrefab()
     {
-        return ItemSpriteAssets.instance.bedPrefab;
+        switch (type)
+        {
+            case FurnitureType.Bed:
+                return ItemSpriteAssets.instance.bedPrefab;
+            case FurnitureType.Desk:
+                return ItemSpriteAssets.instance.deskPrefab;
+            case FurnitureType.Chair:
+                return ItemSpriteAssets.instance.chairPrefab;
+            default: return null;
+        }
     }
 
     // Start is called before the first frame update

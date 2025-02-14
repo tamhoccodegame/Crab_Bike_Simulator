@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PlayerInteractor : MonoBehaviour
@@ -18,9 +19,10 @@ public class PlayerInteractor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Camera cam = Camera.main;
         float rayHeight = playerVisual.GetComponent<Renderer>().bounds.size.y / 2;
         Vector3 offset = new Vector3(0, rayHeight, 0);
-        Ray ray = new Ray(playerVisual.position + offset, playerVisual.forward);
+        Ray ray = new Ray(playerVisual.position + offset, cam.transform.forward);
 
         if (!isInteracting)
         {
@@ -47,7 +49,7 @@ public class PlayerInteractor : MonoBehaviour
             isInteracting = true;
         }
 
-        Debug.DrawRay(playerVisual.position + offset, playerVisual.forward * 10, Color.red);
+        Debug.DrawRay(playerVisual.position + offset, cam.transform.forward * 10, Color.red);
     }
 
     public void QuitInteracting()

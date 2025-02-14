@@ -69,8 +69,8 @@ public class ObjectPlacement : MonoBehaviour
             previewPlacement.transform.position = placementPosition;
             Collider[] colliders = Physics.OverlapBox(placementPosition + offset, extents);
 
-            if (colliders.Length > 1) canPlace = false;
-            else if (colliders.Length > 0 && colliders[0].gameObject == previewPlacement.gameObject) canPlace = true;
+            if (colliders.Length > 2) canPlace = false;
+            else  canPlace = true;
 
             SetTransparency(previewPlacement, canPlace ? Color.green : Color.red);
 
