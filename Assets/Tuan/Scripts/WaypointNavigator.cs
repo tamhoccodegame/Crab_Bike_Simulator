@@ -1,12 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+    using System.Collections;
+    using System.Collections.Generic;
+    using UnityEngine;
 
 public class WaypointNavigator : MonoBehaviour
 {
     CharacterNavigateController controller;
     public Waypoint currentWaypoint;
     int direction;
+
     private void Awake()
     {
         controller = GetComponent<CharacterNavigateController>();
@@ -21,10 +22,12 @@ public class WaypointNavigator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(controller.reachedDestination)
+
+       
+        if (controller.reachedDestination)
         {
             bool shouldBranch = false;
-            if(currentWaypoint.branches != null &&  currentWaypoint.branches.Count > 0)
+            if (currentWaypoint.branches != null && currentWaypoint.branches.Count > 0)
             {
                 shouldBranch = Random.Range(0f, 1f) <= currentWaypoint.branchRatio ? true : false;
             }
@@ -40,7 +43,7 @@ public class WaypointNavigator : MonoBehaviour
                     {
                         currentWaypoint = currentWaypoint.nextWaypoint;
                     }
-                    else 
+                    else
                     {
                         currentWaypoint = currentWaypoint.previousWaypoint;
                         direction = 1;
@@ -62,4 +65,6 @@ public class WaypointNavigator : MonoBehaviour
             controller.SetDestination(currentWaypoint.GetPosition());
         }
     }
+    
+    
 }
