@@ -12,14 +12,27 @@ public class StopDistanceCar : MonoBehaviour
 
     void Start()
     {
-        agent = carAI.GetComponent<NavMeshAgent>();
+        if (carAI != null)
+        {
+            agent = carAI.GetComponent<NavMeshAgent>();
+
+            // Ensure the agent is placed on the NavMesh before doing anything
+            if (!agent.isOnNavMesh)
+            {
+                Debug.LogError("The NavMeshAgent is not on the NavMesh!");
+            }
+        }
+        else
+        {
+            Debug.LogError("CarAI not assigned in StopDistanceCar.");
+        }
     }
 
     void Update()
     {
 
 
-        if (CarZone == true)
+        if (CarZone)
         {
             agent.isStopped = true;
         }
@@ -28,9 +41,6 @@ public class StopDistanceCar : MonoBehaviour
             agent.isStopped = false;
             carAI.MoveToNextWaypointIfNeeded();
         }
-
-
-
     }
 
 

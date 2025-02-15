@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NPCSpawner : MonoBehaviour
 {
-    public GameObject npcPrefab;
+    public List<GameObject> npcPrefab;
     public int npcToSpawn;
     public List<GameObject> spawnedNPC;
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class NPCSpawner : MonoBehaviour
         int count = 0;
         while (count < npcToSpawn) 
         {
-            GameObject obj = Instantiate(npcPrefab);
+            GameObject obj = Instantiate(npcPrefab[Random.Range(0, npcPrefab.Count)]);
             spawnedNPC.Add(obj);
             Transform child = transform.GetChild(Random.Range(0, transform.childCount - 1));
             obj.GetComponent<WaypointNavigator>().currentWaypoint = child.GetComponent<Waypoint>();

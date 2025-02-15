@@ -209,9 +209,9 @@ GameObject:
   - component: {fileID: 3323059074638905270}
   - component: {fileID: 5225232969768613446}
   - component: {fileID: 6264407262383304851}
-  - component: {fileID: 6080747002521235042}
   - component: {fileID: 6134318862071707614}
   - component: {fileID: 5031712376797311705}
+  - component: {fileID: 9109084241753046345}
   m_Layer: 0
   m_Name: Character_BusinessMan_Shirt_01
   m_TagString: Untagged
@@ -227,7 +227,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 616958904626058608}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 739.34, y: 30.9017, z: 268.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -288,7 +288,39 @@ CapsuleCollider:
   m_Height: 2.3
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
---- !u!54 &6080747002521235042
+--- !u!114 &6134318862071707614
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616958904626058608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99341ed772dacca4f83b6d5bf55cfac3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementSpeed: 0
+  gravityStrength: -9.81
+  applyGravity: 1
+  rotationSpeed: 500
+  stopDistance: 2.5
+  destination: {x: 739.34, y: 30.9017, z: 268.37}
+  reachedDestination: 0
+--- !u!114 &5031712376797311705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 616958904626058608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec88f119cfca71345a38840fd1cff7eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentWaypoint: {fileID: 0}
+--- !u!54 &9109084241753046345
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -310,41 +342,11 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
-  m_IsKinematic: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &6134318862071707614
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 616958904626058608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99341ed772dacca4f83b6d5bf55cfac3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  movementSpeed: 0
-  rotationSpeed: 500
-  stopDistance: 2.5
-  destination: {x: 739.34, y: 30.9017, z: 268.37}
-  reachedDestination: 0
---- !u!114 &5031712376797311705
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 616958904626058608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec88f119cfca71345a38840fd1cff7eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentWaypoint: {fileID: 0}
 --- !u!1 &702171758245607479
 GameObject:
   m_ObjectHideFlags: 0

@@ -22,27 +22,8 @@ public class CarAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
 
+        waypoints = waypointsContainer.GetComponentsInChildren<Transform>();
 
-       /* if (waypointsContainer != null)
-        {
-
-            if (waypointsContainer.Count > 0)
-
-            {
-                Transform[] allWaypoints = waypointsContainer.GetComponentsInChildren<Transform>();
-
-                List<Transform> childWaypoints = new List<Transform>();
-
-                foreach (Transform waypoint in allWaypoints)
-                {
-                    if (waypoint != waypointsContainer.transform)
-                    {
-                        childWaypoints.Add(waypoint);
-                    }
-                }
-                waypoints = childWaypoints.ToArray();
-            }
-        }*/
     }
         
 
@@ -69,15 +50,23 @@ public class CarAI : MonoBehaviour
     public void TrafficSystem()
     {
        
-        if (trafficLight != null && trafficLight.currentLightState == TrafficLight.LightState.Red)
+        if (trafficLight != null)
         {
-            agent.isStopped = true;
+            if (trafficLight.currentLightState == TrafficLight.LightState.Red)
+            {
+                agent.isStopped = true;
+            }
+            else
+            {
+                agent.isStopped = false;
+                MoveToNextWaypointIfNeeded();
+            }
         }
         else
         {
-            agent.isStopped = false;
             MoveToNextWaypointIfNeeded();
         }
+        
     }
     
     public void MoveToNextWaypointIfNeeded()
@@ -95,6 +84,8 @@ public class CarAI : MonoBehaviour
 
         agent.destination = waypoints[currentWaypointIndex].position;
         currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+
+        Debug.Log("Moving to waypoint: " + currentWaypointIndex);
     }
 
     void OnTriggerEnter(Collider other)
