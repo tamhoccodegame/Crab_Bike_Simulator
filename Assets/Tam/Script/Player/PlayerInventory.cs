@@ -34,6 +34,22 @@ public class PlayerInventory : MonoBehaviour
         inventory.AddItem(item);
     }
 
+    public List<IShopItem> GetItems()
+    {
+        return inventory.GetItemList();
+    }
+
+    public void SetItems(List<IShopItem> items)
+    {
+        inventory.inventoryItems.Clear();
+
+        if(items != null) 
+        foreach(var item in items)
+        {
+            inventory.AddItem(item);
+        }
+    }
+
     void OnItemUsed(IShopItem item)
     {
         if(item is Food food)

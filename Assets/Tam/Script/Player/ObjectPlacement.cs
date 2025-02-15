@@ -26,12 +26,10 @@ public class ObjectPlacement : MonoBehaviour
     {
         if (objectToPlace == null) return;
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape) && previewPlacement != null)
         {
             inventory.AddItem(previewPlacement.GetComponent<Furniture>());
-            Destroy(previewPlacement.gameObject);
-            objectToPlace = null;
-            previewPlacement = null;
+            ResetPreviewPlacement();
             return;
         }
 
@@ -41,17 +39,22 @@ public class ObjectPlacement : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && canPlace)
         {
             Instantiate(objectToPlace, previewPlacement.transform.position, previewPlacement.transform.rotation);
-            Destroy(previewPlacement.gameObject);
-            previewPlacement = null;
-            objectToPlace = null;
+            ResetPreviewPlacement();
         }
+    }
+
+    void ResetPreviewPlacement()
+    {
+        Destroy(previewPlacement.gameObject);
+        objectToPlace = null;
+        previewPlacement = null;
     }
 
     void PlacePreview()
     {
         Vector3 rayOrigin = transform.position + transform.forward * previewDistance;
 
-        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, Mathf.Infinity, groundLayer))
+        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, Mathf.Infinity))
         {
             if (previewPlacement == null && objectToPlace != null)
             {
@@ -64,19 +67,25 @@ public class ObjectPlacement : MonoBehaviour
             Vector3 colliderCenter = previewCollider.bounds.center;
             Vector3 offset = colliderCenter - previewCollider.transform.position;
 
-            Vector3 placementPosition = hitInfo.point;
+            Vector3 placementPosition = hitInfo.point - new Vector3(0, 0.1f, 0);
 
             previewPlacement.transform.position = placementPosition;
             Collider[] colliders = Physics.OverlapBox(placementPosition + offset, extents);
 
-            if (colliders.Length > 2) canPlace = false;
-            else  canPlace = true;
+            //foreach (var c in colliders) Debug.Log(c.gameObject.name);
 
+            if ((groundLayer & (1 << hitInfo.collider.gameObject.layer)) != 0 && colliders.Length <= 2) canPlace = true;
+            else canPlace = false;
             SetTransparency(previewPlacement, canPlace ? Color.green : Color.red);
 
             //previewPlacement.GetComponent<Renderer>().material.color = canPlace ? Color.green : Color.red;
             DrawDebugBox(placementPosition + offset, extents, canPlace ? Color.green : Color.red);
 
+        }
+        else
+        {
+            inventory.AddItem(objectToPlace.GetComponent<Furniture>());
+            ResetPreviewPlacement();
         }
     }
 

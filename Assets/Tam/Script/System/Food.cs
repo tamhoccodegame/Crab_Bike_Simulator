@@ -12,7 +12,6 @@ public class Food : IShopItem
 
     public FoodType foodType;
 
-
     public Sprite GetSprite()
     {
         switch(foodType)

@@ -146,4 +146,64 @@ public class GameManager : MonoBehaviour
         blackScreen.SetActive(false);
     }
 
+    [ContextMenu("Save")]
+    public void Save()
+    {
+        SaveLoadManager saveSys = new SaveLoadManager();
+        saveSys.SaveGame();
+    }
+
+    [ContextMenu("Load")]
+    public void Load()
+    {
+        SaveLoadManager saveSys = new SaveLoadManager();
+        SaveData data = saveSys.LoadGame();
+
+        TPlayerController.instance.GetComponent<CharacterController>().enabled = false;
+        TPlayerController.instance.transform.position = data.playerPosition;
+        TPlayerController.instance.GetComponent<CharacterController>().enabled = true;
+        PlayerCash.instance.currentCash = data.playerCash;
+
+        List<InventoryReplace> replaces = data.inventoryItems;
+        List<IShopItem> inventoryItems = new List<IShopItem>();
+        foreach(InventoryReplace replace in replaces)
+        {
+            if(replace.typeName == "Food")
+            {
+                Food.FoodType type;
+                if(Enum.TryParse(replace.itemName, out type))
+                inventoryItems.Add(new Food { foodType = type });
+            }
+            else if(replace.typeName == "Furniture")
+            {
+                Furniture.FurnitureType type;
+                if(Enum.TryParse(replace.itemName,out type))
+                inventoryItems.Add(new Furniture { type = type });
+            }
+        }
+
+        VehicleManager vehicleManager = VehicleManager.instance;
+        vehicleManager.ownVehicles.Clear();
+        foreach (string vehicleName in data.ownVehiclesName)
+        {
+            GameObject prefab = vehicleManager.allVehiclesPrefab.Find(v => v.name == vehicleName);
+            if (prefab != null)
+            {
+                vehicleManager.ownVehicles.Add(prefab);
+            }
+        }
+
+        House[] allHouses = FindObjectsOfType<House>();
+        foreach (House house in allHouses)
+        {
+            if (house.id == data.ownHouseId)
+            {
+                HouseManager h = HouseManager.instance;
+                h.currentOwnHouse = house;
+                h.currentOwnHouse.isOwned = true;
+                h.currentOwnHouse.houseDoor.enabled = true;
+                break;
+            }
+        }
+    }
 }
