@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerState : MonoBehaviour
 {
+    public Animator animator;
     public float maxHealth = 100f, maxHunger = 100f, maxHygiene = 100f, maxStrength = 100f;
     public float currentHealth, currentHunger, currentHygiene, currentStrength;
 
@@ -15,6 +16,8 @@ public class PlayerState : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
+
         currentHealth = maxHealth;
         currentHunger = maxHunger;
         currentHygiene = maxHygiene;
@@ -64,14 +67,15 @@ public class PlayerState : MonoBehaviour
     public void DecreaseHealth(float amount)
     {
         currentHealth -= amount;
+        //animator.SetTrigger("isHurt");
 
         currentHealth = Math.Clamp(currentHealth, 0, 100);
 
         OnHealthChange?.Invoke(currentHealth);
 
-        if (currentHealth < 0)
+        if (currentHealth <= 0)
         {
-            Debug.Log("Player died!");
+            Debug.Log("Player is Dead!");
             CancelInvoke();
         }
     }
