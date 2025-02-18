@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Dynamic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 
 public class CarInShop : MonoBehaviour, IInteractable
@@ -38,17 +39,6 @@ public class CarInShop : MonoBehaviour, IInteractable
             direction.y = 0;
             informPanel.transform.rotation = Quaternion.LookRotation(-direction);
         }
-
-        if(Input.GetKeyDown(KeyCode.F) && currentPlayer != null)
-        {
-            if (!PlayerCash.instance.CostMoney(carPrice)) return;
-            Debug.Log("Bought A Car");
-            //Logic Mua xe
-            informPanel.SetActive(false);
-            StopAllCoroutines();
-            currentPlayer.QuitInteracting();
-            onCarBought?.Invoke(this);
-        }
     }
 
     public void ShowPrompt()
@@ -56,11 +46,22 @@ public class CarInShop : MonoBehaviour, IInteractable
 
     }
 
+    public void BuyACar()
+    {
+        if (!PlayerCash.instance.CostMoney(carPrice)) return;
+        Debug.Log("Bought A Car");
+        //Logic Mua xe
+        informPanel.SetActive(false);
+        StopAllCoroutines();
+        currentPlayer.QuitInteracting();
+        onCarBought?.Invoke(this);
+    }
+
     public void OnInteract(PlayerInteractor player)
     {
         player.QuitInteracting();
-        informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(true);
         StartCoroutine(SetPlayer(player));
+        SystemNotify.instance.SendNotify("Mua xe", $"Bạn có chắc muốn mua chiếc xe này với giá {carPrice} không?", BuyACar, () => { player.QuitInteracting(); });
     }
 
     IEnumerator SetPlayer(PlayerInteractor player)
