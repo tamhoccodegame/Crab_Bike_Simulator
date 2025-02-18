@@ -7,12 +7,13 @@ public class NPC_Health_UI : MonoBehaviour
 {
     public Slider npcHealthSlider; // Thanh máu
     [SerializeField] private GameObject NPCHealth_UI;
-    private Transform target;
+    public Transform target;
 
-    private Vector3 offset = new Vector3(5, 5f, 0); // Vị trí thanh máu trên đầu target
+    private Vector3 offset = new Vector3(0, 2f, 0); // Vị trí thanh máu trên đầu target
     // Start is called before the first frame update
     void Start()
     {
+        npcHealthSlider = GetComponent<Slider>();
         NPCHealth_UI.SetActive(false);
     }
 
@@ -22,7 +23,12 @@ public class NPC_Health_UI : MonoBehaviour
         if (target != null)
         {
             transform.position = target.position + offset;
-            //transform.forward = Camera.main.transform.forward;
+
+            //// Chuyển đổi vị trí NPC sang vị trí UI
+            //Vector3 screenPos = Camera.main.WorldToScreenPoint(target.position + offset);
+            //transform.position = screenPos; 
+
+            transform.forward = Camera.main.transform.forward;
         }
     }
 
