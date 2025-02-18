@@ -165,22 +165,22 @@ public class GameManager : MonoBehaviour
         PlayerCash.instance.currentCash = data.playerCash;
 
         List<InventoryReplace> replaces = data.inventoryItems;
-        List<IShopItem> inventoryItems = new List<IShopItem>();
         foreach(InventoryReplace replace in replaces)
         {
             if(replace.typeName == "Food")
             {
                 Food.FoodType type;
                 if(Enum.TryParse(replace.itemName, out type))
-                inventoryItems.Add(new Food { foodType = type });
+                PlayerInventory.instance.AddItem(new Food { foodType = type });
             }
             else if(replace.typeName == "Furniture")
             {
                 Furniture.FurnitureType type;
                 if(Enum.TryParse(replace.itemName,out type))
-                inventoryItems.Add(new Furniture { type = type });
+                PlayerInventory.instance.AddItem(new Furniture { type = type });
             }
         }
+
 
         VehicleManager vehicleManager = VehicleManager.instance;
         vehicleManager.ownVehicles.Clear();
