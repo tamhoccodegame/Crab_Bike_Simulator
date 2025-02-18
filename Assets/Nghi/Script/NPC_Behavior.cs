@@ -24,6 +24,8 @@ public class NPC_Behavior : MonoBehaviour
     public float npcAttackCooldown;
     private float lastAttackTime;
 
+    private bool canAttack = true;
+
     //public Animation_Random animation_Random;
     public NPC_Health npc_Health;
     public NPCInteractable npcInteractable;
@@ -36,6 +38,8 @@ public class NPC_Behavior : MonoBehaviour
         npcAgent = GetComponent<NavMeshAgent>();
         npc_Health = GetComponent<NPC_Health>();
         npcInteractable = GetComponent<NPCInteractable>();
+
+        
         //if (animation_Random == null)
         //{
         //    animation_Random = GetComponent<Animation_Random>();
@@ -52,6 +56,8 @@ public class NPC_Behavior : MonoBehaviour
         }
     }
 
+
+
     public void AttackOrReport()
     {
         //animation_Random.enabled = false;
@@ -59,6 +65,7 @@ public class NPC_Behavior : MonoBehaviour
         Debug.Log($"NPC {gameObject.name} đang quyết định hành động sau khi bị đánh.");
         if (npcType == NPCType.Aggressive)
         {
+            
             npcInteractable.AggressiveOnHitByPlayer();
             Debug.Log($"{gameObject.name} chuyển sang tấn công Player!");
             //animation_Random.enabled = false;
@@ -70,6 +77,7 @@ public class NPC_Behavior : MonoBehaviour
         }
         else if (npcType == NPCType.Friendly)
         {
+           
             npcInteractable.FriendlyOnHitByPlayer();
             Debug.Log($"{gameObject.name} hoảng sợ và chạy đến đồn cảnh sát.");
             //animation_Random.enabled = false;
@@ -123,7 +131,9 @@ public class NPC_Behavior : MonoBehaviour
                 npcAgent.updateRotation = false;
                 animator.SetBool("isApproach", false);
                 //Debug.Log($"{gameObject.name} đang trong tầm tấn công!");
-                AttackPlayer();
+
+                //AttackPlayer();
+                StartCoroutine(AttackPlayer());
             }
             else
             {
@@ -139,43 +149,77 @@ public class NPC_Behavior : MonoBehaviour
         }
     }
 
-    private void AttackPlayer()
+    IEnumerator AttackPlayer()
     {
         float timeSinceLastAttack = Time.time - lastAttackTime;
         //Debug.Log($"Checking attack cooldown: {timeSinceLastAttack} >= {npcAttackCooldown}");
 
-        if (timeSinceLastAttack >= npcAttackCooldown)  // Kiểm tra cooldown
+        if (timeSinceLastAttack >= npcAttackCooldown)
         {
-            //Debug.Log($"{gameObject.name} chuẩn bị tấn công!");
-
+            canAttack = false;
             int randomAnimation = Random.Range(0, attackAnimationCount);
             animator.SetInteger("AttackIndex", randomAnimation);
             animator.SetTrigger("isAttack");
-            Debug.Log($"NPC Attacking with animation index: {randomAnimation}");
-            //*****************************************************************
-            if (playerTransform != null)
-            {
-                Debug.Log($"[Damage] {gameObject.name} gây {npcAttackDamage} sát thương lên Player.");
-                //Invoke(nameof(ActivateHitbox), 0.3f); // Bật hitbox khi đòn đánh sắp trúng
-                //********************
-                //playerTransform.GetComponent<Player_Health>().TakeDamage(npcAttackDamage);
-            }
-            else
-            {
-                Debug.LogError("LỖI: playerTransform bị NULL!");
-            }
 
-            lastAttackTime = Time.time;  // Reset thời gian tấn công
+            Debug.Log($"{gameObject.name} Attacking with animation index: {randomAnimation}");
+
+            lastAttackTime = Time.time;  // Cập nhật thời gian tấn công
+            yield return null; // Chờ một frame để animation cập nhật
+
+            // Đợi animation attack chạy xong trước khi tiếp tục
+            float attackAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(attackAnimationTime+2f); // Chờ animation + cooldown
+            canAttack = true;
+            Debug.Log($"{gameObject.name} đã hoàn thành đòn tấn công, chuẩn bị đòn tiếp theo...");
         }
         else
         {
-            //Debug.Log($"{gameObject.name} chưa thể tấn công, cần chờ cooldown.");
+            Debug.Log($"{gameObject.name} chưa thể tấn công, cần chờ cooldown.");
         }
+
+
+
+
+
+        //float timeSinceLastAttack = Time.time - lastAttackTime;
+        //Debug.Log($"Checking attack cooldown: {timeSinceLastAttack} >= {npcAttackCooldown}");
+
+        //if (timeSinceLastAttack >= npcAttackCooldown)  // Kiểm tra cooldown
+        //{
+
+        //    int randomAnimation = Random.Range(0, attackAnimationCount);
+        //    animator.SetInteger("AttackIndex", randomAnimation);
+        //    animator.SetTrigger("isAttack");
+        //    Debug.Log($"NPC Attacking with animation index: {randomAnimation}");
+        //    //*****************************************************************
+        //    if (playerTransform != null)
+        //    {
+        //        Debug.Log($"[Damage] {gameObject.name} gây {npcAttackDamage} sát thương lên Player.");
+        //        //Invoke(nameof(ActivateHitbox), 0.3f); // Bật hitbox khi đòn đánh sắp trúng
+        //        //********************
+        //        //playerTransform.GetComponent<Player_Health>().TakeDamage(npcAttackDamage);
+        //    }
+        //    else
+        //    {
+        //        Debug.LogError("LỖI: playerTransform bị NULL!");
+        //    }
+
+        //    lastAttackTime = Time.time;  // Reset thời gian tấn công
+        //}
+        //else
+        //{
+        //    //Debug.Log($"{gameObject.name} chưa thể tấn công, cần chờ cooldown.");
+        //}
     }
 
     void ActivateHitbox()
     {
         hitBox.ActivateHitbox();
+    }
+
+    void DeactivateHitbox()
+    {
+        hitBox.DeactivateHitbox();
     }
 
 

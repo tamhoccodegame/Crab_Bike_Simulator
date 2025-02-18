@@ -8,6 +8,8 @@ public class UI_Manager : MonoBehaviour
     public GameObject healthBarPrefab;
     public Canvas canvas; // Canvas chính của UI (World Space hoặc Screen Space)
 
+    //public Transform canvasTransform; // Gán canvas chứa thanh máu
+
     private void Awake()
     {
         if (Instance == null)
@@ -29,4 +31,12 @@ public class UI_Manager : MonoBehaviour
         }
         return healthBarPrefab;
     }
+
+    //public NPC_Health_UI CreateHealthBar(Transform npc)
+    //{
+    //    GameObject heathBarInstance = Instantiate(healthBarPrefab, canvasTransform);
+    //    NPC_Health_UI healthBar = heathBarInstance.GetComponent<NPC_Health_UI>();
+    //    healthBar.target = npc;
+    //    return healthBar;
+    //}
 }

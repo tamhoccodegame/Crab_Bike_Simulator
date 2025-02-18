@@ -9,7 +9,7 @@ public class HitBox : MonoBehaviour
 
     public Collider hitboxCollider;  // Collider dùng làm hitbox
     public int damage = 10;  // Sát thương gây ra
-    public float activeTime = 0.2f;  // Thời gian hitbox hoạt động
+    //public float activeTime = 0.2f;  // Thời gian hitbox hoạt động
     public List<Collider> listDamage = new List<Collider>();  // Danh sách mục tiêu đã bị đánh
 
     private void Start()
@@ -22,6 +22,7 @@ public class HitBox : MonoBehaviour
     {
         if (listDamage.Contains(other)) return; // Nếu đã đánh mục tiêu này rồi thì bỏ qua
 
+
         // Kiểm tra xem hitbox này đánh ai (Player hoặc NPC)
         if (targetType == TargetType.Player && other.CompareTag("Player"))
         {
@@ -30,12 +31,12 @@ public class HitBox : MonoBehaviour
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damage);
-
+                Debug.Log($"{gameObject.name} đã va chạm với {other.name}");
                 //PlayerState playerState = other.GetComponent<PlayerState>();
                 //if (playerState != null)
                 //{
                 //    playerState.DecreaseHealth(damage);
-                //    listDamage.Add(other);
+                listDamage.Add(other);
             }
         }
         else if (targetType == TargetType.NPC && other.CompareTag("NPC"))
@@ -44,6 +45,7 @@ public class HitBox : MonoBehaviour
             if (npcHealth != null)
             {
                 npcHealth.TakeDamage(damage);
+                Debug.Log($"{gameObject.name} đã va chạm với {other.name}");
                 listDamage.Add(other);
             }
         }

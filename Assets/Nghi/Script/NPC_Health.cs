@@ -12,50 +12,52 @@ public class NPC_Health : MonoBehaviour
 
     private bool isDead = false;
     public bool isAttacked = false;
-    public Animation_Random animation_Random;
+    //public Animation_Random animation_Random;
 
-    [SerializeField] private NPC_Health_UI npcHealth_UI;
+    //[SerializeField] private NPC_Health_UI npcHealth_UI;
     // Start is called before the first frame update
     void Start()
     {
+        SetCombatLayerActive(false); // Mặc định tắt Combat Layer
+
         npcCurrentHeath = npcMaxHeath;
         Debug.Log($"{gameObject.name} khởi tạo với máu: {npcCurrentHeath}");
 
         animator = GetComponent<Animator>();
-        animation_Random = GetComponent<Animation_Random>();
+        //animation_Random = GetComponent<Animation_Random>();
 
-        if (UI_Manager.Instance == null)
-        {
-            Debug.LogError("UI_Manager.Instance bị null! Đảm bảo rằng UI_Manager có mặt trong Scene.");
-            return;
-        }
-
-        //*************************************************
-        // Tìm HealthBar trong hệ thống UI thay vì trong NPC
-        GameObject healthBarPrefab = UI_Manager.Instance.GetHealthBar();
-        if (healthBarPrefab == null)
-        {
-            Debug.LogError("Không tìm thấy HealthBar Prefab trong UI_Manager!");
-            return;
-        }
-
-        //if (healthBarPrefab != null)
+        //if (UI_Manager.Instance == null)
         //{
-        //    GameObject healthBarObj = Instantiate(healthBarPrefab, UI_Manager.Instance.canvas.transform);
-        //    npcHealth_UI = healthBarObj.GetComponent<NPC_Health_UI>();
-        //    npcHealth_UI.Initialize(transform);
+        //    Debug.LogError("UI_Manager.Instance bị null! Đảm bảo rằng UI_Manager có mặt trong Scene.");
+        //    return;
         //}
 
-        GameObject healthBarObj = Instantiate(healthBarPrefab, UI_Manager.Instance.canvas.transform);
-        npcHealth_UI = healthBarObj.GetComponent<NPC_Health_UI>();
+        ////*************************************************
+        //// Tìm HealthBar trong hệ thống UI thay vì trong NPC
+        //GameObject healthBarPrefab = UI_Manager.Instance.GetHealthBar();
+        //if (healthBarPrefab == null)
+        //{
+        //    Debug.LogError("Không tìm thấy HealthBar Prefab trong UI_Manager!");
+        //    return;
+        //}
 
-        if (npcHealth_UI == null)
-        {
-            Debug.LogError("HealthBarObj không có NPC_Health_UI!");
-            return;
-        }
+        ////if (healthBarPrefab != null)
+        ////{
+        ////    GameObject healthBarObj = Instantiate(healthBarPrefab, UI_Manager.Instance.canvas.transform);
+        ////    npcHealth_UI = healthBarObj.GetComponent<NPC_Health_UI>();
+        ////    npcHealth_UI.Initialize(transform);
+        ////}
 
-        npcHealth_UI.Initialize(transform);
+        //GameObject healthBarObj = Instantiate(healthBarPrefab, UI_Manager.Instance.canvas.transform);
+        //npcHealth_UI = healthBarObj.GetComponent<NPC_Health_UI>();
+
+        //if (npcHealth_UI == null)
+        //{
+        //    Debug.LogError("HealthBarObj không có NPC_Health_UI!");
+        //    return;
+        //}
+
+        //npcHealth_UI.Initialize(transform);
 
     }
 
@@ -65,16 +67,30 @@ public class NPC_Health : MonoBehaviour
         
     }
 
+    public void SetCombatLayerActive(bool active)
+    {
+        if (active)
+        {
+            animator.SetLayerWeight(1, 1); // Bật Combat Layer
+        }
+        else
+        {
+            animator.SetLayerWeight(1, 0); // Tắt Combat Layer, chỉ chạy Base Layer
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         npcCurrentHeath -= damage;
         animator.SetTrigger("isHurt");
 
-        if (npcHealth_UI != null)
-        {
-            npcHealth_UI.UpdateHeathUI(npcCurrentHeath, npcMaxHeath);
-            //npcHealth_UI.UpdateHealthUI(current_Health, maxHealth);
-        }
+        SetCombatLayerActive(true);
+
+        //if (npcHealth_UI != null)
+        //{
+        //    npcHealth_UI.UpdateHeathUI(npcCurrentHeath, npcMaxHeath);
+        //    //npcHealth_UI.UpdateHealthUI(current_Health, maxHealth);
+        //}
 
         Debug.Log($"{gameObject.name} bị tấn công! Máu trước khi trừ: {npcCurrentHeath}, Sát thương nhận: {damage}");
         Debug.Log($"{gameObject.name} sau khi bị tấn công! Máu còn lại: {npcCurrentHeath}");
@@ -89,18 +105,20 @@ public class NPC_Health : MonoBehaviour
         //if (animation_Random != null)
         //{
             //animator.CrossFade("Idle", 0.1f);
-            animation_Random.StopAllCoroutines(); // Ngừng toàn bộ coroutine của Animation_Random
-            animation_Random.enabled = false; // Tắt script idle
-            Debug.Log("Vô hiệu hóa Animation_Random!");
-            Debug.Log("Animation_Random enabled: " + animation_Random.enabled);
-            animator.SetTrigger("isBackToIdle");
-            Debug.Log("isBackToIdle!");
+
+            //animation_Random.StopAllCoroutines(); // Ngừng toàn bộ coroutine của Animation_Random
+            //animation_Random.enabled = false; // Tắt script idle
+            //Debug.Log("Vô hiệu hóa Animation_Random!");
+            //Debug.Log("Animation_Random enabled: " + animation_Random.enabled);
+            //animator.SetTrigger("isBackToIdle");
+            
+
         //}
         //************************************
         //npcCurrentHeath -= damage;
         //animator.SetTrigger("isHurt");
         //Debug.Log($"{gameObject.name} sau khi bị tấn công! Máu còn lại: {npcCurrentHeath}");
-
+        //**********%%%%%%%%%%%%%%%%%
         StartCoroutine(ReactAfterHurt());
 
         //if (npcCurrentHeath <= 0)
@@ -118,6 +136,9 @@ public class NPC_Health : MonoBehaviour
     {
         // Chờ animation "isHurt" chạy xong
         yield return new WaitForSeconds(1f);
+
+        animator.SetTrigger("isBackToIdle");
+
         if (npcCurrentHeath <= 0)
         {
             Die();

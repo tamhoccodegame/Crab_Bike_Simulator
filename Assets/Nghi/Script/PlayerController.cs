@@ -256,6 +256,12 @@ public class PlayerController : MonoBehaviour
         hitBox.ActivateHitbox();
     }
 
+
+    void DeactivateHitbox()
+    {
+        hitBox.DeactivateHitbox();
+    }
+
     //Hien thi attackRange trong Scene
     private void OnDrawGizmos()
     {
