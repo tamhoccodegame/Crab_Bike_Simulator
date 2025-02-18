@@ -47,7 +47,10 @@ public class PlayerController : MonoBehaviour
     public LayerMask npcLayer;
     public float attackDamage;
 
-    
+    public float attackCooldown = 2f;
+    private float lastAttackTime;
+
+    public HitBox hitBox;
 
     private void Start()
     {
@@ -62,10 +65,10 @@ public class PlayerController : MonoBehaviour
         Move();
         RotatePlayerToCamera(); // Gọi hàm xoay Player
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    ChangeState(PlayerState.Attack);
-        //}
+        if (Input.GetMouseButtonDown(0) && Time.time - lastAttackTime>=attackCooldown)
+        {
+            ChangeState(PlayerState.Attack);
+        }
     }
 
     public void ChangeState(PlayerState newState)
@@ -88,7 +91,7 @@ public class PlayerController : MonoBehaviour
                 Move();
                 break;
             case PlayerState.Attack:
-                //Attack();
+                Attack();
                 break;
         }
 
@@ -217,31 +220,46 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //public void Attack()
-    //{
-    //    int randomAttackAnimation = Random.Range(0, attackAnimationCount);
+    public void Attack()
+    {
+        // Kiểm tra nếu chưa hết cooldown thì không cho đánh
+        if (Time.time - lastAttackTime < attackCooldown)
+        {
+            Debug.Log("Chưa thể tấn công, hãy chờ cooldown!");
+            return;
+        }
 
-    //    animator.SetInteger("Index", randomAttackAnimation);
-    //    animator.SetTrigger("isAttack");
+        int randomAttackAnimation = Random.Range(0, attackAnimationCount);
 
-    //    //Check va cham
-    //    Collider[] hitNPC = Physics.OverlapSphere(attackPoint.position, attackRange, npcLayer);
+        animator.SetInteger("Index", randomAttackAnimation);
+        animator.SetTrigger("isAttack");
 
-    //    foreach (Collider npc in hitNPC)
-    //    {
-    //        //Tru mau
-    //        if (npc != null)//Bi danh trung
-    //        {
-    //            NPC_Health npc_Health = npc.GetComponent<NPC_Health>();
-    //            npc_Health.TakeDamage(attackDamage);
-    //        }
-    //    }
-    //}
+        //Check va cham
+        Collider[] hitNPC = Physics.OverlapSphere(attackPoint.position, attackRange, npcLayer);
 
-    ////Hien thi attackRange trong Scene
-    //private void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.red;
-    //    Gizmos.DrawWireSphere(attackPoint.position, attackRange);
-    //}
+        foreach (Collider npc in hitNPC)
+        {
+            //Tru mau
+            if (npc != null)//Bi danh trung
+            {
+                //Invoke(nameof(ActivateHitbox), 0.2f); // Bật hitbox khi tay chạm vào NPC
+                lastAttackTime = Time.time;
+                //*******************
+                //NPC_Health npc_Health = npc.GetComponent<NPC_Health>();
+                //npc_Health.TakeDamage(attackDamage);
+            }
+        }
+    }
+
+    void ActivateHitbox()
+    {
+        hitBox.ActivateHitbox();
+    }
+
+    //Hien thi attackRange trong Scene
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    }
 }

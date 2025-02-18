@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NPCInteractable : MonoBehaviour
 {
+    //Start Adding 
     public BubbleChat bubbleChatInstance;
     private Animator animator;
     private NPCHeadLookAt npcHeadLookAt;
@@ -28,7 +29,23 @@ public class NPCInteractable : MonoBehaviour
         public string text;  // Nội dung thoại
     }
 
-    [SerializeField] private List<DialogueSource> dialogueList = new List<DialogueSource>(); // Danh sách thoại chứa cả thoại & icon
+    public enum NPCState
+    {
+        Normal,
+        Angry,
+        Scared
+    }
+
+    private NPCState currentState = NPCState.Normal;
+
+    // Chuyển danh sách thoại thành Dictionary để dễ dàng gọi theo trạng thái
+    private Dictionary<NPCState, List<DialogueSource>> dialogueDictionary = new Dictionary<NPCState, List<DialogueSource>>();
+
+    [SerializeField] private List<DialogueSource> normalDialogues;
+    [SerializeField] private List<DialogueSource> angryDialogues;
+    [SerializeField] private List<DialogueSource> scaredDialogues;
+
+    //[SerializeField] private List<DialogueSource> dialogueList = new List<DialogueSource>(); // Danh sách thoại chứa cả thoại & icon
     [SerializeField] private float detectRange = 5f;
     [SerializeField] private Transform playerTransform;
 
@@ -42,16 +59,23 @@ public class NPCInteractable : MonoBehaviour
     //*************
     private float detectBuffer = 0.3f; // Thêm một khoảng buffer để tránh chớp nháy
 
+
+
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
         npcHeadLookAt = GetComponent<NPCHeadLookAt>();
+
+        // Gán các danh sách thoại vào Dictionary
+        dialogueDictionary[NPCState.Normal] = normalDialogues;
+        dialogueDictionary[NPCState.Angry] = angryDialogues;
+        dialogueDictionary[NPCState.Scared] = scaredDialogues;
     }
 
     private void Update()
     {
-        FindPlayerAndDecide();
+        //FindPlayerAndDecide();
 
         if (playerTransform == null) return;
 
@@ -69,6 +93,7 @@ public class NPCInteractable : MonoBehaviour
                 {
                     canShowDialogueBoxChat = true;
                     ShowRandomDialog();
+                    Debug.Log("Show from Update!");
                 }
             }
         }
@@ -96,12 +121,7 @@ public class NPCInteractable : MonoBehaviour
 
 
         // Xóa Dialogue Box Chat ngay lập tức nếu nó đang hiển thị
-        if (currentDialogueBoxChatTransform != null)
-        {
-            Destroy(currentDialogueBoxChatTransform.gameObject);
-            currentDialogueBoxChatTransform = null;
-            isShowingBoxChat = false;
-        }
+        ClearDialogueBox();
 
         bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
 
@@ -120,11 +140,7 @@ public class NPCInteractable : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
 
-        if (currentDialogueBoxChatTransform != null)
-        {
-            Destroy(currentDialogueBoxChatTransform.gameObject);
-            currentDialogueBoxChatTransform = null;
-        }
+        ClearDialogueBox();
 
         isInteracting = false; // Cho phép Dialogue Box Chat hiển thị trở lại
         
@@ -137,32 +153,32 @@ public class NPCInteractable : MonoBehaviour
         return interactText;
     }
 
-    private void FindPlayerAndDecide()
-    {
+    //private void FindPlayerAndDecide()
+    //{
         
-        if (playerTransform == null || isInteracting ||!canShowDialogueBoxChat) return;
+    //    if (playerTransform == null || isInteracting ||!canShowDialogueBoxChat) return;
 
-        float distance = Vector3.Distance(transform.position, playerTransform.position);
+    //    float distance = Vector3.Distance(transform.position, playerTransform.position);
 
-        if (distance <= detectRange && !isShowingBoxChat && Time.deltaTime - lastChatTime >= 2f)
-        {
-            ShowRandomDialog();
-        }
-    }
+    //    if (distance <= detectRange && !isShowingBoxChat && Time.deltaTime - lastChatTime >= 2f)
+    //    {
+    //        ShowRandomDialog();
+    //    }
+    //}
 
     public void ShowRandomDialog()
     {
-        
-        if (dialogueList.Count == 0||isInteracting||!canShowDialogueBoxChat) return; // Không hiển thị nếu đang tương tác
+        if (isShowingBoxChat) return; // Nếu đang hiển thị, không tạo hộp thoại mới
+        //if (dialogueList.Count == 0||isInteracting||!canShowDialogueBoxChat) return; // Không hiển thị nếu đang tương tác
+        if (!dialogueDictionary.ContainsKey(currentState) || dialogueDictionary[currentState].Count == 0 || isInteracting || !canShowDialogueBoxChat) return;
+
 
         // Xóa hộp thoại cũ nếu còn tồn tại
-        if (currentDialogueBoxChatTransform != null)
-        {
-            Destroy(currentDialogueBoxChatTransform.gameObject);
-            isShowingBoxChat = false;
-        }
+        ClearDialogueBox();
 
-        DialogueSource randomDialog = dialogueList[Random.Range(0, dialogueList.Count)];
+        //DialogueSource randomDialog = dialogueList[Random.Range(0, dialogueList.Count)];
+        List<DialogueSource> dialogues = dialogueDictionary[currentState];
+        DialogueSource randomDialog = dialogues[Random.Range(0, dialogues.Count)];
 
         if (bubbleChatInstance != null)
         {
@@ -177,19 +193,50 @@ public class NPCInteractable : MonoBehaviour
 
     IEnumerator HideDialogBoxChat(float time)
     {
+        //***
+        isShowingBoxChat = false; // Đánh dấu trước khi chờ
+
         yield return new WaitForSeconds(time);
-        if (currentDialogueBoxChatTransform != null)
-        {
-            Destroy(currentDialogueBoxChatTransform.gameObject);
-            currentDialogueBoxChatTransform = null;
-        }
-        isShowingBoxChat = false;
+
+        ClearDialogueBox();
 
         // Đợi 2 giây, nếu player vẫn trong phạm vi thì hiển thị lại box chat mới
         yield return new WaitForSeconds(2f);
         if (Vector3.Distance(transform.position, playerTransform.position) <= detectRange)
         {
             ShowRandomDialog();
+            Debug.Log("Show after 2 secs if player still in Range from HideDialogBoxChat!");
+        }
+    }
+
+    private void ClearDialogueBox()
+    {
+        if (currentDialogueBoxChatTransform != null)
+        {
+            Destroy(currentDialogueBoxChatTransform.gameObject);
+            currentDialogueBoxChatTransform = null;
+        }
+        isShowingBoxChat = false;
+    }
+
+    // **Khi NPC bị tấn công**
+    public void AggressiveOnHitByPlayer()
+    {
+        if (currentState != NPCState.Angry) // Nếu chưa tức giận thì mới đổi trạng thái
+        {
+            currentState = NPCState.Angry;
+            ShowRandomDialog();
+            Debug.Log("Show from AggresiveOnHitByPlayer!");
+        }
+    }
+
+    public void FriendlyOnHitByPlayer()
+    {
+        if (currentState != NPCState.Scared)
+        {
+            currentState = NPCState.Scared;
+            ShowRandomDialog();
+            Debug.Log("Show from FriendlyOnHitByPlayer!");
         }
     }
 }
