@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ArrowPointer : MonoBehaviour
 {
-    public Transform checkpoint;
+    public Vector3 checkpoint;
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +17,7 @@ public class ArrowPointer : MonoBehaviour
     {
         if(checkpoint != null)
         {
-            Vector3 direction = checkpoint.position - transform.position;
+            Vector3 direction = checkpoint - transform.position;
 
             direction.y = 0;
 

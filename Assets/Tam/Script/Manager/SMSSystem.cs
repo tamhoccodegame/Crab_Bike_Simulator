@@ -52,7 +52,7 @@ public class SMSSystem : MonoBehaviour
             {
                 "[C] Mày còn nợ tao {b} VND",
                 "[P] Hôm nay tao chỉ trả trước cho mày được {a} VND thôi",
-                "[C] Vậy mày còn nợ tạo {b} VND"
+                "[C] Vậy mày còn nợ tạo {b - a} VND"
             }
         },
 
@@ -131,7 +131,8 @@ public class SMSSystem : MonoBehaviour
         GetComponent<Image>().enabled = false;
         List<string> setenceList = new List<string>();
 
-        setenceList = smsContents[GetSMSType()].ToList();
+        smsType = GetSMSType();
+        setenceList = smsContents[smsType].ToList();
 
         StartCoroutine(ShowSMS(setenceList));
     }
@@ -141,16 +142,23 @@ public class SMSSystem : MonoBehaviour
         if(debtDays > 0)
         {
             if (PlayerCash.instance.CostMoney(payDay * debtDays))
+            {
                 return SMSType.HasDebtAndTodayCanPay;
+            }
 
             if (PlayerCash.instance.CostMoney(payDay))
+            {
                 return SMSType.HasDebtAndTodayCanPayAPart;
+            }
 
-            debtDays++;
             return debtDays == 5 ? SMSType.BadEnd : SMSType.HasDebtAndTodayCannotPay;
         }
 
-        return PlayerCash.instance.CostMoney(payDay) ? SMSType.TodayCanPay : SMSType.TodayCannotPay;
+        if (!PlayerCash.instance.CostMoney(payDay))
+        {
+            return SMSType.TodayCannotPay;
+        }
+        return SMSType.TodayCanPay;
     }
 
     IEnumerator ShowSMS(List<string> setences)
@@ -179,6 +187,10 @@ public class SMSSystem : MonoBehaviour
             {
                 sb.Replace("{b}", (payDay * debtDays).ToString());
             }
+            if(s.Contains("{b - a}"))
+            {
+                sb.Replace("{b - a}", ((payDay * debtDays) - payDay).ToString());
+            }
 
             SpawnSMS(sb.ToString(), isPlayer);
 
@@ -200,6 +212,37 @@ public class SMSSystem : MonoBehaviour
         GameManager.instance.ChangeGameState(GameManager.GameState.Playing);
         SMSUI.SetActive(false);
         GetComponent<Image>().enabled = false;
+
+        CalculateAfterSMS();
+    }
+
+    void CalculateAfterSMS()
+    {
+        switch(smsType)
+        {
+            case SMSType.HasDebtAndTodayCanPayAPart:
+                debtDays--;
+                break;
+            case SMSType.HasDebtAndTodayCanPay:
+                debtDays = 1;
+                break;
+            case SMSType.HasDebtAndTodayCannotPay:
+                debtDays++;
+                break;
+
+            case SMSType.TodayCanPay:
+                break;
+            case SMSType.TodayCannotPay:
+                debtDays++;
+                break;
+
+
+            case SMSType.BadEnd:
+                break;
+            case SMSType.DonePayday:
+                break;
+
+        }
     }
 
     void SpawnSMS(string text, bool isPlayer)

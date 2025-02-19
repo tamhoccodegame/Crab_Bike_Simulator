@@ -60,6 +60,12 @@ public class CharacterNavigateController : MonoBehaviour
       
       
     }
+
+    private void OnDisable()
+    {
+        rb.velocity = Vector3.zero;
+    }
+
     public void SetDestination(Vector3 destination)
     {
         this.destination = destination;
