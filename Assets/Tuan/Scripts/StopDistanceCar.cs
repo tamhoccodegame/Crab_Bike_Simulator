@@ -6,17 +6,17 @@ using UnityEngine.AI;
 public class StopDistanceCar : MonoBehaviour
 {
     private bool CarZone = false;
-    public NavMeshAgent agent;
-    public CarAI carAI;
+    private NavMeshAgent agent;
+    private CarAI carAI;
 
 
     void Start()
     {
+        carAI = GetComponent<CarAI>();
         if (carAI != null)
         {
             agent = carAI.GetComponent<NavMeshAgent>();
 
-            // Ensure the agent is placed on the NavMesh before doing anything
             if (!agent.isOnNavMesh)
             {
                 Debug.LogError("The NavMeshAgent is not on the NavMesh!");
@@ -39,14 +39,18 @@ public class StopDistanceCar : MonoBehaviour
         else
         {
             agent.isStopped = false;
-            carAI.MoveToNextWaypointIfNeeded();
+
+            if (carAI != null)
+            {
+                carAI.MoveToNextWaypoint();
+            }
         }
     }
 
 
     void OnTriggerEnter(Collider other)
     {
-      
+
         if (other.CompareTag("Car"))
         {
             CarZone = true;
