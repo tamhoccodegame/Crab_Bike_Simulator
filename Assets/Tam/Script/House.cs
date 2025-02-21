@@ -22,12 +22,6 @@ public class House : MonoBehaviour
 
     }
 
-    [ContextMenu("BuyThisHouse")]
-    public void Buy()
-    {
-        HouseManager.instance.BuyHouse(this);
-    }
-
     [ContextMenu("SellThisHouse")]
     public void Sell()
     {

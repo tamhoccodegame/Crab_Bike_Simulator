@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using System.Linq;
 using UnityEngine;
 
 public class Destination : MonoBehaviour
@@ -9,7 +11,7 @@ public class Destination : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.SetActive(false);
+        
     }
 
     private void OnEnable() 
@@ -33,8 +35,11 @@ public class Destination : MonoBehaviour
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
 
                 Transform customer = transform.parent;
-                customer.GetComponent<Animator>().SetBool("isOnTrip", true);
-                customer.GetComponent<WaitingCustomer>().enabled = false;
+                //customer.GetComponent<Animator>().SetBool("isOnTrip", true);
+                //customer.GetComponent<WaitingCustomer>().enabled = false;
+                customer.GetComponent<Collider>().enabled = false;
+                customer.GetComponent<Animator>().SetBool("isWaiting", false);
+                customer.GetComponent<Animator>().SetLayerWeight(2, 1);
                 customer.transform.SetParent(customerSitPosition, true);
                 customer.transform.localPosition = Vector3.zero;
                 customer.transform.localRotation = Quaternion.Euler(0,0,0);
@@ -43,12 +48,14 @@ public class Destination : MonoBehaviour
             { 
                 CrabService.instance.CompleteTrip();
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
-                Transform _customer = customerSitPosition.Find("NPC(Clone)");
+                Transform _customer = customerSitPosition.GetComponentsInChildren<Transform>()
+                                      .FirstOrDefault(t => t.name.Contains("(Clone)"));
                 _customer.transform.SetParent(null);
                 _customer.transform.position += new Vector3(0, 0, 2);
                 _customer.transform.rotation = Quaternion.Euler(0,0,0);
-                _customer.GetComponent<Animator>().SetBool("isOnTrip", false);
-                _customer.GetComponent <WaitingCustomer>().enabled = true;
+                //_customer.GetComponent <WaitingCustomer>().enabled = true;
+                _customer.GetComponent<Collider>().enabled = true;
+                _customer.GetComponent<Animator>().SetLayerWeight(2, 0);
             }
             gameObject.SetActive(false);
         }

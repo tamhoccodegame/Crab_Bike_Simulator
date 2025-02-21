@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class TPlayerController : MonoBehaviour
+public class TPlayerController : Controller
 {
     public static TPlayerController instance;
     public float rotationSpeed;

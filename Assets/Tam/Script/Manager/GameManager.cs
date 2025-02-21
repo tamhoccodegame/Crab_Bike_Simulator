@@ -1,8 +1,11 @@
+﻿using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +20,7 @@ public class GameManager : MonoBehaviour
         Playing,
         Sleeping,
         Texting,
+        Phone,
     }
 
     public GameState currentState;
@@ -24,9 +28,11 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI fpsText;
 
-	private void Awake()
-	{
-		if(instance == null)
+    private List<Controller> controllerList = new List<Controller>();
+
+    private void Awake()
+    {
+        if (instance == null)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -35,12 +41,15 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-	}
 
-	// Start is called before the first frame update
-	void Start()
+    }
+
+    // Start is called before the first frame update
+    void Start()
     {
         InvokeRepeating(nameof(UpdateFPS), 1f, 1f);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void UpdateFPS()
@@ -51,31 +60,30 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.M))
-        {
-            if(Cursor.lockState == CursorLockMode.Locked)
-            {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-            else if(Cursor.lockState == CursorLockMode.None)
-            {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-        }
 
         if (Input.GetKeyDown(KeyCode.P))
         {
             if (phoneUI.activeSelf)
             {
                 phoneUI.SetActive(false);
+
+                TPlayerController.instance.canMove = true;
+                Camera.main.GetComponent<CinemachineBrain>().enabled = true;
+                ActiveAllController();
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
             }
             else
             {
                 phoneUI.SetActive(true);
-			}
-		}
+
+                TPlayerController.instance.canMove = false;
+                DeactiveAllController();
+                Camera.main.GetComponent<CinemachineBrain>().enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.B))
         {
@@ -95,7 +103,7 @@ public class GameManager : MonoBehaviour
         if (newState == currentState) return;
         currentState = newState;
 
-        switch(currentState)
+        switch (currentState)
         {
             case GameState.Sleeping:
                 TPlayerController.instance.canMove = false;
@@ -110,12 +118,32 @@ public class GameManager : MonoBehaviour
                 SMSSystem.instance.StartShowSMS();
                 break;
             case GameState.Playing:
-                if(phoneUI.activeSelf)
-                phoneUI.SetActive(false);
+                if (phoneUI.activeSelf)
+                    phoneUI.SetActive(false);
                 HideBlackScreen();
                 LightingManager.instance.SetDaySpeed(60);
                 TPlayerController.instance.canMove = true;
                 break;
+        }
+    }
+
+    void ActiveAllController()
+    {
+        foreach (var c in controllerList)
+        {
+            c.enabled = true;
+        }
+        controllerList.Clear();
+    }
+
+    void DeactiveAllController()
+    {
+        var controllers = FindObjectsOfType<Controller>();
+        foreach (var c in controllers)
+        {
+            if (!c.enabled) continue;
+            c.enabled = false;
+            controllerList.Add(c);
         }
     }
 
@@ -165,19 +193,19 @@ public class GameManager : MonoBehaviour
         PlayerCash.instance.currentCash = data.playerCash;
 
         List<InventoryReplace> replaces = data.inventoryItems;
-        foreach(InventoryReplace replace in replaces)
+        foreach (InventoryReplace replace in replaces)
         {
-            if(replace.typeName == "Food")
+            if (replace.typeName == "Food")
             {
                 Food.FoodType type;
-                if(Enum.TryParse(replace.itemName, out type))
-                PlayerInventory.instance.AddItem(new Food { foodType = type });
+                if (Enum.TryParse(replace.itemName, out type))
+                    PlayerInventory.instance.AddItem(new Food { foodType = type });
             }
-            else if(replace.typeName == "Furniture")
+            else if (replace.typeName == "Furniture")
             {
                 Furniture.FurnitureType type;
-                if(Enum.TryParse(replace.itemName,out type))
-                PlayerInventory.instance.AddItem(new Furniture { type = type });
+                if (Enum.TryParse(replace.itemName, out type))
+                    PlayerInventory.instance.AddItem(new Furniture { type = type });
             }
         }
 

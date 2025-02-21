@@ -13,6 +13,9 @@ public class CrabService : MonoBehaviour
     private CashSystem cashSystem;
     private PlayerCash playerCash;
 
+    public string[] customersName;
+
+    private System.Action onTripAccepted;
 
     public List<Transform> destinationList;
     public Vector3 currentPickUpPosition;
@@ -25,9 +28,17 @@ public class CrabService : MonoBehaviour
 
     public ArrowPointer directionArrow;
     public Slider progressTripSlider;
+    public GameObject minimap;
+    public Slider m_progressTripSlider;
 
     private Vector3 currentDestination;
     private float tripLong;
+
+    //[Header("RatingTab")]
+    //public TextMeshProUGUI ratingStar;
+    //public Transform ratingBoxTemplate;
+    //public Transform ratingBoxContainer;
+
 
     private void Awake()
     {
@@ -44,6 +55,14 @@ public class CrabService : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(isOnDuty && !GameManager.instance.phoneUI.activeSelf)
+        {
+            minimap.SetActive(true);
+        }
+        else
+        {
+            minimap.SetActive(false);
+        }
         UpdateTripProgress();
     }
 
@@ -57,30 +76,40 @@ public class CrabService : MonoBehaviour
         float sliderValue = 1 - (currentDistance / tripLong);
 
         progressTripSlider.value = sliderValue;
+
+        m_progressTripSlider.value = sliderValue;
     }
 
 
-    public bool TryPingTrip(Vector3 pickUpPosition)
+    public bool TryPingTrip(Vector3 pickUpPosition, System.Action _onTripAccepted)
     {
-        if(isOnDuty && !notificationPanel.activeSelf)
+        if(!notificationPanel.activeSelf)
         {
             PingTrip(pickUpPosition);
+            onTripAccepted = _onTripAccepted;
             return true;
         }
+        Debug.Log("Called by Complete TryPingTrip");
         CustomerBookCrab.ResetBookCrab();
         return false;
     }
 
     private void PingTrip(Vector3 pickUpPosition)
     {
+        if (!GameManager.instance.phoneUI.activeSelf)
+        {
+            SystemNotify.instance.SendMNotify("Bạn có một thông báo mới [P]", "Có một khách hàng đang chờ bạn");
+        }
+
         currentPickUpPosition = pickUpPosition;
         GetDestination();
         cashSystem.CalculatePayment(currentPickUpPosition, currentDropOffPoint.position);
         float distance = Vector3.Distance(player.position, currentPickUpPosition);
         //Gửi thông báo có khách
         notificationPanel.SetActive(true);
+        string customerName = customersName[Random.Range(0, customersName.Length)];
         notificationPanel.transform.Find("PickUp")
-                                   .GetComponent<TextMeshProUGUI>().text = $"Điểm đón: {currentPickUpPosition} ({(int)(distance / 100)}km)";
+                                   .GetComponent<TextMeshProUGUI>().text = $"Điểm đón: {customerName} ({(int)(distance / 100)}km)";
         notificationPanel.transform.Find("DropOff")
                                    .GetComponent<TextMeshProUGUI>().text = $"Điểm đến: {currentDropOffPoint.name}";
         notificationPanel.transform.Find("Price")
@@ -91,7 +120,7 @@ public class CrabService : MonoBehaviour
     {
         Transform dropOffPoint;
         {
-            dropOffPoint = destinationList[Random.Range(0, destinationList.Count - 1)];
+            dropOffPoint = destinationList[Random.Range(0, destinationList.Count)];
         }
         currentDropOffPoint = dropOffPoint;
     }
@@ -119,6 +148,8 @@ public class CrabService : MonoBehaviour
         }
         else
         {
+            onTripAccepted?.Invoke();
+            onTripAccepted = null;
             progressTripSlider.gameObject.SetActive(true);
             currentDestination = currentPickUpPosition;
             tripLong = Vector3.Distance(player.position, currentDestination);
@@ -131,8 +162,10 @@ public class CrabService : MonoBehaviour
     public void CancelTrip()
     {
         if (currentPickUpPosition == null || currentDropOffPoint == null) return;
+        onTripAccepted = null;
         currentDropOffPoint.gameObject.SetActive(false);
         currentDropOffPoint = null;
+        Debug.Log("Called by Cancel Trip");
         CustomerBookCrab.ResetBookCrab();
     }
 
@@ -150,6 +183,7 @@ public class CrabService : MonoBehaviour
         currentDropOffPoint.gameObject.SetActive(false);
         currentDropOffPoint = null;
         progressTripSlider.gameObject.SetActive(false);
+        Debug.Log("Called by Complete Trip");
         CustomerBookCrab.ResetBookCrab();
         //Cộng tiền cho player
         playerCash.AddMoney((int)cashSystem.currentPayment);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BikeController : MonoBehaviour
+public class BikeController : Controller
 {
     RaycastHit hit;
     float moveInput, steerInput, rayLength;

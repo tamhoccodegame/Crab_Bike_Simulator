@@ -16,27 +16,44 @@ public class CustomerBookCrab : MonoBehaviour
     void Start()
     {
         timer = cooldown;
+        destination.SetActive(false);
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (isBooking) return;
 
-        if(timer >= 0)
+        if (isBooking || !CrabService.instance.isOnDuty) return;
+
+        foreach (var script in scripts)
         {
-            timer -= Time.deltaTime;
+            script.enabled = true;
+        }
+
+
+        if (timer >= 0)
+        {
+            timer -= Time.fixedDeltaTime;
         }    
 
         if(timer < 0)
         {
-            if (CrabService.instance.TryPingTrip(transform.position))
+            if (CrabService.instance.TryPingTrip(transform.position, OnTripAccepted))
             {
-                isBooking = true;
-                destination.SetActive(true);
+                GetComponent<Animator>().SetBool("isWaiting", true);
+                foreach(var script in scripts)
+                {
+                    script.enabled = false;
+                }
                 timer = cooldown;
+                isBooking = true;
             }
         }
+    }
+
+    void OnTripAccepted()
+    {
+        destination.SetActive(true);
     }
 
     public static void ResetBookCrab()

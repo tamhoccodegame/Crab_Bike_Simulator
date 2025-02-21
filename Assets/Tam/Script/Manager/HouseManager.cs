@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class HouseManager : MonoBehaviour
@@ -24,12 +25,12 @@ public class HouseManager : MonoBehaviour
         
     }
 
-    public void BuyHouse(House _house)
+    public bool BuyHouse(House _house)
     {
         if(currentOwnHouse != null)
         {
             Debug.Log("Bạn đang có nhà rồi! Không thể mua");
-            return;
+            return false;
         }
 
         if (PlayerCash.instance.CostMoney(_house.price))
@@ -37,7 +38,10 @@ public class HouseManager : MonoBehaviour
             currentOwnHouse = _house;
             currentOwnHouse.isOwned = true;
             currentOwnHouse.houseDoor.enabled = true;
+            return true;
         }
+
+        return false;
     }
 
     public void SellHouse()

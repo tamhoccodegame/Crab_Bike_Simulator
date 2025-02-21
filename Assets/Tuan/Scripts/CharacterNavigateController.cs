@@ -11,26 +11,16 @@ public class CharacterNavigateController : MonoBehaviour
     public float stopDistance = 0.5f;    
     public Vector3 destination;         
     public bool reachedDestination = false;
-    private Rigidbody rb;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        SetRandomMovementSpeed();
-        if (rb != null && applyGravity)
-        {
-            rb.useGravity = false;
-        }
+       
     }
     void FixedUpdate()
     {
-        if (applyGravity && rb != null)
-        {
-            Vector3 gravityForce = new Vector3(0, gravityStrength, 0);
-            rb.AddForce(gravityForce, ForceMode.Acceleration);
-        }
+       
     }
     void SetRandomMovementSpeed()
     {
@@ -63,7 +53,7 @@ public class CharacterNavigateController : MonoBehaviour
 
     private void OnDisable()
     {
-        rb.velocity = Vector3.zero;
+
     }
 
     public void SetDestination(Vector3 destination)
