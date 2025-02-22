@@ -1334,10 +1334,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5110240929861969383}
   - component: {fileID: 4078260529689400209}
-  - component: {fileID: 6210572058941110990}
   m_Layer: 0
-  m_Name: OppositeWay
-  m_TagString: Untagged
+  m_Name: ReverseWay
+  m_TagString: Reverse
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1378,19 +1377,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.305457, y: 8.731104, z: 12.262263}
   m_Center: {x: -1.827148, y: 3.8655703, z: 5.6311703}
---- !u!114 &6210572058941110990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4393773030473746226}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1457afde27f58f54d81d0786b4fb8be0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  carAI: {fileID: 341908941325303040, guid: b4c01a6db824424469c27d3d465ea932, type: 3}
 --- !u!1 &4811608018122440307
 GameObject:
   m_ObjectHideFlags: 0
@@ -2626,7 +2612,7 @@ Transform:
   m_GameObject: {fileID: 9150879984664284190}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 463.91998, y: 30.900002, z: 373.18402}
+  m_LocalPosition: {x: -95.56, y: 0, z: -66.79999}
   m_LocalScale: {x: 0.9921898, y: 0.9921898, z: 0.9921898}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2719,9 +2705,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentLightState: 1
-  greenTime: 1
+  greenTime: 5
   redTime: 10
-  yellowTime: 1
+  yellowTime: 3
 --- !u!64 &9086231112704104814
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2785,5 +2771,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.9918537, y: 6.482997, z: 16.395071}
-  m_Center: {x: 1.8230273, y: 3.2414985, z: 6.3481393}
+  m_Size: {x: 7.322102, y: 6.482997, z: 16.395071}
+  m_Center: {x: 3.4881475, y: 3.2414985, z: 6.348139}

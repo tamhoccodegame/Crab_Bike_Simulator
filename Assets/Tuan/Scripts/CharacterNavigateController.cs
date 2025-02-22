@@ -39,8 +39,9 @@ public class CharacterNavigateController : MonoBehaviour
             {
                 reachedDestination = false;
                 Quaternion targetRotation = Quaternion.LookRotation( destinationDirection );
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                transform.Translate(Vector3.forward * movementSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                Vector3 moveDirection = destinationDirection.normalized * movementSpeed * Time.deltaTime;
+                rb.MovePosition(rb.position + moveDirection);
             }
             else
             {

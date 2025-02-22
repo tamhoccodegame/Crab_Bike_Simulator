@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class CarAI : MonoBehaviour
 {
     public GameObject waypointsContainer;
-    public TrafficLight trafficLight;
+    private TrafficLight trafficLight;
     public float speed = 10f;
     private int currentWaypointIndex = 0;
     private bool TrafficZone = false;
@@ -16,14 +16,12 @@ public class CarAI : MonoBehaviour
 
 
 
-
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.speed = speed;
 
-        waypoints = waypointsContainer.GetComponentsInChildren<Transform>();
-
+        waypoints = GetWaypoints(waypointsContainer);
     }
         
 
@@ -32,13 +30,11 @@ public class CarAI : MonoBehaviour
 
         if (TrafficZone && isTrafficSystemActive)
         {
-            
             TrafficSystem();
         }
         else
         {
-            
-            MoveToNextWaypointIfNeeded();
+            MoveToNextWaypoint();
         }
 
     }
@@ -49,70 +45,111 @@ public class CarAI : MonoBehaviour
 
     public void TrafficSystem()
     {
-       
         if (trafficLight != null)
         {
+            Debug.Log("Current Traffic Light State: " + trafficLight.currentLightState);
+
             if (trafficLight.currentLightState == TrafficLight.LightState.Red)
             {
-                agent.isStopped = true;
+                if (!agent.isStopped)
+                {
+                    agent.isStopped = true;
+                }
             }
             else
             {
-                agent.isStopped = false;
-                MoveToNextWaypointIfNeeded();
+                if (agent.isStopped)
+                {
+                    agent.isStopped = false;
+                }
+
+                MoveToNextWaypoint();
             }
         }
         else
         {
-            MoveToNextWaypointIfNeeded();
-        }
-        
-    }
-    
-    public void MoveToNextWaypointIfNeeded()
-    {
-       
-        if (!agent.isStopped && !agent.pathPending && agent.remainingDistance < 0.5f)
-        {
             MoveToNextWaypoint();
         }
     }
-    void MoveToNextWaypoint()
+
+
+    public void MoveToNextWaypoint()
     {
         if (waypoints.Length == 0)
            return;
 
-        agent.destination = waypoints[currentWaypointIndex].position;
-        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
-
-        Debug.Log("Moving to waypoint: " + currentWaypointIndex);
+        if (!agent.pathPending && agent.remainingDistance < 1f)
+        {
+            if (!agent.isStopped)
+            {
+                currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Length;
+                agent.destination = waypoints[currentWaypointIndex].position;
+                Debug.Log("Moving to waypoint: " + currentWaypointIndex);
+            }
+        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("TrafficLight"))
         {
-            
             TrafficZone = true;
+            trafficLight = other.GetComponent<TrafficLight>();
         }
-
+        if (other.CompareTag("Reverse"))
+        {
+            StartCoroutine(delayTraffic());
+            Debug.Log("Car is going in the opposite direction, ignoring traffic lights.");
+        }
     }
-
 
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("TrafficLight"))
         {
-            
             TrafficZone = false;
+            trafficLight = null;
+            if (!isTrafficSystemActive)
+            {
+                MoveToNextWaypoint();
+            }
+        }
+        if (other.CompareTag("Reverse"))
+        {
+            Debug.Log("Exited Reverse Zone.");
+            StartCoroutine(ResumeTrafficSystem());
+        }
+    }
+    IEnumerator delayTraffic()
+    {
+        TrafficZone = false;
+        yield return new WaitForSeconds(1f);
+        TrafficZone = true;
+    }
+    IEnumerator ResumeTrafficSystem()
+    {
+        yield return new WaitForSeconds(1f); // Optional: Delay before resuming
+        TrafficZone = true;
+        Debug.Log("Resumed traffic system.");
+    }
+    Transform[] GetWaypoints(GameObject container)
+    {
+        Transform[] allTransforms = container.GetComponentsInChildren<Transform>();
+
+        List<Transform> waypointsList = new List<Transform>();
+
+        foreach (Transform t in allTransforms)
+        {
+            if (t != container.transform)
+            {
+                waypointsList.Add(t);
+            }
         }
 
+        // Convert list to array and return
+        return waypointsList.ToArray();
     }
 
-
-    
-
-   
 }
 
 
