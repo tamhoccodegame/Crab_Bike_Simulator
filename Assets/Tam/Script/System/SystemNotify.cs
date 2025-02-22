@@ -21,6 +21,9 @@ public class SystemNotify : MonoBehaviour
     public TextMeshProUGUI m_title;
     public TextMeshProUGUI m_content;
 
+    [Header("BigTextNoti")]
+    public TextMeshProUGUI bigText;
+
     private void Awake()
     {
         instance = this;
@@ -74,9 +77,18 @@ public class SystemNotify : MonoBehaviour
         StartCoroutine(TurnOffPanel());
     }
 
+    public void SendBigNoti(string content, Color color)
+    {
+        bigText.text = content;
+        bigText.color = color;
+        bigText.gameObject.SetActive(true);
+        StartCoroutine(TurnOffPanel());
+    }
+
     IEnumerator TurnOffPanel()
     {
         yield return new WaitForSeconds(3f);
         m_SystemNotiPanel.SetActive(false);
+        bigText.gameObject.SetActive(false);
     }
 }

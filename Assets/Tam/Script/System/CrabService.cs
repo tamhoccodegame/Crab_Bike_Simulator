@@ -26,7 +26,7 @@ public class CrabService : MonoBehaviour
     public Button dutyButton;
     public GameObject notificationPanel;
 
-    public ArrowPointer directionArrow;
+    public RectTransform arrowUI;
     public Slider progressTripSlider;
     public GameObject minimap;
     public Slider m_progressTripSlider;
@@ -63,7 +63,20 @@ public class CrabService : MonoBehaviour
         {
             minimap.SetActive(false);
         }
+        UpdateArrowUI();
         UpdateTripProgress();
+    }
+
+    void UpdateArrowUI()
+    {
+        if (currentDestination != null)
+        {
+            Vector3 direction = currentDestination - player.position;
+            Vector3 localDirection = player.InverseTransformDirection(direction);
+
+            float angle = Mathf.Atan2(localDirection.x, localDirection.z) * Mathf.Rad2Deg;
+            arrowUI.rotation = Quaternion.Euler(0, 0, -angle);
+        }
     }
 
     void UpdateTripProgress()
@@ -153,8 +166,7 @@ public class CrabService : MonoBehaviour
             progressTripSlider.gameObject.SetActive(true);
             currentDestination = currentPickUpPosition;
             tripLong = Vector3.Distance(player.position, currentDestination);
-            directionArrow.gameObject.SetActive(true);
-            directionArrow.checkpoint = currentPickUpPosition;
+            arrowUI.gameObject.SetActive(true);
         }
 
     }
@@ -171,7 +183,6 @@ public class CrabService : MonoBehaviour
 
     public void SetDestination()
     {
-        directionArrow.checkpoint = currentDropOffPoint.position;
         currentDestination = currentDropOffPoint.position;
         tripLong = Vector3.Distance(player.position, currentDestination);
         currentDropOffPoint.gameObject.SetActive(true);
@@ -179,7 +190,7 @@ public class CrabService : MonoBehaviour
 
     public void CompleteTrip()
     {
-        directionArrow.gameObject.SetActive(false);
+        arrowUI.gameObject.SetActive(false);
         currentDropOffPoint.gameObject.SetActive(false);
         currentDropOffPoint = null;
         progressTripSlider.gameObject.SetActive(false);
@@ -187,5 +198,6 @@ public class CrabService : MonoBehaviour
         CustomerBookCrab.ResetBookCrab();
         //Cộng tiền cho player
         playerCash.AddMoney((int)cashSystem.currentPayment);
+        SystemNotify.instance.SendBigNoti($"+{(int)(cashSystem.currentPayment)}", Color.green);
     }
 }

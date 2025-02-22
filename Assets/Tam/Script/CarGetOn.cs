@@ -20,7 +20,9 @@ public class CarGetOn : MonoBehaviour, IInteractable
         currentPlayer = player;
         currentPlayer.GetComponent<TPlayerController>().enabled = false;
         currentPlayer.GetComponent<CharacterController>().enabled = false;
-        //currentPlayer.transform.SetParent(sitPosition.transform, true);
+        currentPlayer.transform.SetParent(sitPosition.transform, true);
+        currentPlayer.transform.position = sitPosition.position;
+        currentPlayer.transform.rotation = sitPosition.rotation;
         currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 1);
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = rightHand;
@@ -66,14 +68,6 @@ public class CarGetOn : MonoBehaviour, IInteractable
         }
     }
 
-    private void FixedUpdate()
-    {
-        if(hasPlayer)
-        {
-            currentPlayer.transform.position = sitPosition.position;
-            currentPlayer.transform.rotation = sitPosition.rotation;
-        }
-    }
 
     public void ExitCar()
     {
@@ -81,7 +75,7 @@ public class CarGetOn : MonoBehaviour, IInteractable
         hasPlayer = false;
         currentPlayer.enabled = true;
         currentPlayer.QuitInteracting();
-        //currentPlayer.transform.SetParent(null);
+        currentPlayer.transform.SetParent(null);
         currentPlayer.transform.position += -currentPlayer.transform.right * 1.5f;
         currentPlayer.GetComponent<TPlayerController>().enabled = true;
         currentPlayer.GetComponent<CharacterController>().enabled = true;
