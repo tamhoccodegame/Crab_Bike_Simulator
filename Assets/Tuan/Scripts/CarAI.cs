@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -16,7 +16,6 @@ public class CarAI : MonoBehaviour
 
 
 
-
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -31,12 +30,10 @@ public class CarAI : MonoBehaviour
 
         if (TrafficZone && isTrafficSystemActive)
         {
-            
             TrafficSystem();
         }
         else
         {
-            
             MoveToNextWaypoint();
         }
 
@@ -81,7 +78,7 @@ public class CarAI : MonoBehaviour
         if (waypoints.Length == 0)
            return;
 
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        if (!agent.pathPending && agent.remainingDistance < 1f)
         {
             if (!agent.isStopped)
             {
@@ -97,6 +94,12 @@ public class CarAI : MonoBehaviour
         if (other.CompareTag("TrafficLight"))
         {
             TrafficZone = true;
+            trafficLight = other.GetComponent<TrafficLight>();
+        }
+        if (other.CompareTag("Reverse"))
+        {
+            StartCoroutine(delayTraffic());
+            Debug.Log("Car is going in the opposite direction, ignoring traffic lights.");
         }
     }
 
@@ -105,11 +108,29 @@ public class CarAI : MonoBehaviour
         if (other.CompareTag("TrafficLight"))
         {
             TrafficZone = false;
+            trafficLight = null;
             if (!isTrafficSystemActive)
             {
                 MoveToNextWaypoint();
             }
         }
+        if (other.CompareTag("Reverse"))
+        {
+            Debug.Log("Exited Reverse Zone.");
+            StartCoroutine(ResumeTrafficSystem());
+        }
+    }
+    IEnumerator delayTraffic()
+    {
+        TrafficZone = false;
+        yield return new WaitForSeconds(1f);
+        TrafficZone = true;
+    }
+    IEnumerator ResumeTrafficSystem()
+    {
+        yield return new WaitForSeconds(1f); // Optional: Delay before resuming
+        TrafficZone = true;
+        Debug.Log("Resumed traffic system.");
     }
     Transform[] GetWaypoints(GameObject container)
     {

@@ -179,10 +179,10 @@ GameObject:
   - component: {fileID: 2094582894591585266}
   - component: {fileID: 8446115050449091386}
   - component: {fileID: 341908941325303040}
+  - component: {fileID: 8133784072738749970}
   - component: {fileID: 2434451219919652756}
   - component: {fileID: 4568405212410050500}
-  - component: {fileID: 3031493449583759061}
-  - component: {fileID: 1681818640031629405}
+  - component: {fileID: 6780239842114394827}
   m_Layer: 0
   m_Name: SM_Veh_Car_Muscle_01
   m_TagString: Car
@@ -297,7 +297,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   waypointsContainer: {fileID: 0}
-  speed: 10
+  speed: 0
+--- !u!114 &8133784072738749970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2376817693236696620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d7057ba25a07e647a00f8e880be4adf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!195 &2434451219919652756
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -307,11 +319,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 2376817693236696620}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 2.951476
+  m_Radius: 2.83
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
+  avoidancePriority: 0
+  m_AngularSpeed: 150
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -347,7 +359,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &3031493449583759061
+--- !u!65 &6780239842114394827
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -366,20 +378,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 3.1242676, y: 1.3140848, z: 3.956192}
-  m_Center: {x: -0.029296875, y: 0.8365443, z: 8.322914}
---- !u!114 &1681818640031629405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2376817693236696620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d7057ba25a07e647a00f8e880be4adf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_Size: {x: 4.1377563, y: 1.3140848, z: 5.731064}
+  m_Center: {x: 0.13699341, y: 0.8365443, z: 4.599098}
 --- !u!1 &2421377903733405720
 GameObject:
   m_ObjectHideFlags: 0
