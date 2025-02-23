@@ -26,7 +26,11 @@ public class CarGetOn : MonoBehaviour, IInteractable
         currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 1);
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = rightHand;
-        parent.GetComponent<BikeController>().enabled = true;
+
+        if(parent != null)
+        parent.GetComponent<BaseCarController>().enabled = true;
+        else GetComponent<BaseCarController>().enabled = true;
+
         currentPlayer.enabled = false;
         StartCoroutine(DelaySetPlayer());
     }
@@ -53,6 +57,13 @@ public class CarGetOn : MonoBehaviour, IInteractable
     {
         if (!hasPlayer) return;
 
+        if (Input.GetKeyDown(KeyCode.F) && hasPlayer)
+        {
+            ExitCar();
+        }
+
+        if(parent == null) return;
+
         if (parent.GetComponent<BikeController>().currentVelocityOffset > 0.01f)
         {
             currentPlayer.GetComponent<Animator>().SetBool("Stopping", false);
@@ -62,10 +73,6 @@ public class CarGetOn : MonoBehaviour, IInteractable
             currentPlayer.GetComponent<Animator>().SetBool("Stopping", true);
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && hasPlayer)
-        {
-            ExitCar();
-        }
     }
 
 
@@ -79,7 +86,11 @@ public class CarGetOn : MonoBehaviour, IInteractable
         currentPlayer.transform.position += -currentPlayer.transform.right * 1.5f;
         currentPlayer.GetComponent<TPlayerController>().enabled = true;
         currentPlayer.GetComponent<CharacterController>().enabled = true;
-        parent.GetComponent<BikeController>().enabled = false;
+
+        if(parent != null)
+        parent.GetComponent<BaseCarController>().enabled = false;
+        else GetComponent<BaseCarController>().enabled = false;
+
         currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 0);
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = null;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = null;

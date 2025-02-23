@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarController : Controller
+public class CarController : BaseCarController
 {
     //private float horizontalInput, verticalInput;
     private float currentSteerAngle, currentbreakForce;

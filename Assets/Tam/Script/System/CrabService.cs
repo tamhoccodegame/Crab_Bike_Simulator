@@ -39,6 +39,14 @@ public class CrabService : MonoBehaviour
     //public Transform ratingBoxTemplate;
     //public Transform ratingBoxContainer;
 
+    [Header("ProfileTab")]
+    private int rideCount;
+    private int totalRide;
+    private float kmCount;
+    public TextMeshProUGUI rideCountText;
+    public TextMeshProUGUI kmCountText;
+    public TextMeshProUGUI acceptRateText;
+
 
     private void Awake()
     {
@@ -50,6 +58,9 @@ public class CrabService : MonoBehaviour
     {
         cashSystem = new CashSystem();
         playerCash = FindObjectOfType<PlayerCash>();
+        rideCount = 0;
+        totalRide = 0;
+        kmCount = 0;
     }
 
     // Update is called once per frame
@@ -99,6 +110,7 @@ public class CrabService : MonoBehaviour
         if(!notificationPanel.activeSelf)
         {
             PingTrip(pickUpPosition);
+            totalRide++;
             onTripAccepted = _onTripAccepted;
             return true;
         }
@@ -190,6 +202,11 @@ public class CrabService : MonoBehaviour
 
     public void CompleteTrip()
     {
+        rideCount++;
+        kmCount += tripLong/100f;
+        rideCountText.text = rideCount.ToString();
+        kmCountText.text = kmCount.ToString("N0");
+        acceptRateText.text = $"{(rideCount / totalRide) * 100}%";
         arrowUI.gameObject.SetActive(false);
         currentDropOffPoint.gameObject.SetActive(false);
         currentDropOffPoint = null;
@@ -198,6 +215,6 @@ public class CrabService : MonoBehaviour
         CustomerBookCrab.ResetBookCrab();
         //Cộng tiền cho player
         playerCash.AddMoney((int)cashSystem.currentPayment);
-        SystemNotify.instance.SendBigNoti($"+{(int)(cashSystem.currentPayment)}", Color.green);
+        SystemNotify.instance.SendBigNoti($"+{((int)(cashSystem.currentPayment)).ToString("N0")}VND", Color.green);
     }
 }

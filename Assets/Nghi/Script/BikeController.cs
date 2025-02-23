@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BikeController : Controller
+public class BikeController : BaseCarController
 {
     RaycastHit hit;
     float moveInput, steerInput, rayLength;
@@ -14,6 +14,7 @@ public class BikeController : Controller
     public GameObject handle;
     public GameObject frontTyre;
     public GameObject rearTyre;
+    public GameObject carSmoke;
 
     public float handleRotVal = 30f, handleRotSpeed = 0.15f;
     [Range(1f, 10f)]
@@ -64,6 +65,7 @@ public class BikeController : Controller
     {
         Movement();
         EngineSound();
+        carSmoke.SetActive(velocity.magnitude > 0.1f);
         transform.position = sphereRb.transform.position;
 
         velocity = bikeBody.transform.InverseTransformDirection(bikeBody.velocity);

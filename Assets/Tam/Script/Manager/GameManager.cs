@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour
         {
             if (phoneUI.activeSelf)
             {
+                phoneUI.GetComponent<Animator>().SetTrigger("shutdown");
                 phoneUI.SetActive(false);
 
                 TPlayerController.instance.canMove = true;
