@@ -71,6 +71,7 @@ public class SystemNotify : MonoBehaviour
 
     public void SendMNotify(string _title, string _content)
     {
+        AudioManager.instance.PlaySound("UI_NotifyPopUp");
         m_SystemNotiPanel.SetActive(true);
         m_title.text = _title;
         m_content.text = _content;
