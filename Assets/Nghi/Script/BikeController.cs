@@ -71,8 +71,8 @@ public class BikeController : BaseCarController
         velocity = bikeBody.transform.InverseTransformDirection(bikeBody.velocity);
         currentVelocityOffset = bikeBody.velocity.magnitude / maxSpeed;
 
-        frontTyre.transform.Rotate(Vector3.forward * velocity.magnitude * 200 * Time.deltaTime);
-        rearTyre.transform.Rotate(Vector3.forward * velocity.magnitude * 200 * Time.deltaTime);
+        frontTyre.transform.Rotate(Vector3.forward * velocity.magnitude * 200 * Time.fixedDeltaTime);
+        rearTyre.transform.Rotate(Vector3.forward * velocity.magnitude * 200 * Time.fixedDeltaTime);
 
     }
 

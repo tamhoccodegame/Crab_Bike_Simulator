@@ -26,7 +26,17 @@ public class CarController : BaseCarController
     public Transform rearLeftWheelTransform;
     public Transform rearRightWheelTransform;
 
+    public Transform steeringWheel;
+    private float currentSteeringAngle = 0f;
+    public float maxSteeringWAngle;
+
+
+    public AudioSource engineSound;
+    [Range(0, 1)] public float minPitch;
+    [Range(1, 5)] public float maxPitch;
+
     private Rigidbody rb;
+    private float currentVelocity;
 
     private void Start()
     {
@@ -35,6 +45,21 @@ public class CarController : BaseCarController
         rb.centerOfMass = new Vector3(0, -0.5f, 0); // Hạ trọng tâm xuống dưới trục xe
     }
 
+    private void FixedUpdate()
+    {
+        if(verticalInput > 0f)
+        {
+            currentVelocity += 0.2f * Time.fixedDeltaTime;
+            currentVelocity = Mathf.Min(currentVelocity, maxPitch);
+        }
+        else
+        {
+            currentVelocity -= 0.2f * Time.fixedDeltaTime;
+            currentVelocity = Mathf.Max(minPitch, currentVelocity);
+        }
+
+            engineSound.pitch = Mathf.Lerp(minPitch, maxPitch, Mathf.Abs(currentVelocity));
+    }
     private void Update()
     {
         frontLeftWheelCollider.motorTorque = 0;
@@ -47,13 +72,14 @@ public class CarController : BaseCarController
         HandleMotor();
         HandleSteering();
         UpdateWheels();
+        UpdateSteeringWheels();
     }
 
     private void GetInput()
     {
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
-        isBreaking = Input.GetKey(KeyCode.Space);
+        isBreaking = Input.GetKey(KeyCode.Space) || verticalInput == 0;
     }
 
     private void HandleMotor()
@@ -87,6 +113,23 @@ public class CarController : BaseCarController
         frontRightWheelCollider.steerAngle = currentSteerAngle;
         //rearLeftWheelCollider.steerAngle = currentSteerAngle;
         //rearRightWheelCollider.steerAngle = currentSteerAngle;
+    }
+
+    private void UpdateSteeringWheels()
+    {
+        // Lấy góc quay hiện tại của vô lăng theo trục Y
+        currentSteeringAngle = steeringWheel.localEulerAngles.y;
+
+        // Chuyển góc từ [0, 360] về [-180, 180] để dễ xử lý
+        if (currentSteeringAngle > 180f)
+            currentSteeringAngle -= 360f;
+
+        // Chỉ cho phép quay nếu chưa vượt quá góc max
+        if ((horizontalInput > 0 && currentSteeringAngle < maxSteeringAngle) ||
+            (horizontalInput < 0 && currentSteeringAngle > -maxSteeringAngle))
+        {
+            steeringWheel.Rotate(Vector3.up * horizontalInput * 100f * Time.deltaTime);
+        }
     }
 
     private void UpdateWheels()

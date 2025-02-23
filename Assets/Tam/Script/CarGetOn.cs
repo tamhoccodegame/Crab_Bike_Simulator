@@ -84,6 +84,7 @@ public class CarGetOn : MonoBehaviour, IInteractable
         currentPlayer.QuitInteracting();
         currentPlayer.transform.SetParent(null);
         currentPlayer.transform.position += -currentPlayer.transform.right * 1.5f;
+        currentPlayer.transform.rotation = Quaternion.Euler(0, 0, 0);
         currentPlayer.GetComponent<TPlayerController>().enabled = true;
         currentPlayer.GetComponent<CharacterController>().enabled = true;
 
