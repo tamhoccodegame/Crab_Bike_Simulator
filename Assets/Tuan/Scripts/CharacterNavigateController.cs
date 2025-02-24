@@ -34,8 +34,8 @@ public class CharacterNavigateController : MonoBehaviour
             destinationDirection.y = 0;
             
             float destinationDistance = destinationDirection.magnitude;
-
-            if(destinationDistance >= stopDistance )
+            Debug.Log(destinationDistance);
+            if(destinationDistance >= stopDistance)
             {
                 reachedDestination = false;
                 Quaternion targetRotation = Quaternion.LookRotation( destinationDirection );
