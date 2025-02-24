@@ -330,7 +330,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 50
+  m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -593,8 +593,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1c9d8521306e0a458778caccb8dd2c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  motorForce: 50000
-  brakeForce: 500000
+  motorForce: 20000
+  brakeForce: 1000000
   maxSteeringAngle: 45
   frontLeftWheelCollider: {fileID: 3524556192242722188}
   frontRightWheelCollider: {fileID: 3553894296077412350}
@@ -605,10 +605,10 @@ MonoBehaviour:
   rearLeftWheelTransform: {fileID: 4018659253833828097}
   rearRightWheelTransform: {fileID: 3002819173627438448}
   steeringWheel: {fileID: 1575156256112445209}
-  maxSteeringWAngle: 120
+  maxSteeringWAngle: 90
   engineSound: {fileID: 132645324695166325}
-  minPitch: 0
-  maxPitch: 1
+  minPitch: 0.5
+  maxPitch: 1.1
 --- !u!114 &1661934442624900958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,11 +636,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5dbb7ae24f72b784688cf73a5cedc3c5, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 0
+  m_audioClip: {fileID: 8300000, guid: f053181d511291844b00ec1450de428f, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -816,7 +816,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 50
+  m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -1068,7 +1068,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 50
+  m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4
@@ -1174,7 +1174,7 @@ WheelCollider:
     targetPosition: 0.5
   m_SuspensionDistance: 0.3
   m_ForceAppPointDistance: 0
-  m_Mass: 50
+  m_Mass: 20
   m_WheelDampingRate: 0.25
   m_ForwardFriction:
     m_ExtremumSlip: 0.4

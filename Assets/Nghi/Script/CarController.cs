@@ -52,7 +52,7 @@ public class CarController : BaseCarController
             currentVelocity += 0.2f * Time.fixedDeltaTime;
             currentVelocity = Mathf.Min(currentVelocity, maxPitch);
         }
-        else
+        else if (verticalInput <= 0 || isBreaking)
         {
             currentVelocity -= 0.2f * Time.fixedDeltaTime;
             currentVelocity = Mathf.Max(minPitch, currentVelocity);

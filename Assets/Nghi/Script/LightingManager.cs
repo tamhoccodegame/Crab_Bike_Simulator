@@ -22,6 +22,9 @@ public class LightingManager : MonoBehaviour
     [SerializeField, Range(0, 24)] public float TimeOfDay;
     private int day = 1;
 
+    public AudioSource openingDayAudio;
+    public TextMeshProUGUI TimeOfDayBig;
+
     private float secondsPerGameHour = 60f; // 60 giây thực tế = 1 giờ trong game
 
     public TextMeshProUGUI timeText;
@@ -78,11 +81,16 @@ public class LightingManager : MonoBehaviour
         if (5 == hours)
         {
             GameManager.instance.ChangeGameState(GameManager.GameState.Texting);
+            if(!openingDayAudio.isPlaying)
+            openingDayAudio.Play();
+            TimeOfDayBig.gameObject.SetActive(false);
             return;
         }
         if(24 == hours)
         {
             GameManager.instance.ChangeGameState(GameManager.GameState.Sleeping);
+            SystemNotify.instance.SendBigNoti("Bạn đang ngủ.....", Color.white);
+            TimeOfDayBig.gameObject.SetActive(true);
             return;
         }
     }
@@ -192,6 +200,7 @@ public class LightingManager : MonoBehaviour
         int minutes = Mathf.FloorToInt((TimeOfDay - hours) * 60); // Lấy phần phút
 
         timeText.text = $"Time: {hours:D2}:{minutes:D2}";
+        TimeOfDayBig.text = $"{hours:D2}:{minutes:D2}";
         dayText.text = "Day: " + day;
     }
 
