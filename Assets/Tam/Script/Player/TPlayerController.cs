@@ -97,7 +97,8 @@ public class TPlayerController : Controller
 
     public void Footstep()
     {
-        GetComponent<AudioSource>().Play();
+        int index = Random.Range(1, 9);
+        AudioManager.instance.PlaySound($"Footstep_{index}");
     }
 
     void ChangeSpeed()
