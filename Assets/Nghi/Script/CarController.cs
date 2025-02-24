@@ -128,8 +128,21 @@ public class CarController : BaseCarController
         if ((horizontalInput > 0 && currentSteeringAngle < maxSteeringAngle) ||
             (horizontalInput < 0 && currentSteeringAngle > -maxSteeringAngle))
         {
-            steeringWheel.Rotate(Vector3.up * horizontalInput * 100f * Time.deltaTime);
+            steeringWheel.Rotate(Vector3.up * horizontalInput * 500f * Time.deltaTime);
         }
+
+        // Nếu không có input, vô lăng sẽ tự động quay về vị trí trung tâm
+        if (horizontalInput == 0)
+        {
+            float returnSpeed = 100f * Time.deltaTime; // Tốc độ trả lái
+            float returnAmount = Mathf.Sign(-currentSteeringAngle) * returnSpeed;
+
+            if (Mathf.Abs(currentSteeringAngle) > 1f) // Tránh dao động nhỏ
+            {
+                steeringWheel.Rotate(Vector3.up * returnAmount);
+            }
+        }
+
     }
 
     private void UpdateWheels()

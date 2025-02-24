@@ -57,12 +57,12 @@ public class CarGetOn : MonoBehaviour, IInteractable
     {
         if (!hasPlayer) return;
 
-        if (Input.GetKeyDown(KeyCode.F) && hasPlayer)
+        if (Input.GetKeyDown(KeyCode.F))
         {
             ExitCar();
         }
 
-        if(parent == null) return;
+        if(parent == null || !hasPlayer) return;
 
         if (parent.GetComponent<BikeController>().currentVelocityOffset > 0.01f)
         {

@@ -6,53 +6,45 @@ using UnityEngine.UI;
 
 public class UIShop : MonoBehaviour
 {
+    public static UIShop instance;
     public GameObject shopUI;
     private IShop shop;
     public Transform shopItemTemplate;
     public Transform shopItemContainer;
     public Button buyButton;
 
-    private PlayerInteractor currentPlayer;
-    private Inventory playerInventory;
-
-
-    public void OnExit()
+    private void Awake()
     {
-        shopUI.SetActive(false);
-        currentPlayer.GetComponent<Animator>().SetBool("Shopping", false);
-        currentPlayer = null;
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        PlayerInteractor p = other.GetComponent<PlayerInteractor>();
-        if(p != null)
-        {
-            currentPlayer = p;
-        }
-
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        PlayerInteractor p = other.GetComponent<PlayerInteractor>();
-        if (p != null && p == currentPlayer)
-        {
-            currentPlayer = null;
-        }
+        instance = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        shop = GetComponent<IShop>();
+        
+    }
 
+    public void SetIShop(IShop _shop)
+    {
+        shop = _shop;
+    }
+
+    public void ShowShop()
+    {
+        shopUI.SetActive(true);
+        GameManager.instance.ChangeGameState(GameManager.GameState.Menu);
         RefreshShopUI();
     }
 
-    public void SetPlayerInventory(Inventory _playerInventory)
+    public void HideShop()
     {
-        playerInventory = _playerInventory;
+        shopUI.SetActive(false);
+        GameManager.instance.ChangeGameState(GameManager.GameState.Playing);
+    }
+
+    public bool IsShopUIActive()
+    {
+        return shopUI.activeSelf;
     }
 
     void RefreshShopUI()
@@ -83,7 +75,7 @@ public class UIShop : MonoBehaviour
                 {
                     Debug.Log($"Buy {shopItem.GetSprite().name}");
                     if(PlayerCash.instance.CostMoney(shopItem.GetPrice()))
-                    playerInventory.AddItem(shopItem);
+                    PlayerInventory.instance.AddItem(shopItem);
                     else
                     {
                         Debug.Log("Không đủ tiền");
@@ -92,16 +84,5 @@ public class UIShop : MonoBehaviour
             });
         }
 
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(currentPlayer != null && Input.GetKeyDown(KeyCode.F))
-        {
-            TPlayerController.instance.ChangePlayerMode(shopUI.activeSelf ? TPlayerController.PlayerMode.Normal : TPlayerController.PlayerMode.Shopping);
-            shopUI.SetActive(!shopUI.activeSelf);
-            currentPlayer.GetComponent<Animator>().SetBool("Shopping", shopUI.activeSelf);
-        }
     }
 }

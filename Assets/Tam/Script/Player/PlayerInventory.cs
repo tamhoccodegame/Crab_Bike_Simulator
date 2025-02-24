@@ -7,8 +7,6 @@ public class PlayerInventory : MonoBehaviour
 {
     public static PlayerInventory instance;
     private Inventory inventory;
-    public UIInventory UIInventory;
-    public UIShop UIShop;
     public ObjectPlacement objectPlacement;
 
     private PlayerState playerState;
@@ -24,14 +22,13 @@ public class PlayerInventory : MonoBehaviour
         inventory = new Inventory();
         inventory.onItemUsed += OnItemUsed;
         playerState = GetComponent<PlayerState>();
-        UIInventory.SetInventory(inventory);
-        UIShop.SetPlayerInventory(inventory);
         objectPlacement.SetInventory(inventory);
     }
 
     public void AddItem(IShopItem item)
     {
         inventory.AddItem(item);
+        UIInventory.instance.RefreshInventoryUI();
     }
 
     public List<IShopItem> GetItems()
@@ -70,6 +67,7 @@ public class PlayerInventory : MonoBehaviour
         {
             GetComponent<ObjectPlacement>().SetObjectToPlace(furniture.GetPrefab());
         }
+        UIInventory.instance.RefreshInventoryUI();
     }
 
     // Update is called once per frame

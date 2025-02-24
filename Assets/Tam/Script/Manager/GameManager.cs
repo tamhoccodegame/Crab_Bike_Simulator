@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         Playing,
         Sleeping,
         Texting,
-        Phone,
+        Menu,
     }
 
     public GameState currentState;
@@ -63,26 +63,14 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (phoneUI.activeSelf)
+            if (!phoneUI.activeSelf)
             {
-                phoneUI.GetComponent<Animator>().SetTrigger("shutdown");
-                phoneUI.SetActive(false);
-
-                TPlayerController.instance.canMove = true;
-                Camera.main.GetComponent<CinemachineBrain>().enabled = true;
-                ActiveAllController();
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                phoneUI.SetActive(true);
+                ChangeGameState(GameState.Menu);
             }
             else
             {
-                phoneUI.SetActive(true);
-
-                TPlayerController.instance.canMove = false;
-                DeactiveAllController();
-                Camera.main.GetComponent<CinemachineBrain>().enabled = false;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                ChangeGameState(GameState.Playing);
             }
         }
 
@@ -91,10 +79,12 @@ public class GameManager : MonoBehaviour
             if (inventoryUI.activeSelf)
             {
                 inventoryUI.SetActive(false);
+                ChangeGameState(GameState.Playing);
             }
             else
             {
                 inventoryUI.SetActive(true);
+                ChangeGameState(GameState.Menu);
             }
         }
     }
@@ -111,6 +101,7 @@ public class GameManager : MonoBehaviour
                 ShowBlackScreen();
                 LightingManager.instance.SetDaySpeed(5);
                 break;
+
             case GameState.Texting:
                 TPlayerController.instance.canMove = false;
                 HideBlackScreen();
@@ -118,13 +109,26 @@ public class GameManager : MonoBehaviour
                 phoneUI.SetActive(true);
                 SMSSystem.instance.StartShowSMS();
                 break;
+
             case GameState.Playing:
-                if (phoneUI.activeSelf)
-                    phoneUI.SetActive(false);
+                phoneUI.SetActive(false);
                 HideBlackScreen();
                 LightingManager.instance.SetDaySpeed(60);
                 TPlayerController.instance.canMove = true;
+                Camera.main.GetComponent<CinemachineBrain>().enabled = true;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                ActiveAllController();
                 break;
+
+            case GameState.Menu:
+                TPlayerController.instance.canMove = false;
+                DeactiveAllController();
+                Camera.main.GetComponent<CinemachineBrain>().enabled = false;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                break;
+
         }
     }
 
