@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CharacterNavigateController : MonoBehaviour
 {
@@ -11,12 +12,16 @@ public class CharacterNavigateController : MonoBehaviour
     public float stopDistance = 0.5f;    
     public Vector3 destination;         
     public bool reachedDestination = false;
+    private Transform foot;
+    private CharacterController controller;
+    Vector3 moveDirection;
 
 
     // Start is called before the first frame update
     void Start()
     {
-       
+        foot = transform.Find("Foot");
+        controller = GetComponent<CharacterController>();
     }
     void FixedUpdate()
     {
@@ -40,15 +45,20 @@ public class CharacterNavigateController : MonoBehaviour
                 reachedDestination = false;
                 Quaternion targetRotation = Quaternion.LookRotation( destinationDirection );
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                Vector3 moveDirection = destinationDirection.normalized * movementSpeed * Time.deltaTime;
+                moveDirection = destinationDirection.normalized * movementSpeed * Time.deltaTime;
             }
             else
             {
                 reachedDestination = true;
             }
         }
-      
-      
+
+        if (!Physics.Raycast(foot.position, transform.TransformDirection(Vector3.down), 0.1f))
+        {
+            moveDirection.y += gravityStrength * Time.deltaTime;
+        }
+        controller.Move(moveDirection);
+
     }
 
     private void OnDisable()

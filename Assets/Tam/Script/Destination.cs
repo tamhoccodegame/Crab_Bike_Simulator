@@ -48,8 +48,7 @@ public class Destination : MonoBehaviour
             { 
                 CrabService.instance.CompleteTrip();
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
-                Transform _customer = customerSitPosition.GetComponentsInChildren<Transform>()
-                                      .FirstOrDefault(t => t.name.Contains("(Clone)"));
+                Transform _customer = customerSitPosition.GetChild(0);
                 _customer.transform.SetParent(null);
                 _customer.transform.position += new Vector3(0, 0, 2);
                 _customer.transform.rotation = Quaternion.Euler(0,0,0);

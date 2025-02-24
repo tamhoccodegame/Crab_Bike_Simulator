@@ -140,8 +140,8 @@ GameObject:
   - component: {fileID: 2859707312210119574}
   - component: {fileID: 3226967600568881243}
   - component: {fileID: 8071645187111563751}
-  - component: {fileID: 3246703170800918055}
   - component: {fileID: 106287005014490901}
+  - component: {fileID: 3269513969221321203}
   m_Layer: 0
   m_Name: Character_Female_Coat_01
   m_TagString: Untagged
@@ -173,6 +173,7 @@ Transform:
   - {fileID: 6286054519601583002}
   - {fileID: 2526600432162125495}
   - {fileID: 1812914660738552860}
+  - {fileID: 1780431095619572602}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2859707312210119574
@@ -228,29 +229,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentWaypoint: {fileID: 0}
---- !u!136 &3246703170800918055
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 941878789191149836}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.3
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &106287005014490901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +247,32 @@ MonoBehaviour:
   scripts:
   - {fileID: 3226967600568881243}
   - {fileID: 8071645187111563751}
+--- !u!143 &3269513969221321203
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941878789191149836}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &1408207595494956842
 GameObject:
   m_ObjectHideFlags: 0
@@ -1223,6 +1227,37 @@ SkinnedMeshRenderer:
     m_Center: {x: 0, y: 85.79422, z: -5.736662}
     m_Extent: {x: 102.1203, y: 95.05966, z: 25.914097}
   m_DirtyAABB: 0
+--- !u!1 &4187796475044659784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1780431095619572602}
+  m_Layer: 0
+  m_Name: Foot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1780431095619572602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4187796475044659784}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7142580455201532422}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4263911373747835144
 GameObject:
   m_ObjectHideFlags: 0
