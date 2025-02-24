@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Audio;
 
 [System.Serializable]
 public class Sound
@@ -18,6 +19,8 @@ public class Sound
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
+
+    public AudioMixer audioMixer;
 
     public List<Sound> sounds;
 
@@ -36,6 +39,7 @@ public class AudioManager : MonoBehaviour
             s.source.clip = s.soundClip;
             s.source.pitch = s.pitch;
             s.source.volume = s.volume;
+            s.source.outputAudioMixerGroup = audioMixer.FindMatchingGroups("SFX")[0];
         }
     }
 

@@ -5254,7 +5254,7 @@ MonoBehaviour:
   sphereRb: {fileID: 3139264387088373372}
   bikeBody: {fileID: 6164224966981905938}
   engineSound: {fileID: 5841108557360613100}
-  minPitch: 0.081
+  minPitch: 0.3
   maxPitch: 1.1
   headlight: {fileID: 3133767502335908548}
 --- !u!82 &5841108557360613100
@@ -5268,7 +5268,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 5dbb7ae24f72b784688cf73a5cedc3c5, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 0.1
   m_Pitch: 0.081
   Loop: 1
@@ -5705,7 +5705,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.51169086
+  m_Radius: 0.16
   m_Height: 1.75
   m_Direction: 0
   m_Center: {x: -0.30999997, y: 0.43, z: -0.0000001144171}
