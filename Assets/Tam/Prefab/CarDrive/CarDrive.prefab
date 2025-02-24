@@ -202,6 +202,8 @@ GameObject:
   - component: {fileID: 2839746375984858615}
   - component: {fileID: -6792253784674893704}
   - component: {fileID: 2486224118254415098}
+  - component: {fileID: 623986412987378264}
+  - component: {fileID: -1640364206151374054}
   m_Layer: 0
   m_Name: CarDrive
   m_TagString: Untagged
@@ -314,6 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf7ce6d6584d53e4aaa8933186feea28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
   price: 50000
   speed: 0
 --- !u!54 &2486224118254415098
@@ -343,6 +346,51 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
+--- !u!114 &623986412987378264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60cf35f068adde2499b7b9e34dca1f9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sitPosition: {fileID: 0}
+  leftHand: {fileID: 0}
+  rightHand: {fileID: 0}
+  parent: {fileID: 0}
+  motorSound: {fileID: 0}
+--- !u!114 &-1640364206151374054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141870}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1c9d8521306e0a458778caccb8dd2c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  motorForce: 1000
+  brakeForce: 3000
+  maxSteeringAngle: 30
+  frontLeftWheelCollider: {fileID: 0}
+  frontRightWheelCollider: {fileID: 0}
+  rearLeftWheelCollider: {fileID: 0}
+  rearRightWheelCollider: {fileID: 0}
+  frontLeftWheelTransform: {fileID: 0}
+  frontRightWheelTransform: {fileID: 0}
+  rearLeftWheelTransform: {fileID: 0}
+  rearRightWheelTransform: {fileID: 0}
+  steeringWheel: {fileID: 0}
+  maxSteeringWAngle: 0
+  engineSound: {fileID: 0}
+  minPitch: 0
+  maxPitch: 1
 --- !u!1 &166256
 GameObject:
   m_ObjectHideFlags: 0

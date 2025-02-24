@@ -18,6 +18,7 @@ public class VehicleManager : MonoBehaviour
     {
         instance = this;
         uIVehicleManager.SetVehicleManager(this);
+        DeliVehicle(ownVehicles[0], PlayerInventory.instance.transform.position);
     }
 
     // Update is called once per frame

@@ -15,6 +15,7 @@ public class UIInventory : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        gameObject.SetActive(false);
     }
 
     // Start is called before the first frame update

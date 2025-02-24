@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class HouseDoor : MonoBehaviour
 {
+    public Transform door;
     public Transform hingePosition;
     public float openAngle;
     public float rotationSpeed;
@@ -11,6 +12,12 @@ public class HouseDoor : MonoBehaviour
     public bool isOpen = false;
     public bool isClosed = true;
     private float currentAngle = 0f;
+    private PlayerInteractor currentPlayer;
+
+    public void ShowPrompt()
+    {
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -21,7 +28,7 @@ public class HouseDoor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.E))
+        if(currentPlayer != null && Input.GetKeyDown(KeyCode.F))
         {
             isOpen = !isOpen;
             isClosed = !isClosed;
@@ -33,7 +40,7 @@ public class HouseDoor : MonoBehaviour
         if(Mathf.Abs(currentAngle - targetAngle) > 0.1f)
         {
             float newAngle = Mathf.MoveTowards(currentAngle, targetAngle, angleStep);
-            transform.RotateAround(hingePosition.position, Vector3.up, newAngle - currentAngle);
+            door.RotateAround(hingePosition.position, Vector3.up, newAngle - currentAngle);
             currentAngle = newAngle;
         }
         else
@@ -41,5 +48,23 @@ public class HouseDoor : MonoBehaviour
             isClosed = true;
         }
     }
-    
+
+    private void OnTriggerEnter(Collider other)
+    {
+        PlayerInteractor p = other.GetComponent<PlayerInteractor>();
+        if(p != null)
+        {
+            currentPlayer = p;
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        PlayerInteractor p = other.GetComponent<PlayerInteractor>();
+        if(p != null && p == currentPlayer)
+        {
+            currentPlayer = null;
+        }
+    }
+
 }

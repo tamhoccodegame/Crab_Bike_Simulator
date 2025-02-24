@@ -50,7 +50,9 @@ public class UIVehicleManager : MonoBehaviour
             }
             RectTransform rectTransform = Instantiate(vehicleIconTemplate, vehicleIconContainer).GetComponent<RectTransform>();
             rectTransform.gameObject.SetActive(true);
-            rectTransform.Find("CarPrice").GetComponent<TextMeshProUGUI>().text = vehicle.price.ToString();
+            rectTransform.Find("CarName").GetComponent<TextMeshProUGUI>().text = vehicle.name.ToString();
+            rectTransform.Find("CarPrice").GetComponent<TextMeshProUGUI>().text = "Giá: " + vehicle.price.ToString();
+            rectTransform.Find("CarSpeed").GetComponent<TextMeshProUGUI>().text = "Tốc độ: " + vehicle.speed.ToString();
 
             //Đăng ký sự kiện cho các Button để spawn xe raaaa, cất xeee, bán xeee
             rectTransform.Find("CallSpawnCarBtn").GetComponent<Button>().onClick.AddListener(() =>
