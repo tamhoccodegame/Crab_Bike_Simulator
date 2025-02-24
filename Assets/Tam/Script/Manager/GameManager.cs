@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
@@ -12,8 +13,11 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameObject phoneUI;
     public GameObject inventoryUI;
+    public GameObject pauseUI;
 
     public GameObject blackScreen;
+
+    public AudioMixer audioMixer;
 
     public enum GameState
     {
@@ -41,7 +45,6 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
     }
 
     // Start is called before the first frame update
@@ -87,6 +90,20 @@ public class GameManager : MonoBehaviour
                 ChangeGameState(GameState.Menu);
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseUI.activeSelf)
+            {
+                pauseUI.SetActive(false);
+                ChangeGameState(GameState.Playing);
+            }
+            else
+            {
+                pauseUI.SetActive(true);
+                ChangeGameState(GameState.Menu);
+            }
+        }
     }
 
     public void ChangeGameState(GameState newState)
@@ -98,7 +115,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Sleeping:
                 TPlayerController.instance.canMove = false;
-                ShowBlackScreen();
+                StartCoroutine(BlackScreenCoroutine(25f));
                 LightingManager.instance.SetDaySpeed(5);
                 break;
 
@@ -112,7 +129,8 @@ public class GameManager : MonoBehaviour
 
             case GameState.Playing:
                 phoneUI.SetActive(false);
-                HideBlackScreen();
+                pauseUI.SetActive(false);
+                inventoryUI.SetActive(false);
                 LightingManager.instance.SetDaySpeed(60);
                 TPlayerController.instance.canMove = true;
                 Camera.main.GetComponent<CinemachineBrain>().enabled = true;
@@ -189,6 +207,7 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Load")]
     public void Load()
     {
+        StartCoroutine(BlackScreenCoroutine(5f));
         SaveLoadManager saveSys = new SaveLoadManager();
         SaveData data = saveSys.LoadGame();
 
@@ -238,5 +257,6 @@ public class GameManager : MonoBehaviour
                 break;
             }
         }
+        ChangeGameState(GameState.Playing);
     }
 }
