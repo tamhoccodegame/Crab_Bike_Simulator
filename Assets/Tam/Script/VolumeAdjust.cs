@@ -14,11 +14,6 @@ public class VolumeAdjust : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    private void OnEnable()
-    {
         float masterDb = PlayerPrefs.GetFloat("MasterVolume", 0.5f); Debug.Log(masterDb);
         float musicDb = PlayerPrefs.GetFloat("MusicVolume", 0.5f);
         float sfxDb = PlayerPrefs.GetFloat("SFXVolume", 0.5f);
@@ -30,6 +25,14 @@ public class VolumeAdjust : MonoBehaviour
         masterVolumeSlider.value = Mathf.Pow(10, masterDb / 20);
         musicVolumeSlider.value = Mathf.Pow(10, musicDb / 20);
         sfxVolumeSlider.value = Mathf.Pow(10, sfxDb / 20);
+
+        gameObject.SetActive(false);
+        transform.parent.gameObject.SetActive(false);
+    }
+
+    private void OnEnable()
+    {
+        
     }
 
     // Update is called once per frame

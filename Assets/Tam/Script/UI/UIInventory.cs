@@ -58,7 +58,7 @@ public class UIInventory : MonoBehaviour
                 useButton.onClick.RemoveAllListeners();
                 useButton.onClick.AddListener(() =>
                 {
-                    inventory.UseItem(item);
+                    PlayerInventory.instance.UseItem(item);
                 });
             });
         }

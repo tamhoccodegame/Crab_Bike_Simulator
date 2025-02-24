@@ -47,6 +47,11 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
+    public void UseItem(IShopItem item)
+    {
+        inventory.UseItem(item);
+    }
+
     void OnItemUsed(IShopItem item)
     {
         if(item is Food food)
