@@ -45,10 +45,10 @@ public class CarAI : MonoBehaviour
 
     public void TrafficSystem()
     {
-        if (trafficLight != null)
+        /*if (trafficLight != null)
         {
             Debug.Log("Current Traffic Light State: " + trafficLight.currentLightState);
-
+*/
             if (trafficLight.currentLightState == TrafficLight.LightState.Red)
             {
                 if (!agent.isStopped)
@@ -65,11 +65,11 @@ public class CarAI : MonoBehaviour
 
                 MoveToNextWaypoint();
             }
-        }
-        else
+        /*}*/
+       /* else
         {
             MoveToNextWaypoint();
-        }
+        }*/
     }
 
 
@@ -96,11 +96,11 @@ public class CarAI : MonoBehaviour
             TrafficZone = true;
             trafficLight = other.GetComponent<TrafficLight>();
         }
-        if (other.CompareTag("Reverse"))
+        /*if (other.CompareTag("Reverse"))
         {
             StartCoroutine(delayTraffic());
             Debug.Log("Car is going in the opposite direction, ignoring traffic lights.");
-        }
+        }*/
     }
 
     void OnTriggerExit(Collider other)
@@ -114,13 +114,13 @@ public class CarAI : MonoBehaviour
                 MoveToNextWaypoint();
             }
         }
-        if (other.CompareTag("Reverse"))
+        /*if (other.CompareTag("Reverse"))
         {
             Debug.Log("Exited Reverse Zone.");
             StartCoroutine(ResumeTrafficSystem());
-        }
+        }*/
     }
-    IEnumerator delayTraffic()
+    /*IEnumerator delayTraffic()
     {
         TrafficZone = false;
         yield return new WaitForSeconds(1f);
@@ -131,7 +131,7 @@ public class CarAI : MonoBehaviour
         yield return new WaitForSeconds(1f); // Optional: Delay before resuming
         TrafficZone = true;
         Debug.Log("Resumed traffic system.");
-    }
+    }*/
     Transform[] GetWaypoints(GameObject container)
     {
         Transform[] allTransforms = container.GetComponentsInChildren<Transform>();
