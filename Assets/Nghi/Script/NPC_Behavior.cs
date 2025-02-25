@@ -12,14 +12,14 @@ public class NPC_Behavior : MonoBehaviour
     public Animator animator;
     public int attackAnimationCount;
     //public bool isAggressive;
-    private bool isChasing;
+    private bool isChasing = false;
     private bool isAttacking;
 
     public Transform policeStationTransform;
     public Transform playerTransform;
     private NavMeshAgent npcAgent;
 
-    public float npcAttackDamage;
+    //public float npcAttackDamage;
     public float npcAttackRange;
     public float npcAttackCooldown;
     private float lastAttackTime;
@@ -31,6 +31,9 @@ public class NPC_Behavior : MonoBehaviour
     public NPCInteractable npcInteractable;
 
     public HitBox hitBox;
+
+    public Police_Behavior police_Behavior;
+    //public bool isReportToPolice = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -113,6 +116,15 @@ public class NPC_Behavior : MonoBehaviour
         Debug.Log($"{gameObject.name} đã chạy đến đồn cảnh sát...");
         animator.ResetTrigger("isScared");
         animator.SetTrigger("isScared");
+        //()()()()()()()()
+        //Police_Behavior police_Behavior = GetComponent<Police_Behavior>();
+        police_Behavior.ReceiveNPCReport(this);
+
+        //isReportToPolice = true;
+
+        //^^^^^^^^^^^^^^^^^^^^
+        // Gọi tất cả cảnh sát cùng đuổi Player
+        Police_Manager.Instance.AlertAllPolice(this);
     }
 
 
@@ -166,15 +178,15 @@ public class NPC_Behavior : MonoBehaviour
             lastAttackTime = Time.time;  // Cập nhật thời gian tấn công
             yield return null; // Chờ một frame để animation cập nhật
 
-            // Đợi animation attack chạy xong trước khi tiếp tục
-            float attackAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(attackAnimationTime+2f); // Chờ animation + cooldown
+            // Đợi animation attack chạy xong trước khi tiếp tục^^^^^^^^^^^^^^
+            //float attackAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
+            //yield return new WaitForSeconds(attackAnimationTime+2f); // Chờ animation + cooldown
             canAttack = true;
-            Debug.Log($"{gameObject.name} đã hoàn thành đòn tấn công, chuẩn bị đòn tiếp theo...");
+            //Debug.Log($"{gameObject.name} đã hoàn thành đòn tấn công, chuẩn bị đòn tiếp theo...");
         }
         else
         {
-            Debug.Log($"{gameObject.name} chưa thể tấn công, cần chờ cooldown.");
+            //Debug.Log($"{gameObject.name} chưa thể tấn công, cần chờ cooldown.");
         }
 
 
