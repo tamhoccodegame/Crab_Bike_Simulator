@@ -26,7 +26,7 @@ public class ObjectPlacement : MonoBehaviour
     {
         if (objectToPlace == null) return;
 
-        if(Input.GetKeyDown(KeyCode.Escape) && previewPlacement != null)
+        if(Input.GetKeyDown(KeyCode.C) && previewPlacement != null)
         {
             inventory.AddItem(previewPlacement.GetComponent<Furniture>());
             ResetPreviewPlacement();

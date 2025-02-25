@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -20,9 +20,7 @@ public class InteriorInShop : MonoBehaviour, IInteractable
     void Start()
     {
         cam = Camera.main;
-        informPanel = Instantiate(informPanelPrefab);
-        informPanel.transform.SetParent(transform, true);
-        informPanel.transform.position = transform.position;
+        informPanel = Instantiate(informPanelPrefab, transform.parent);
         informPanel.transform.localPosition = informPanelPrefab.transform.position;
         informPanel.transform.Find("Panel").Find("Price").GetComponent<TextMeshProUGUI>().text = interiorPrice.ToString();
         informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(false);
@@ -37,17 +35,6 @@ public class InteriorInShop : MonoBehaviour, IInteractable
             direction.y = 0;
             informPanel.transform.rotation = Quaternion.LookRotation(-direction);
         }
-
-        if (Input.GetKeyDown(KeyCode.F) && currentPlayer != null)
-        {
-            if (!PlayerCash.instance.CostMoney(interiorPrice)) return;
-            Debug.Log("Bought A Interior");
-            //Logic Mua xe
-            informPanel.SetActive(false);
-            StopAllCoroutines();
-            currentPlayer.QuitInteracting();
-            onInteriorBought?.Invoke(this);
-        }
     }
 
     public void ShowPrompt()
@@ -57,9 +44,21 @@ public class InteriorInShop : MonoBehaviour, IInteractable
 
     public void OnInteract(PlayerInteractor player)
     {
-        player.QuitInteracting();
-        informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(true);
-        StartCoroutine(SetPlayer(player));
+        currentPlayer = player;
+        SystemNotify.instance.SendNotify("Mua nội thất", $"Bạn có muốn mua món đồ này với giá {interiorPrice} không?", BuyInterior, () => { currentPlayer.QuitInteracting(); });
+    }
+
+    void BuyInterior()
+    {
+        currentPlayer.QuitInteracting();
+        informPanel.SetActive(false);
+        currentPlayer = null;
+        StopAllCoroutines();
+
+        if (PlayerCash.instance.CostMoney(interiorPrice))
+        {
+            onInteriorBought?.Invoke(this);
+        }
     }
 
     IEnumerator SetPlayer(PlayerInteractor player)

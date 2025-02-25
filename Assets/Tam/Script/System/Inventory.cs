@@ -13,7 +13,6 @@ public class Inventory
     {
         //inventoryItems.Add(new Food { foodType = Food.FoodType.Burger });
         //inventoryItems.Add(new Food { foodType = Food.FoodType.Soda });
-        inventoryItems.Add(new Furniture { type = Furniture.FurnitureType.Bed });
     }
 
     public List<IShopItem> GetItemList()

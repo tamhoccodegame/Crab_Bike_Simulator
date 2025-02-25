@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
             case GameState.Sleeping:
                 TPlayerController.instance.canMove = false;
                 StartCoroutine(BlackScreenCoroutine(25f));
-                LightingManager.instance.SetDaySpeed(5);
+                LightingManager.instance.SetDaySpeed(3);
                 break;
 
             case GameState.Texting:
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
                 phoneUI.SetActive(false);
                 pauseUI.SetActive(false);
                 inventoryUI.SetActive(false);
-                LightingManager.instance.SetDaySpeed(60);
+                LightingManager.instance.SetDaySpeed(25); //Nhớ chỉnh lại, 25 là demo thôi, real là 60
                 TPlayerController.instance.canMove = true;
                 Camera.main.GetComponent<CinemachineBrain>().enabled = true;
                 Cursor.lockState = CursorLockMode.Locked;
