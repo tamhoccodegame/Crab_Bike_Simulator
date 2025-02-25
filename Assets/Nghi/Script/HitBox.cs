@@ -8,7 +8,7 @@ public class HitBox : MonoBehaviour
     public TargetType targetType;  // Chọn mục tiêu trong Inspector
 
     public Collider hitboxCollider;  // Collider dùng làm hitbox
-    public int damage = 10;  // Sát thương gây ra
+    public int damage;  // Sát thương gây ra
     //public float activeTime = 0.2f;  // Thời gian hitbox hoạt động
     public List<Collider> listDamage = new List<Collider>();  // Danh sách mục tiêu đã bị đánh
 
@@ -42,10 +42,18 @@ public class HitBox : MonoBehaviour
         else if (targetType == TargetType.NPC && other.CompareTag("NPC"))
         {
             NPC_Health npcHealth = other.GetComponent<NPC_Health>();
+            Police_Health police_Health = other.GetComponent<Police_Health>();
             if (npcHealth != null)
             {
                 npcHealth.TakeDamage(damage);
                 Debug.Log($"{gameObject.name} đã va chạm với {other.name}");
+                listDamage.Add(other);
+            }
+
+            if (police_Health != null)
+            {
+                police_Health.TakeDamage(damage);
+                Debug.Log($"{gameObject.name} đã gây {damage} sát thương lên cảnh sát {other.name}");
                 listDamage.Add(other);
             }
         }

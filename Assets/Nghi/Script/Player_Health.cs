@@ -41,5 +41,18 @@ public class Player_Health : MonoBehaviour
     //private void Die()
     //{
     //    Debug.Log("Player is Dead!");
+    //    animator.enabled = false;
+    //    GetComponent<Collider>().enabled = false;
+
+    //    Ragdoll ragdoll = GetComponent<Ragdoll>();
+    //    if (ragdoll != null)
+    //    {
+    //        ragdoll.EnableRagdoll();
+    //    }
+    //    else
+    //    {
+    //        Debug.LogError("Ragdoll component is missing on " + gameObject.name);
+    //    }
+
     //}
 }

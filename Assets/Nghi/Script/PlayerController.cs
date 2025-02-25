@@ -47,10 +47,12 @@ public class PlayerController : MonoBehaviour
     public LayerMask npcLayer;
     public float attackDamage;
 
+    public HitBox hitBox;
     public float attackCooldown = 2f;
+    public float attackDuration = 0.2f;
     private float lastAttackTime;
 
-    public HitBox hitBox;
+    private bool canAttack; 
 
     private void Start()
     {
@@ -65,10 +67,15 @@ public class PlayerController : MonoBehaviour
         Move();
         RotatePlayerToCamera(); // Gọi hàm xoay Player
 
-        if (Input.GetMouseButtonDown(0) && Time.time - lastAttackTime>=attackCooldown)
+        if (Input.GetMouseButtonDown(0) && Time.time - lastAttackTime >= attackCooldown)
         {
             ChangeState(PlayerState.Attack);
         }
+
+        //if (Input.GetMouseButtonDown(0) && canAttack)
+        //{
+        //    ChangeState(PlayerState.Attack);
+        //}
     }
 
     public void ChangeState(PlayerState newState)
@@ -92,6 +99,7 @@ public class PlayerController : MonoBehaviour
                 break;
             case PlayerState.Attack:
                 Attack();
+                //StartCoroutine(AttackCoroutine());
                 break;
         }
 
@@ -249,6 +257,38 @@ public class PlayerController : MonoBehaviour
                 //npc_Health.TakeDamage(attackDamage);
             }
         }
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        canAttack = false;
+
+        int randomAttackAnimation = Random.Range(0, attackAnimationCount);
+        animator.SetInteger("Index", randomAttackAnimation);
+        animator.SetTrigger("isAttack");
+
+        // Chờ cooldown trước khi có thể tấn công lần tiếp theo
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+
+        //canAttack = false; // Không thể tấn công liên tục
+
+        //int randomAttackAnimation = Random.Range(0, attackAnimationCount);
+        //animator.SetInteger("Index", randomAttackAnimation);
+        //animator.SetTrigger("isAttack");
+        ////Check va cham
+        //Collider[] hitNPCArray = Physics.OverlapSphere(transform.position, attackRange, npcLayer);
+        //foreach(Collider npc in hitNPCArray)
+        //{
+        //    if (npc != null)
+        //    {
+        //        //Cho thoi gian hien thi, ton tai HitBox  
+        //        yield return new WaitForSeconds(attackDuration);
+        //    }
+        //}
+        ////Cho thoi gian CoolDown
+        //yield return new WaitForSeconds(attackCooldown-attackDuration);
+        //canAttack = true; // Cho phép tấn công lại
     }
 
     void ActivateHitbox()
