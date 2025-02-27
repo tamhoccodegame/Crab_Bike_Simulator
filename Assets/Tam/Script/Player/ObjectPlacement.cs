@@ -48,6 +48,7 @@ public class ObjectPlacement : MonoBehaviour
         Destroy(previewPlacement.gameObject);
         objectToPlace = null;
         previewPlacement = null;
+        UIInventory.instance.RefreshInventoryUI();
     }
 
     void PlacePreview()
@@ -82,11 +83,7 @@ public class ObjectPlacement : MonoBehaviour
             DrawDebugBox(placementPosition + offset, extents, canPlace ? Color.green : Color.red);
 
         }
-        else
-        {
-            inventory.AddItem(objectToPlace.GetComponent<Furniture>());
-            ResetPreviewPlacement();
-        }
+
     }
 
     void AdjustPreviewPosition()
@@ -98,7 +95,7 @@ public class ObjectPlacement : MonoBehaviour
         if (mouseScroll != 0)
         {
             previewDistance += mouseScroll * scrollSpeed;
-            previewDistance = Mathf.Clamp(previewDistance, 1, 10f);
+            previewDistance = Mathf.Clamp(previewDistance, 4f, 10f);
         }
 
         int rotateDirection = Input.GetKey(KeyCode.R) ? 1 : Input.GetKey(KeyCode.Q) ? -1 : 0;

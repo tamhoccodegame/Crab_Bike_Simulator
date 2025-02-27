@@ -11,7 +11,8 @@ public class ItemSpriteAssets : MonoBehaviour
     public Sprite burgerSprite;
     public Sprite sodaSprite;
     public Sprite bedSprite;
-    public Sprite wardrobeSprite;
+    public Sprite deskSprite;
+    public Sprite chairSprite;
 
     [Header("Prefab Assets")]
     public GameObject bedPrefab;

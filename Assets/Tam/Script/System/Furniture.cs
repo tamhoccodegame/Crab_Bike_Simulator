@@ -22,13 +22,23 @@ public class Furniture : MonoBehaviour, IShopItem
             case FurnitureType.Desk:
                 return 80000;
             case FurnitureType.Chair:
+                return 30000;
             default: return 0;
         }
     }
 
     public Sprite GetSprite()
     {
-        return ItemSpriteAssets.instance.sodaSprite;
+        switch (type)
+        {
+            case FurnitureType.Bed:
+                return ItemSpriteAssets.instance.bedSprite;
+            case FurnitureType.Desk:
+                return ItemSpriteAssets.instance.deskSprite;
+            case FurnitureType.Chair:
+                return ItemSpriteAssets.instance.chairSprite;
+            default: return null;
+        }
     }
 
     public GameObject GetPrefab()
