@@ -16,6 +16,8 @@ public class CharacterNavigateController : MonoBehaviour
     private CharacterController controller;
     Vector3 moveDirection;
 
+    private bool isDelay;
+
 
     // Start is called before the first frame update
     void Start()

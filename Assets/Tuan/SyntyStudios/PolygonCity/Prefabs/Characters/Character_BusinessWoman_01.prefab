@@ -2243,6 +2243,8 @@ MonoBehaviour:
   scaredDialogues: []
   detectRange: 5
   playerTransform: {fileID: 0}
+  healPrice: 0
+  healAmount: 0
 --- !u!114 &412420073564254276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2374,12 +2376,12 @@ MonoBehaviour:
   attackAnimationCount: 4
   policeStationTransform: {fileID: 0}
   playerTransform: {fileID: 0}
-  npcAttackDamage: 20
   npcAttackRange: 1
   npcAttackCooldown: 2
   npc_Health: {fileID: 1014973551093130747}
   npcInteractable: {fileID: 1473123420236595496}
   hitBox: {fileID: 7714002751086832191}
+  police_Behavior: {fileID: 0}
 --- !u!114 &1014973551093130747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2396,6 +2398,7 @@ MonoBehaviour:
   npc_Behavior: {fileID: 5524035827152794969}
   isAggressive: 1
   isAttacked: 0
+  npcHealth_UI: {fileID: 0}
 --- !u!195 &4032790231418593539
 NavMeshAgent:
   m_ObjectHideFlags: 0
