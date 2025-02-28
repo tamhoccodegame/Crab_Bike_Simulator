@@ -61,6 +61,9 @@ public class NPCInteractable : MonoBehaviour
 
 
 
+
+    public float healPrice;
+    public float healAmount;
     // Start is called before the first frame update
     void Start()
     {
@@ -123,7 +126,29 @@ public class NPCInteractable : MonoBehaviour
         // Xóa Dialogue Box Chat ngay lập tức nếu nó đang hiển thị
         ClearDialogueBox();
 
-        bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
+        if (gameObject.layer == LayerMask.NameToLayer("Doctor"))
+        {
+            if (interactorTransform == null)
+            {
+                Debug.LogWarning("InteractorTransform is NULL!");
+                return;
+            }
+
+            Debug.Log($"{gameObject.name} được tương tác bởi {interactorTransform.name}");
+
+            bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Healed player!");
+            //HealPlayer();
+            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+            
+
+
+        }
+        else
+        {
+            bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
+        }
+        
+        //bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
 
         animator.SetTrigger("isWaving");
 
@@ -152,19 +177,6 @@ public class NPCInteractable : MonoBehaviour
     {
         return interactText;
     }
-
-    //private void FindPlayerAndDecide()
-    //{
-        
-    //    if (playerTransform == null || isInteracting ||!canShowDialogueBoxChat) return;
-
-    //    float distance = Vector3.Distance(transform.position, playerTransform.position);
-
-    //    if (distance <= detectRange && !isShowingBoxChat && Time.deltaTime - lastChatTime >= 2f)
-    //    {
-    //        ShowRandomDialog();
-    //    }
-    //}
 
     public void ShowRandomDialog()
     {
@@ -239,4 +251,5 @@ public class NPCInteractable : MonoBehaviour
             Debug.Log("Show from FriendlyOnHitByPlayer!");
         }
     }
+
 }

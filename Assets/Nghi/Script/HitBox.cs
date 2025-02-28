@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class HitBox : MonoBehaviour
@@ -9,8 +10,9 @@ public class HitBox : MonoBehaviour
 
     public Collider hitboxCollider;  // Collider dùng làm hitbox
     public int damage;  // Sát thương gây ra
-    //public float activeTime = 0.2f;  // Thời gian hitbox hoạt động
-    public List<Collider> listDamage = new List<Collider>();  // Danh sách mục tiêu đã bị đánh
+   
+    //public List<Collider> listDamage = new List<Collider>();  // Danh sách mục tiêu đã bị đánh
+    public List<Transform> listDamage = new List<Transform>();  // Danh sách mục tiêu đã bị đánh
 
     private void Start()
     {
@@ -20,23 +22,24 @@ public class HitBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (listDamage.Contains(other)) return; // Nếu đã đánh mục tiêu này rồi thì bỏ qua
+        Transform rootTransform = other.transform.root; // Lấy root GameObject (cơ thể nhân vật)
+        if (listDamage.Contains(rootTransform)) return; // Nếu đã trúng nhân vật này rồi thì bỏ qua
+        //if (listDamage.Contains(other)) return; // Nếu đã đánh mục tiêu này rồi thì bỏ qua
 
+        Debug.Log($"Hitbox {gameObject.name} va chạm với {other.name}"); // Kiểm tra số lần gọi
 
         // Kiểm tra xem hitbox này đánh ai (Player hoặc NPC)
         if (targetType == TargetType.Player && other.CompareTag("Player"))
         {
-            Player_Health playerHealth = other.GetComponent<Player_Health>();
-            
+            Player_Health playerHealth = rootTransform.GetComponent<Player_Health>();
+
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damage);
-                Debug.Log($"{gameObject.name} đã va chạm với {other.name}");
-                //PlayerState playerState = other.GetComponent<PlayerState>();
-                //if (playerState != null)
-                //{
-                //    playerState.DecreaseHealth(damage);
-                listDamage.Add(other);
+                Debug.Log($"{gameObject.name} đã gây {damage} sát thương lên {other.name}"); // Kiểm tra số lần gây damage
+
+                listDamage.Add(rootTransform);// Chỉ thêm root vào danh sách để tránh trùng lặp
+
             }
         }
         else if (targetType == TargetType.NPC && other.CompareTag("NPC"))
@@ -47,14 +50,14 @@ public class HitBox : MonoBehaviour
             {
                 npcHealth.TakeDamage(damage);
                 Debug.Log($"{gameObject.name} đã va chạm với {other.name}");
-                listDamage.Add(other);
+                listDamage.Add(rootTransform);
             }
 
             if (police_Health != null)
             {
                 police_Health.TakeDamage(damage);
                 Debug.Log($"{gameObject.name} đã gây {damage} sát thương lên cảnh sát {other.name}");
-                listDamage.Add(other);
+                listDamage.Add(rootTransform);
             }
         }
     }
@@ -62,13 +65,23 @@ public class HitBox : MonoBehaviour
     public void ActivateHitbox()
     {
         listDamage.Clear();
-        hitboxCollider.enabled = true;
-        //Invoke(nameof(DeactivateHitbox), activeTime);
+        if (!hitboxCollider.enabled) // Đảm bảo hitbox chưa bật
+        {
+            hitboxCollider.enabled = true;
+            Debug.Log($"Hitbox {gameObject.name} được kích hoạt");
+        }
     }
 
     public void DeactivateHitbox()
     {
-        listDamage.Clear();
-        hitboxCollider.enabled = false;
+
+        if (hitboxCollider.enabled) // Đảm bảo chỉ tắt nếu đang bật
+        {
+            hitboxCollider.enabled = false;
+            listDamage.Clear();
+            Debug.Log($"Hitbox {gameObject.name} đã tắt");
+        }
     }
+
+
 }

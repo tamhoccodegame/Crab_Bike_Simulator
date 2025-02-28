@@ -11,7 +11,7 @@ public class NPC_Behavior : MonoBehaviour
 
     public Animator animator;
     public int attackAnimationCount;
-    //public bool isAggressive;
+    
     private bool isChasing = false;
     private bool isAttacking;
 
@@ -19,21 +19,21 @@ public class NPC_Behavior : MonoBehaviour
     public Transform playerTransform;
     private NavMeshAgent npcAgent;
 
-    //public float npcAttackDamage;
+    
     public float npcAttackRange;
     public float npcAttackCooldown;
     private float lastAttackTime;
 
     private bool canAttack = true;
 
-    //public Animation_Random animation_Random;
+    
     public NPC_Health npc_Health;
     public NPCInteractable npcInteractable;
 
     public HitBox hitBox;
 
     public Police_Behavior police_Behavior;
-    //public bool isReportToPolice = false;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -42,11 +42,7 @@ public class NPC_Behavior : MonoBehaviour
         npc_Health = GetComponent<NPC_Health>();
         npcInteractable = GetComponent<NPCInteractable>();
 
-        
-        //if (animation_Random == null)
-        //{
-        //    animation_Random = GetComponent<Animation_Random>();
-        //}
+       
     }
 
     // Update is called once per frame
@@ -54,8 +50,22 @@ public class NPC_Behavior : MonoBehaviour
     {
         if (isChasing)
         {
-            //Debug.Log($"{gameObject.name} đang tiếp tục truy đuổi/tấn công...");
+            RotateSmoothlyTowards(playerTransform.position);
             ApproachAndAttack();
+        }
+
+
+    }
+
+    void RotateSmoothlyTowards(Vector3 targetPosition)
+    {
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        direction.y = 0; // Giữ NPC thẳng đứng
+
+        if (direction.magnitude > 0.01f) // Kiểm tra nếu có hướng xoay hợp lệ
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * 200f);
         }
     }
 
@@ -71,7 +81,7 @@ public class NPC_Behavior : MonoBehaviour
             
             npcInteractable.AggressiveOnHitByPlayer();
             Debug.Log($"{gameObject.name} chuyển sang tấn công Player!");
-            //animation_Random.enabled = false;
+            
             //NPC dữ sẽ truy đuổi để tấn công player
             isChasing = true;
             Debug.Log("Switching to Attack Animation");
@@ -83,7 +93,7 @@ public class NPC_Behavior : MonoBehaviour
            
             npcInteractable.FriendlyOnHitByPlayer();
             Debug.Log($"{gameObject.name} hoảng sợ và chạy đến đồn cảnh sát.");
-            //animation_Random.enabled = false;
+            
             // NPC hiền chạy đến đồn cảnh sát
             StartCoroutine(ScaredAndReport(3f));
 
@@ -95,17 +105,12 @@ public class NPC_Behavior : MonoBehaviour
         animator.SetTrigger("isScared");
         Debug.Log("Scared");
         yield return new WaitForSeconds(time);
-        //animator.ResetTrigger("isScared");
 
         animator.SetBool("isRun", true);
         Debug.Log("Run");
         npcAgent.SetDestination(policeStationTransform.position);
         Debug.Log($"{gameObject.name} đang chạy đến đồn cảnh sát...");
-        //Chờ NPC chạy tới đồn cảnh sát
-        //while (npcAgent.remainingDistance > npcAgent.stoppingDistance)
-        //{
-        //    yield return null;
-        //}
+
 
         while (npcAgent.pathPending || npcAgent.remainingDistance > npcAgent.stoppingDistance)
         {
@@ -116,13 +121,10 @@ public class NPC_Behavior : MonoBehaviour
         Debug.Log($"{gameObject.name} đã chạy đến đồn cảnh sát...");
         animator.ResetTrigger("isScared");
         animator.SetTrigger("isScared");
-        //()()()()()()()()
-        //Police_Behavior police_Behavior = GetComponent<Police_Behavior>();
+        
         police_Behavior.ReceiveNPCReport(this);
 
-        //isReportToPolice = true;
-
-        //^^^^^^^^^^^^^^^^^^^^
+       
         // Gọi tất cả cảnh sát cùng đuổi Player
         Police_Manager.Instance.AlertAllPolice(this);
     }
@@ -130,6 +132,15 @@ public class NPC_Behavior : MonoBehaviour
 
     private void ApproachAndAttack()
     {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+        {
+            //Nếu đang trong animation attack thì không tiếp cận
+            return;
+        }
+
+
+
+
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
         //Debug.Log($"Distance to Player: {distanceToPlayer} | Attack Range: {npcAttackRange}");
 
@@ -151,15 +162,16 @@ public class NPC_Behavior : MonoBehaviour
             {
                 // Tiếp cận player
                 //Debug.Log($"{gameObject.name} đang tiến gần đến Player...");
-                //Debug.Log("Approaching Player");
                 npcAgent.isStopped = false;
                 npcAgent.updatePosition = true;
-                npcAgent.updateRotation = true;
+                //npcAgent.updateRotation = true;
                 animator.SetBool("isApproach", true);
                 npcAgent.SetDestination(playerTransform.position);
             }
         }
     }
+
+
 
     IEnumerator AttackPlayer()
     {
@@ -169,6 +181,21 @@ public class NPC_Behavior : MonoBehaviour
         if (timeSinceLastAttack >= npcAttackCooldown)
         {
             canAttack = false;
+
+            ////^^^^^^^^^^^^^^^^
+
+            // Dừng di chuyển hoàn toàn khi đang attack
+            npcAgent.isStopped = true;
+            npcAgent.velocity = Vector3.zero; // Reset vận tốc để tránh trượt
+            npcAgent.updatePosition = false;
+            npcAgent.updateRotation = false;
+            ////^^^^^^^^^^^^^^^^
+
+            // Lưu vị trí NPC trước khi attack
+            Vector3 fixedPosition = transform.position;
+            // Xoay trước khi tấn công
+            RotateSmoothlyTowards(playerTransform.position);
+
             int randomAnimation = Random.Range(0, attackAnimationCount);
             animator.SetInteger("AttackIndex", randomAnimation);
             animator.SetTrigger("isAttack");
@@ -176,11 +203,26 @@ public class NPC_Behavior : MonoBehaviour
             Debug.Log($"{gameObject.name} Attacking with animation index: {randomAnimation}");
 
             lastAttackTime = Time.time;  // Cập nhật thời gian tấn công
-            yield return null; // Chờ một frame để animation cập nhật
 
-            // Đợi animation attack chạy xong trước khi tiếp tục^^^^^^^^^^^^^^
-            //float attackAnimationTime = animator.GetCurrentAnimatorStateInfo(0).length;
-            //yield return new WaitForSeconds(attackAnimationTime+2f); // Chờ animation + cooldown
+            // Đợi animation attack chạy xong trước khi tiếp tục
+            //yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length); // Đợi animation đánh xong
+
+            // Lấy thời gian animation attack
+            float attackDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+
+            // Giữ nguyên vị trí NPC suốt thời gian attack
+            float elapsedTime = 0f;
+            while (elapsedTime < 1.8)
+            {
+                transform.position = fixedPosition; // Cố định vị trí
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            //Chỉ sau khi attack kết thúc mới cho phép di chuyển tiếp
+            npcAgent.isStopped = false;
+            npcAgent.updatePosition = true;
+            npcAgent.updateRotation = true;
             canAttack = true;
             //Debug.Log($"{gameObject.name} đã hoàn thành đòn tấn công, chuẩn bị đòn tiếp theo...");
         }
@@ -188,40 +230,6 @@ public class NPC_Behavior : MonoBehaviour
         {
             //Debug.Log($"{gameObject.name} chưa thể tấn công, cần chờ cooldown.");
         }
-
-
-
-
-
-        //float timeSinceLastAttack = Time.time - lastAttackTime;
-        //Debug.Log($"Checking attack cooldown: {timeSinceLastAttack} >= {npcAttackCooldown}");
-
-        //if (timeSinceLastAttack >= npcAttackCooldown)  // Kiểm tra cooldown
-        //{
-
-        //    int randomAnimation = Random.Range(0, attackAnimationCount);
-        //    animator.SetInteger("AttackIndex", randomAnimation);
-        //    animator.SetTrigger("isAttack");
-        //    Debug.Log($"NPC Attacking with animation index: {randomAnimation}");
-        //    //*****************************************************************
-        //    if (playerTransform != null)
-        //    {
-        //        Debug.Log($"[Damage] {gameObject.name} gây {npcAttackDamage} sát thương lên Player.");
-        //        //Invoke(nameof(ActivateHitbox), 0.3f); // Bật hitbox khi đòn đánh sắp trúng
-        //        //********************
-        //        //playerTransform.GetComponent<Player_Health>().TakeDamage(npcAttackDamage);
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("LỖI: playerTransform bị NULL!");
-        //    }
-
-        //    lastAttackTime = Time.time;  // Reset thời gian tấn công
-        //}
-        //else
-        //{
-        //    //Debug.Log($"{gameObject.name} chưa thể tấn công, cần chờ cooldown.");
-        //}
     }
 
     void ActivateHitbox()
@@ -233,7 +241,4 @@ public class NPC_Behavior : MonoBehaviour
     {
         hitBox.DeactivateHitbox();
     }
-
-
-
 }
