@@ -16,9 +16,17 @@ public class CharacterNavigateController : MonoBehaviour
     private CharacterController controller;
     Vector3 moveDirection;
 
+    [Header("NPC_Behaviour Controller")]
+    public float delayTime;
     private bool isDelay;
+    public MonoBehaviour[] npcBehaviourScripts;
+    public Animator animator;
 
 
+    private void OnEnable()
+    {
+        DisableBehaviour();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +43,7 @@ public class CharacterNavigateController : MonoBehaviour
     }
     void Update()
     {
+        if (isDelay) return;
         if (transform.position != destination)
         {
             Vector3 destinationDirection = destination - transform.position;
@@ -51,7 +60,7 @@ public class CharacterNavigateController : MonoBehaviour
             }
             else
             {
-                reachedDestination = true;
+                StartCoroutine(DelaySetWayPoint());
             }
         }
 
@@ -61,6 +70,41 @@ public class CharacterNavigateController : MonoBehaviour
         }
         controller.Move(moveDirection);
 
+    }
+
+    IEnumerator DelaySetWayPoint()
+    {
+        isDelay = true;
+        EnableBehaviour();
+        yield return new WaitForSeconds(10f);
+        reachedDestination = true;
+        GetComponent<CustomerBookCrab>().BookCrab();
+        isDelay = false;
+    }
+
+    void DisableBehaviour()
+    {
+        animator.SetInteger("index", 0);
+        animator.Play("Walking");
+        foreach (var m in npcBehaviourScripts)
+        {
+            if (m.enabled)
+            {
+                m.enabled = false;
+            }
+        }
+    }
+
+    void EnableBehaviour()
+    {
+        animator.Play("Idle");
+        foreach (var m in npcBehaviourScripts)
+        {
+            if (!m.enabled)
+            {
+                m.enabled = true;
+            }
+        }
     }
 
     private void OnDisable()
@@ -73,5 +117,6 @@ public class CharacterNavigateController : MonoBehaviour
         this.destination = destination;
         reachedDestination = false;
         SetRandomMovementSpeed();
+        DisableBehaviour();
     }
 }

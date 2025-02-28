@@ -21,6 +21,8 @@ public class TPlayerController : Controller
 
     private Animator animator;
 
+    public HitBox hitBox;
+
     public enum PlayerMode
     {
         Normal,
@@ -50,6 +52,11 @@ public class TPlayerController : Controller
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetMouseButtonDown(0))
+        {
+            animator.SetTrigger("isAttack");
+        }
+
         if (!canMove)
         {
             movement = Vector3.zero;    
@@ -61,6 +68,16 @@ public class TPlayerController : Controller
         ChangeSpeed();
         CalculateMove();
 	}
+
+    void ActivateHitbox()
+    {
+        hitBox.ActivateHitbox();
+    }
+
+    void DeactivateHitbox()
+    {
+        hitBox.DeactivateHitbox();
+    }
 
     private void FixedUpdate()
     {

@@ -55,6 +55,7 @@ public class Destination : MonoBehaviour
                 //_customer.GetComponent <WaitingCustomer>().enabled = true;
                 _customer.GetComponent<Collider>().enabled = true;
                 _customer.GetComponent<Animator>().SetLayerWeight(2, 0);
+                _customer.GetComponent<CharacterNavigateController>().enabled = true;
             }
             gameObject.SetActive(false);
         }

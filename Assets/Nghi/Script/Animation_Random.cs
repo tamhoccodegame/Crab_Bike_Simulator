@@ -55,4 +55,9 @@ public class Animation_Random : MonoBehaviour
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         return stateInfo.length;
     }
+
+    private void OnDisable()
+    {
+        GetComponent<Animator>().SetInteger("index", 0);
+    }
 }

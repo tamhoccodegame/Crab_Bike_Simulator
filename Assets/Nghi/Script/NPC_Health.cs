@@ -32,26 +32,26 @@ public class NPC_Health : MonoBehaviour
 
         ////*************************************************
         // Tìm HealthBar trong hệ thống UI thay vì trong NPC
-        GameObject healthBarPrefab = UI_Manager.Instance.GetHealthBar();
-        if (healthBarPrefab == null)
-        {
-            Debug.LogError("Không tìm thấy HealthBar Prefab trong UI_Manager!");
-            return;
-        }
+        //GameObject healthBarPrefab = UI_Manager.Instance.GetHealthBar();
+        //if (healthBarPrefab == null)
+        //{
+        //    Debug.LogError("Không tìm thấy HealthBar Prefab trong UI_Manager!");
+        //    return;
+        //}
 
-        GameObject healthBarObj = Instantiate(healthBarPrefab, UI_Manager.Instance.canvas.transform);
-        npcHealth_UI = healthBarObj.GetComponent<NPC_Health_UI>();
+        //GameObject healthBarObj = Instantiate(healthBarPrefab, UI_Manager.Instance.canvas.transform);
+        //npcHealth_UI = healthBarObj.GetComponent<NPC_Health_UI>();
 
-        if (npcHealth_UI != null)
-        {
-            npcHealth_UI.Initialize(transform);
-        }
+        //if (npcHealth_UI != null)
+        //{
+        //    npcHealth_UI.Initialize(transform);
+        //}
 
-        if (npcHealth_UI == null)
-        {
-            Debug.LogError("HealthBarObj không có NPC_Health_UI!");
-            return;
-        }
+        //if (npcHealth_UI == null)
+        //{
+        //    Debug.LogError("HealthBarObj không có NPC_Health_UI!");
+        //    return;
+        //}
 
 
 
@@ -79,6 +79,7 @@ public class NPC_Health : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        npc_Behavior.enabled = true;
         npcCurrentHeath -= damage;
         animator.SetTrigger("isHurt");
 

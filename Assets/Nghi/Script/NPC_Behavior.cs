@@ -21,6 +21,7 @@ public class NPC_Behavior : MonoBehaviour
 
     
     public float npcAttackRange;
+    public float npcChaseRange;
     public float npcAttackCooldown;
     private float lastAttackTime;
 
@@ -33,7 +34,8 @@ public class NPC_Behavior : MonoBehaviour
     public HitBox hitBox;
 
     public Police_Behavior police_Behavior;
-    
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,11 +70,10 @@ public class NPC_Behavior : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * 200f);
         }
     }
-
-
-
+        
     public void AttackOrReport()
     {
+        GetComponent<CharacterNavigateController>().enabled = false;
         //animation_Random.enabled = false;
 
         Debug.Log($"NPC {gameObject.name} đang quyết định hành động sau khi bị đánh.");
@@ -138,11 +139,16 @@ public class NPC_Behavior : MonoBehaviour
             return;
         }
 
-
-
-
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
         //Debug.Log($"Distance to Player: {distanceToPlayer} | Attack Range: {npcAttackRange}");
+
+        if(distanceToPlayer > npcChaseRange)
+        {
+            GetComponent<CharacterNavigateController>().enabled = true;
+            isChasing = false;
+            npc_Health.SetCombatLayerActive(false);
+            return;
+        }
 
         if (npc_Health.isAttacked)// Nếu NPC đã bị tấn công, chỉ tập trung vào attack player
         {
@@ -196,11 +202,7 @@ public class NPC_Behavior : MonoBehaviour
             // Xoay trước khi tấn công
             RotateSmoothlyTowards(playerTransform.position);
 
-            int randomAnimation = Random.Range(0, attackAnimationCount);
-            animator.SetInteger("AttackIndex", randomAnimation);
             animator.SetTrigger("isAttack");
-
-            Debug.Log($"{gameObject.name} Attacking with animation index: {randomAnimation}");
 
             lastAttackTime = Time.time;  // Cập nhật thời gian tấn công
 
