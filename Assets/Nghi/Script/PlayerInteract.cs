@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -20,9 +20,19 @@ public class PlayerInteract : MonoBehaviour
             Collider [] colliderArray = Physics.OverlapSphere(transform.position, interactRange);
             foreach(Collider collider in colliderArray)
             {
-                if(collider.TryGetComponent(out NPCInteractable npcInteractable))
+                if(collider.TryGetComponent(out NPCInteractable npcInteractable) && npcInteractable != null)
                 {
-                    npcInteractable.Interact(transform);
+                    //npcInteractable.Interact(transform);
+
+                    if (npcInteractable != null)  // 🔹 Kiểm tra NULL trước khi gọi Interact()
+                    {
+                        Debug.Log("Interacting with NPC: " + npcInteractable.gameObject.name);
+                        npcInteractable.Interact(transform);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("NPCInteractable is NULL!");
+                    }
                 }
             }
         }

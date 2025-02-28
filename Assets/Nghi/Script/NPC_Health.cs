@@ -29,13 +29,6 @@ public class NPC_Health : MonoBehaviour
         Debug.Log($"{gameObject.name} khởi tạo với máu: {npcCurrentHeath}");
 
         animator = GetComponent<Animator>();
-        //animation_Random = GetComponent<Animation_Random>();
-
-        //if (UI_Manager.Instance == null)
-        //{
-        //    Debug.LogError("UI_Manager.Instance bị null! Đảm bảo rằng UI_Manager có mặt trong Scene.");
-        //    return;
-        //}
 
         ////*************************************************
         // Tìm HealthBar trong hệ thống UI thay vì trong NPC
@@ -106,34 +99,10 @@ public class NPC_Health : MonoBehaviour
         }
 
         isAttacked = true; // Đánh dấu NPC đang bị tấn công
-        //if (animation_Random != null)
-        //{
-        //    animator.CrossFade("Idle", 0.1f);
 
-        //    animation_Random.StopAllCoroutines(); // Ngừng toàn bộ coroutine của Animation_Random
-        //    animation_Random.enabled = false; // Tắt script idle
-        //    Debug.Log("Vô hiệu hóa Animation_Random!");
-        //    //Debug.Log("Animation_Random enabled: " + animation_Random.enabled);
-        //    //animator.SetTrigger("isBackToIdle");
-
-
-        //}
-        //************************************
-        //npcCurrentHeath -= damage;
-        //animator.SetTrigger("isHurt");
-        //Debug.Log($"{gameObject.name} sau khi bị tấn công! Máu còn lại: {npcCurrentHeath}");
         //**********%%%%%%%%%%%%%%%%%
         StartCoroutine(ReactAfterHurt());
 
-        //if (npcCurrentHeath <= 0)
-        //{
-        //    Die();
-        //}
-        //else
-        //{
-        //    //StartCoroutine(ReactAfterHurt());
-        //    npc_Behavior.AttackOrReport();
-        //}
     }
 
     IEnumerator ReactAfterHurt()
@@ -179,11 +148,5 @@ public class NPC_Health : MonoBehaviour
 
     }
 
-    //void SpawnHealthBar()
-    //{
-    //    GameObject healthBarInstance = Instantiate(healthBarPrefab, transform.position, Quaternion.identity);
-    //    healthBar = healthBarInstance.GetComponent<HealthBar>();
-    //    healthBar.target = transform; // Gán NPC làm target
-    //    isHealthBarSpawned = true;
-    //}
+
 }
