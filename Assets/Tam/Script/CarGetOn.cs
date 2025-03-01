@@ -10,10 +10,13 @@ public class CarGetOn : MonoBehaviour, IInteractable
     public Transform rightHand;
     public GameObject parent;
 
+    public AudioSource motorSound;
+
     private bool hasPlayer = false;
 
     public void OnInteract(PlayerInteractor player)
     {
+        motorSound.Play();
         currentPlayer = player;
         currentPlayer.GetComponent<TPlayerController>().enabled = false;
         currentPlayer.GetComponent<CharacterController>().enabled = false;
@@ -23,7 +26,12 @@ public class CarGetOn : MonoBehaviour, IInteractable
         currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 1);
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = rightHand;
-        parent.GetComponent<BikeController>().enabled = true;
+
+        if(parent != null)
+        parent.GetComponent<BaseCarController>().enabled = true;
+        else GetComponent<BaseCarController>().enabled = true;
+
+        currentPlayer.enabled = false;
         StartCoroutine(DelaySetPlayer());
     }
 
@@ -47,7 +55,15 @@ public class CarGetOn : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        if (currentPlayer == null) return;
+        if (!hasPlayer) return;
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            ExitCar();
+        }
+
+        if(parent == null || !hasPlayer) return;
+
         if (parent.GetComponent<BikeController>().currentVelocityOffset > 0.01f)
         {
             currentPlayer.GetComponent<Animator>().SetBool("Stopping", false);
@@ -57,21 +73,25 @@ public class CarGetOn : MonoBehaviour, IInteractable
             currentPlayer.GetComponent<Animator>().SetBool("Stopping", true);
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && hasPlayer)
-        {
-            ExitCar();
-        }
     }
+
 
     public void ExitCar()
     {
+        motorSound.Stop();
         hasPlayer = false;
+        currentPlayer.enabled = true;
         currentPlayer.QuitInteracting();
         currentPlayer.transform.SetParent(null);
         currentPlayer.transform.position += -currentPlayer.transform.right * 1.5f;
+        currentPlayer.transform.rotation = Quaternion.Euler(0, 0, 0);
         currentPlayer.GetComponent<TPlayerController>().enabled = true;
         currentPlayer.GetComponent<CharacterController>().enabled = true;
-        parent.GetComponent<BikeController>().enabled = false;
+
+        if(parent != null)
+        parent.GetComponent<BaseCarController>().enabled = false;
+        else GetComponent<BaseCarController>().enabled = false;
+
         currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 0);
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = null;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = null;

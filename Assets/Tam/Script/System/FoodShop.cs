@@ -15,6 +15,7 @@ public class FoodShop : MonoBehaviour, IShop
     void Awake()
     {
         foodList.Add(new Food { foodType = Food.FoodType.Burger } as IShopItem);
+        foodList.Add(new Food { foodType = Food.FoodType.Soda } as IShopItem);
     }
 
     // Update is called once per frame

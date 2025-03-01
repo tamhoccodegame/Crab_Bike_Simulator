@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CarController : MonoBehaviour
+public class CarController : BaseCarController
 {
     //private float horizontalInput, verticalInput;
     private float currentSteerAngle, currentbreakForce;
@@ -26,7 +26,17 @@ public class CarController : MonoBehaviour
     public Transform rearLeftWheelTransform;
     public Transform rearRightWheelTransform;
 
+    public Transform steeringWheel;
+    private float currentSteeringAngle = 0f;
+    public float maxSteeringWAngle;
+
+
+    public AudioSource engineSound;
+    [Range(0, 1)] public float minPitch;
+    [Range(1, 5)] public float maxPitch;
+
     private Rigidbody rb;
+    private float currentVelocity;
 
     private void Start()
     {
@@ -35,6 +45,21 @@ public class CarController : MonoBehaviour
         rb.centerOfMass = new Vector3(0, -0.5f, 0); // Hạ trọng tâm xuống dưới trục xe
     }
 
+    private void FixedUpdate()
+    {
+        if(verticalInput > 0f)
+        {
+            currentVelocity += 0.2f * Time.fixedDeltaTime;
+            currentVelocity = Mathf.Min(currentVelocity, maxPitch);
+        }
+        else if (verticalInput <= 0 || isBreaking)
+        {
+            currentVelocity -= 0.2f * Time.fixedDeltaTime;
+            currentVelocity = Mathf.Max(minPitch, currentVelocity);
+        }
+
+            engineSound.pitch = Mathf.Lerp(minPitch, maxPitch, Mathf.Abs(currentVelocity));
+    }
     private void Update()
     {
         frontLeftWheelCollider.motorTorque = 0;
@@ -47,13 +72,14 @@ public class CarController : MonoBehaviour
         HandleMotor();
         HandleSteering();
         UpdateWheels();
+        UpdateSteeringWheels();
     }
 
     private void GetInput()
     {
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
-        isBreaking = Input.GetKey(KeyCode.Space);
+        isBreaking = Input.GetKey(KeyCode.Space) || verticalInput == 0;
     }
 
     private void HandleMotor()
@@ -87,6 +113,36 @@ public class CarController : MonoBehaviour
         frontRightWheelCollider.steerAngle = currentSteerAngle;
         //rearLeftWheelCollider.steerAngle = currentSteerAngle;
         //rearRightWheelCollider.steerAngle = currentSteerAngle;
+    }
+
+    private void UpdateSteeringWheels()
+    {
+        // Lấy góc quay hiện tại của vô lăng theo trục Y
+        currentSteeringAngle = steeringWheel.localEulerAngles.y;
+
+        // Chuyển góc từ [0, 360] về [-180, 180] để dễ xử lý
+        if (currentSteeringAngle > 180f)
+            currentSteeringAngle -= 360f;
+
+        // Chỉ cho phép quay nếu chưa vượt quá góc max
+        if ((horizontalInput > 0 && currentSteeringAngle < maxSteeringAngle) ||
+            (horizontalInput < 0 && currentSteeringAngle > -maxSteeringAngle))
+        {
+            steeringWheel.Rotate(Vector3.up * horizontalInput * 500f * Time.deltaTime);
+        }
+
+        // Nếu không có input, vô lăng sẽ tự động quay về vị trí trung tâm
+        if (horizontalInput == 0)
+        {
+            float returnSpeed = 100f * Time.deltaTime; // Tốc độ trả lái
+            float returnAmount = Mathf.Sign(-currentSteeringAngle) * returnSpeed;
+
+            if (Mathf.Abs(currentSteeringAngle) > 1f) // Tránh dao động nhỏ
+            {
+                steeringWheel.Rotate(Vector3.up * returnAmount);
+            }
+        }
+
     }
 
     private void UpdateWheels()

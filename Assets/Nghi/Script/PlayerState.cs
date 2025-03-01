@@ -1,20 +1,23 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerState : MonoBehaviour
 {
+    public Animator animator;
     public float maxHealth = 100f, maxHunger = 100f, maxHygiene = 100f, maxStrength = 100f;
     public float currentHealth, currentHunger, currentHygiene, currentStrength;
 
-    public Action<float> OnHealthChange;
-    public Action<float> OnHungerChange;
-    public Action<float> OnHygieneChange;
-    public Action<float> OnStrengthChange;
+    public event Action<float> OnHealthChange;
+    public event Action<float> OnHungerChange;
+    public event Action<float> OnHygieneChange;
+    public event Action<float> OnStrengthChange;
     // Start is called before the first frame update
     void Start()
     {
+        animator = GetComponent<Animator>();
+
         currentHealth = maxHealth;
         currentHunger = maxHunger;
         currentHygiene = maxHygiene;
@@ -23,8 +26,8 @@ public class PlayerState : MonoBehaviour
         InvokeRepeating(nameof(DecreaseHunger), 1f, 1f);
         InvokeRepeating(nameof(DecreaseHygiene), 2f, 2f);
 
-        OnHealthChange?.Invoke(currentHealth);
-        OnStrengthChange?.Invoke(currentStrength);
+        //OnHealthChange?.Invoke(currentHealth);
+       
     }
 
     // Update is called once per frame
@@ -63,15 +66,28 @@ public class PlayerState : MonoBehaviour
 
     public void DecreaseHealth(float amount)
     {
+        if (currentHealth <= 0) return; // Không giảm nữa nếu đã chết.
+
         currentHealth -= amount;
 
-        currentHealth = Math.Clamp(currentHealth, 0, 100);
+        currentHealth = Math.Clamp(currentHealth, 0, maxHealth);
 
-        OnHealthChange?.Invoke(currentHealth);
+        Debug.Log($"Health changed: {currentHealth}"); // Debug kiểm tra giá trị máu
 
-        if (currentHealth < 0)
+        if (OnHealthChange != null)
         {
-            Debug.Log("Player died!");
+            Debug.Log("Invoking OnHealthChange event..."); // Kiểm tra sự kiện có được gọi
+            OnHealthChange.Invoke(currentHealth);
+        }
+        else
+        {
+            Debug.LogWarning("OnHealthChange is null, UI won't update!");
+        }
+
+
+        if (currentHealth <= 0)
+        {
+            Debug.Log("Player is Dead!");
             CancelInvoke();
         }
     }

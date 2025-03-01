@@ -26,12 +26,11 @@ public class ObjectPlacement : MonoBehaviour
     {
         if (objectToPlace == null) return;
 
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.C) && previewPlacement != null)
         {
             inventory.AddItem(previewPlacement.GetComponent<Furniture>());
-            Destroy(previewPlacement.gameObject);
-            objectToPlace = null;
-            previewPlacement = null;
+            ResetPreviewPlacement();
+            return;
         }
 
         PlacePreview();
@@ -40,17 +39,23 @@ public class ObjectPlacement : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && canPlace)
         {
             Instantiate(objectToPlace, previewPlacement.transform.position, previewPlacement.transform.rotation);
-            Destroy(previewPlacement.gameObject);
-            previewPlacement = null;
-            objectToPlace = null;
+            ResetPreviewPlacement();
         }
+    }
+
+    void ResetPreviewPlacement()
+    {
+        Destroy(previewPlacement.gameObject);
+        objectToPlace = null;
+        previewPlacement = null;
+        UIInventory.instance.RefreshInventoryUI();
     }
 
     void PlacePreview()
     {
         Vector3 rayOrigin = transform.position + transform.forward * previewDistance;
 
-        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, Mathf.Infinity, groundLayer))
+        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hitInfo, Mathf.Infinity))
         {
             if (previewPlacement == null && objectToPlace != null)
             {
@@ -63,20 +68,22 @@ public class ObjectPlacement : MonoBehaviour
             Vector3 colliderCenter = previewCollider.bounds.center;
             Vector3 offset = colliderCenter - previewCollider.transform.position;
 
-            Vector3 placementPosition = hitInfo.point;
+            Vector3 placementPosition = hitInfo.point - new Vector3(0, 0.1f, 0);
 
             previewPlacement.transform.position = placementPosition;
             Collider[] colliders = Physics.OverlapBox(placementPosition + offset, extents);
 
-            if (colliders.Length > 1) canPlace = false;
-            else if (colliders.Length > 0 && colliders[0].gameObject == previewPlacement.gameObject) canPlace = true;
+            //foreach (var c in colliders) Debug.Log(c.gameObject.name);
 
+            if ((groundLayer & (1 << hitInfo.collider.gameObject.layer)) != 0 && colliders.Length <= 2) canPlace = true;
+            else canPlace = false;
             SetTransparency(previewPlacement, canPlace ? Color.green : Color.red);
 
             //previewPlacement.GetComponent<Renderer>().material.color = canPlace ? Color.green : Color.red;
             DrawDebugBox(placementPosition + offset, extents, canPlace ? Color.green : Color.red);
 
         }
+
     }
 
     void AdjustPreviewPosition()
@@ -88,7 +95,7 @@ public class ObjectPlacement : MonoBehaviour
         if (mouseScroll != 0)
         {
             previewDistance += mouseScroll * scrollSpeed;
-            previewDistance = Mathf.Clamp(previewDistance, 1, 10f);
+            previewDistance = Mathf.Clamp(previewDistance, 4f, 10f);
         }
 
         int rotateDirection = Input.GetKey(KeyCode.R) ? 1 : Input.GetKey(KeyCode.Q) ? -1 : 0;

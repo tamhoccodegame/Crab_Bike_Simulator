@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 701950922015059871}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 60.96, y: 0, z: 48.24}
+  m_LocalPosition: {x: 62.319984, y: 0, z: 48.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 7995659231334846134}
   nextWaypoint: {fileID: 1773075079285634682}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &876309927250797947
@@ -75,7 +75,7 @@ Transform:
   m_GameObject: {fileID: 876309927250797947}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.9283807, z: -0, w: -0.37163052}
-  m_LocalPosition: {x: 59.84, y: 0, z: -11.17}
+  m_LocalPosition: {x: 59.84, y: 0, z: -12.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -95,7 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 1773075079285634682}
   nextWaypoint: {fileID: 3376833528047302727}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &1039341232406405145
@@ -222,7 +222,7 @@ Transform:
   m_GameObject: {fileID: 1425327339006249279}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.07, y: 0, z: -0.19}
+  m_LocalPosition: {x: -0.3200146, y: 0, z: -0.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 1758817974436259155}
   nextWaypoint: {fileID: 3066540270498793485}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &1803445075489441407
@@ -271,7 +271,7 @@ Transform:
   m_GameObject: {fileID: 1803445075489441407}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.45691088, z: -0, w: 0.8895125}
-  m_LocalPosition: {x: 1.07, y: 0, z: -10.78}
+  m_LocalPosition: {x: 0.8, y: 0, z: -11.47}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -291,7 +291,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 8573970445129241763}
   nextWaypoint: {fileID: 2957535500397593805}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &1952832493296961110
@@ -343,6 +343,105 @@ MonoBehaviour:
   width: 5
   branches: []
   branchRatio: 0.5
+--- !u!1 &2560199503769573626
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2525342580832608951}
+  - component: {fileID: 1446848125230804996}
+  m_Layer: 0
+  m_Name: 'Waypoint: 30'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2525342580832608951
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2560199503769573626}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.486, y: 0, z: -15.607}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 593313689323129442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1446848125230804996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2560199503769573626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead397bc0ec623d4793f798015ee9462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previousWaypoint: {fileID: 4998724962292460877}
+  nextWaypoint: {fileID: 2052774610368003971}
+  width: 3
+  branches:
+  - {fileID: 7189105640553889092}
+  branchRatio: 1
+--- !u!1 &3388957216876365160
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 395506957779134078}
+  - component: {fileID: 2052774610368003971}
+  m_Layer: 0
+  m_Name: 'Waypoint: 31'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &395506957779134078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3388957216876365160}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: 0.66, y: 0, z: -26.67}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 593313689323129442}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2052774610368003971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3388957216876365160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ead397bc0ec623d4793f798015ee9462, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  previousWaypoint: {fileID: 1446848125230804996}
+  nextWaypoint: {fileID: 0}
+  width: 3
+  branches: []
+  branchRatio: 0.5
 --- !u!1 &3418954966882030168
 GameObject:
   m_ObjectHideFlags: 0
@@ -369,7 +468,7 @@ Transform:
   m_GameObject: {fileID: 3418954966882030168}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 60.960022, y: 0, z: -9.34}
+  m_LocalPosition: {x: 62.320007, y: 0, z: -9.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -389,7 +488,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 5322627535623885048}
   nextWaypoint: {fileID: 4812975121018760960}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &3486216589459065214
@@ -418,7 +517,7 @@ Transform:
   m_GameObject: {fileID: 3486216589459065214}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 58.25, y: 0, z: 54}
+  m_LocalPosition: {x: 58.25, y: 0, z: 55.160004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -438,7 +537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 2950862759702882224}
   nextWaypoint: {fileID: 7995659231334846134}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &4125314140130534502
@@ -467,7 +566,7 @@ Transform:
   m_GameObject: {fileID: 4125314140130534502}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.95, y: 0, z: -8.05}
+  m_LocalPosition: {x: -0.44001466, y: 0, z: -8.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -487,7 +586,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 7189105640553889092}
   nextWaypoint: {fileID: 1758817974436259155}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &4171818320673846188
@@ -516,7 +615,7 @@ Transform:
   m_GameObject: {fileID: 4171818320673846188}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.06, y: 0, z: -4.83}
+  m_LocalPosition: {x: -0.33, y: 0, z: -4.83}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -536,7 +635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 2957535500397593805}
   nextWaypoint: {fileID: 9142268115516433852}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &4387634321778322527
@@ -565,7 +664,7 @@ Transform:
   m_GameObject: {fileID: 4387634321778322527}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.3088947, z: -0, w: 0.9510963}
-  m_LocalPosition: {x: 2.19, y: 0, z: 53.37}
+  m_LocalPosition: {x: 2.19, y: 0, z: 54.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -585,59 +684,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 6657831118542295647}
   nextWaypoint: {fileID: 2950862759702882224}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
---- !u!1 &4477081367224958391
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1745210421596253255}
-  - component: {fileID: 8489868825458053823}
-  m_Layer: 0
-  m_Name: 'Waypoint: 30'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1745210421596253255
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4477081367224958391}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.99090916, z: -0, w: -0.1345331}
-  m_LocalPosition: {x: 0.38, y: 0, z: -14}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 593313689323129442}
-  m_LocalEulerAnglesHint: {x: 0, y: -164.537, z: 0}
---- !u!114 &8489868825458053823
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4477081367224958391}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ead397bc0ec623d4793f798015ee9462, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  previousWaypoint: {fileID: 0}
-  nextWaypoint: {fileID: 166739051480978999}
-  width: 1
-  branches:
-  - {fileID: 2957535500397593805}
-  branchRatio: 1
 --- !u!1 &5239344461835222970
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,7 +762,7 @@ Transform:
   m_GameObject: {fileID: 5259120517453639783}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 57.94, y: 0, z: -12.05}
+  m_LocalPosition: {x: 57.94, y: 0, z: -13.479993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -733,7 +782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 4812975121018760960}
   nextWaypoint: {fileID: 8573970445129241763}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &5274258567502926839
@@ -761,7 +810,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5274258567502926839}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 739.34, y: 30.9017, z: 268.37}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -782,8 +831,9 @@ Transform:
   - {fileID: 7192882585573277159}
   - {fileID: 2914001125929631860}
   - {fileID: 4668586338147672394}
-  - {fileID: 1745210421596253255}
   - {fileID: 4452936919782620517}
+  - {fileID: 395506957779134078}
+  - {fileID: 2525342580832608951}
   - {fileID: 3787554380171260975}
   - {fileID: 9093909398596337508}
   - {fileID: 8371517177160058320}
@@ -840,7 +890,7 @@ Transform:
   m_GameObject: {fileID: 5759835063315157919}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.03, y: 0, z: 27.2}
+  m_LocalPosition: {x: -0.36001468, y: 0, z: 27.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -860,7 +910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 3066540270498793485}
   nextWaypoint: {fileID: 6657831118542295647}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &5870398581419645191
@@ -1183,7 +1233,7 @@ Transform:
   m_GameObject: {fileID: 7625295807869460853}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.04, y: 0, z: 9.59}
+  m_LocalPosition: {x: -0.3500147, y: 0, z: 9.59}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1203,7 +1253,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 9142268115516433852}
   nextWaypoint: {fileID: 2743548490460791846}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &7638534596764056231
@@ -1232,7 +1282,7 @@ Transform:
   m_GameObject: {fileID: 7638534596764056231}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.59707546, z: -0, w: 0.8021851}
-  m_LocalPosition: {x: 4.76, y: 0, z: 54.11}
+  m_LocalPosition: {x: 4.76, y: 0, z: 55.270004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1252,7 +1302,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 761579712070771695}
   nextWaypoint: {fileID: 8236269000795783114}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &7649231680655760537
@@ -1281,7 +1331,7 @@ Transform:
   m_GameObject: {fileID: 7649231680655760537}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 2.63, y: 0, z: -12.19}
+  m_LocalPosition: {x: 3.03, y: 0, z: -12.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1301,7 +1351,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 3376833528047302727}
   nextWaypoint: {fileID: 7189105640553889092}
-  width: 2.44
+  width: 3
   branches:
   - {fileID: 166739051480978999}
   branchRatio: 0.5
@@ -1380,7 +1430,7 @@ Transform:
   m_GameObject: {fileID: 8120009106355616868}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
-  m_LocalPosition: {x: 0.66, y: 0, z: -27.62}
+  m_LocalPosition: {x: 0.66, y: 0, z: -26.68}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1430,7 +1480,7 @@ Transform:
   m_GameObject: {fileID: 8235438339586714663}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.14, y: 0, z: 51.34}
+  m_LocalPosition: {x: -0.25001466, y: 0, z: 51.34}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1450,7 +1500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 2743548490460791846}
   nextWaypoint: {fileID: 761579712070771695}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5
 --- !u!1 &8262910490027422857
@@ -1479,7 +1529,7 @@ Transform:
   m_GameObject: {fileID: 8262910490027422857}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0.49, y: 0, z: -16.71}
+  m_LocalPosition: {x: 0.49, y: 0, z: -15.61}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1497,7 +1547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ead397bc0ec623d4793f798015ee9462, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  previousWaypoint: {fileID: 8489868825458053823}
+  previousWaypoint: {fileID: 0}
   nextWaypoint: {fileID: 4998724962292460877}
   width: 3
   branches: []
@@ -1528,7 +1578,7 @@ Transform:
   m_GameObject: {fileID: 8728818066446795208}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.40695378, z: -0, w: 0.91344875}
-  m_LocalPosition: {x: 6.53, y: 0, z: -34.72}
+  m_LocalPosition: {x: 6.9, y: 0, z: -34.98}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1549,7 +1599,8 @@ MonoBehaviour:
   previousWaypoint: {fileID: 7555074360175216117}
   nextWaypoint: {fileID: 4714464891929414474}
   width: 5
-  branches: []
+  branches:
+  - {fileID: 2052774610368003971}
   branchRatio: 0.5
 --- !u!1 &8911941612405202770
 GameObject:
@@ -1577,7 +1628,7 @@ Transform:
   m_GameObject: {fileID: 8911941612405202770}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.9125135, z: -0, w: 0.40904668}
-  m_LocalPosition: {x: 60.62, y: 0, z: 52.45}
+  m_LocalPosition: {x: 61.98, y: 0, z: 52.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1597,6 +1648,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   previousWaypoint: {fileID: 8236269000795783114}
   nextWaypoint: {fileID: 5322627535623885048}
-  width: 2.44
+  width: 3
   branches: []
   branchRatio: 0.5

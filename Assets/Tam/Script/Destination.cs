@@ -1,34 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using System.Linq;
 using UnityEngine;
 
 public class Destination : MonoBehaviour
 {
-    public CrabService crabService;
     public bool isThisPickUpPoint;
-    public GameObject customer;
-    public List<GameObject> customerVisual = new List<GameObject>();
-    private int currentCustomerIndex;
 
     // Start is called before the first frame update
     void Start()
     {
-        foreach(Transform c in customer.transform)
-        {
-            if (c.name == "Root") continue;
-            customerVisual.Add(c.gameObject);
-        }
-        gameObject.SetActive(false);
+        
     }
 
     private void OnEnable() 
     {
-        if (customerVisual.Count == 0) return;
-        isThisPickUpPoint = Vector3.Distance(crabService.currentPickUpPoint.position, transform.position) <= 0.5f;
-        customerVisual[currentCustomerIndex].gameObject.SetActive(false);
-        currentCustomerIndex = Random.Range(0, customerVisual.Count);
-        Debug.Log(customerVisual.Count);
-        customerVisual[currentCustomerIndex].gameObject.SetActive(isThisPickUpPoint);
+
     }
 
     // Update is called once per frame
@@ -43,26 +31,28 @@ public class Destination : MonoBehaviour
         {
             if(isThisPickUpPoint)
             {
-                crabService.SetDestination();
+                CrabService.instance.SetDestination();
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
-                Transform duplicatCustomer = Instantiate(customer, customer.transform.parent).transform;
-                customerVisual[currentCustomerIndex].gameObject.SetActive(false);
-                duplicatCustomer.GetComponent<Animator>().SetBool("isOnTrip", true);
-                duplicatCustomer.GetComponent<WaitingCustomer>().enabled = false;
-                duplicatCustomer.transform.SetParent(customerSitPosition, true);
-                duplicatCustomer.transform.localPosition = Vector3.zero;
-                duplicatCustomer.transform.localRotation = Quaternion.Euler(0,0,0);
+                Transform customer = transform.parent;
+                customer.GetComponent<CharacterController>().enabled = false;
+                customer.GetComponent<Animator>().SetLayerWeight(2, 1);
+                customer.GetComponent<Animation_Random>().enabled = false;
+                customer.transform.SetParent(customerSitPosition, true);
+                customer.transform.localPosition = Vector3.zero;
+                customer.transform.localRotation = Quaternion.Euler(0,0,0);
             }
             else
             { 
-                crabService.CompleteTrip();
+                CrabService.instance.CompleteTrip();
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
-                Transform _customer = customerSitPosition.Find("NPC(Clone)");
+                Transform _customer = customerSitPosition.GetChild(0);
                 _customer.transform.SetParent(null);
                 _customer.transform.position += new Vector3(0, 0, 2);
                 _customer.transform.rotation = Quaternion.Euler(0,0,0);
-                _customer.GetComponent<Animator>().SetBool("isOnTrip", false);
-                _customer.GetComponent <WaitingCustomer>().enabled = true;
+                _customer.GetComponent<CharacterController>().enabled = true;
+                _customer.GetComponent<Animator>().SetLayerWeight(2, 0);
+                _customer.GetComponent<CharacterNavigateController>().enabled = true;
+                GetComponent<NPC_Behavior>().enabled = true;
             }
             gameObject.SetActive(false);
         }

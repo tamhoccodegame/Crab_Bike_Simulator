@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class TPlayerController : MonoBehaviour
+public class TPlayerController : Controller
 {
+    public static TPlayerController instance;
     public float rotationSpeed;
     public float walkSpeed;
     public float runSpeed;
@@ -19,17 +20,29 @@ public class TPlayerController : MonoBehaviour
     private Camera cam;
 
     private Animator animator;
-    private GameManager gameManager;
+
+    public HitBox hitBox;
+
+    public enum PlayerMode
+    {
+        Normal,
+        Shopping,
+    }
+
+    public PlayerMode playerMode = PlayerMode.Normal;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameManager.instance;
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         cam = Camera.main;
 
-        gameManager.onGameStateChange += OnGameStateChange;
         currentSpeed = walkSpeed;
 
         //Cursor.lockState = CursorLockMode.Locked;
@@ -39,8 +52,14 @@ public class TPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetMouseButtonDown(0))
+        {
+            animator.SetTrigger("isAttack");
+        }
+
         if (!canMove)
         {
+            movement = Vector3.zero;    
             animator.SetBool("Walking", false);
             animator.SetBool("Running", false);
             return;
@@ -49,6 +68,16 @@ public class TPlayerController : MonoBehaviour
         ChangeSpeed();
         CalculateMove();
 	}
+
+    void ActivateHitbox()
+    {
+        hitBox.ActivateHitbox();
+    }
+
+    void DeactivateHitbox()
+    {
+        hitBox.DeactivateHitbox();
+    }
 
     private void FixedUpdate()
     {
@@ -66,21 +95,27 @@ public class TPlayerController : MonoBehaviour
         controller.Move(movement * currentSpeed * Time.deltaTime);
     }
 
-    void OnGameStateChange(GameManager.GameState gameState)
+    public void ChangePlayerMode(PlayerMode newMode)
     {
-        if(gameState == GameManager.GameState.Menu)
+        if(playerMode != newMode)
         {
-            canMove = false;
+            playerMode = newMode;
+            switch(playerMode)
+            {
+                case PlayerMode.Normal:
+                    canMove = true;
+                    break;
+                case PlayerMode.Shopping:
+                    canMove = false; 
+                    break;
+            }
         }
-        else if(gameState == GameManager.GameState.Playing)
-        {
-            canMove = true;
-		}
-	}
+    }
 
     public void Footstep()
     {
-        GetComponent<AudioSource>().Play();
+        int index = Random.Range(1, 9);
+        AudioManager.instance.PlaySound($"Footstep_{index}");
     }
 
     void ChangeSpeed()

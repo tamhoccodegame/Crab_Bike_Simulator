@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Vehicle : MonoBehaviour
 {
+    public string name;
     public int price;
     public float speed;
 

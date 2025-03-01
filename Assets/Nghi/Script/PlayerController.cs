@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     {
         //Idle,
         Move,
-        Dash,
+        Attack,
     }
 
 
@@ -40,6 +40,20 @@ public class PlayerController : MonoBehaviour
 
     public Transform orientation; // Gắn Empty Object giữ hướng Player
 
+    //Attack
+    public int attackAnimationCount; // Số lượng animations có trong Animator
+    public Transform attackPoint;
+    public float attackRange;
+    public LayerMask npcLayer;
+    public float attackDamage;
+
+    public HitBox hitBox;
+    public float attackCooldown = 2f;
+    public float attackDuration = 0.2f;
+    private float lastAttackTime;
+
+    private bool canAttack; 
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -52,6 +66,16 @@ public class PlayerController : MonoBehaviour
         UpdateAnimator();
         Move();
         RotatePlayerToCamera(); // Gọi hàm xoay Player
+
+        if (Input.GetMouseButtonDown(0) && Time.time - lastAttackTime >= attackCooldown)
+        {
+            ChangeState(PlayerState.Attack);
+        }
+
+        //if (Input.GetMouseButtonDown(0) && canAttack)
+        //{
+        //    ChangeState(PlayerState.Attack);
+        //}
     }
 
     public void ChangeState(PlayerState newState)
@@ -62,6 +86,8 @@ public class PlayerController : MonoBehaviour
             //    break;
             case PlayerState.Move:
                 break;
+            case PlayerState.Attack:
+                break;
         }
 
         switch (newState)
@@ -70,6 +96,10 @@ public class PlayerController : MonoBehaviour
             //    break;
             case PlayerState.Move:
                 Move();
+                break;
+            case PlayerState.Attack:
+                Attack();
+                //StartCoroutine(AttackCoroutine());
                 break;
         }
 
@@ -196,5 +226,86 @@ public class PlayerController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection); // Tính góc quay
             transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * 10f); // Quay mượt
         }
+    }
+
+    public void Attack()
+    {
+        // Kiểm tra nếu chưa hết cooldown thì không cho đánh
+        if (Time.time - lastAttackTime < attackCooldown)
+        {
+            Debug.Log("Chưa thể tấn công, hãy chờ cooldown!");
+            return;
+        }
+
+        int randomAttackAnimation = Random.Range(0, attackAnimationCount);
+
+        animator.SetInteger("Index", randomAttackAnimation);
+        animator.SetTrigger("isAttack");
+
+        //Check va cham
+        Collider[] hitNPC = Physics.OverlapSphere(attackPoint.position, attackRange, npcLayer);
+
+        foreach (Collider npc in hitNPC)
+        {
+            //Tru mau
+            if (npc != null)//Bi danh trung
+            {
+                //Invoke(nameof(ActivateHitbox), 0.2f); // Bật hitbox khi tay chạm vào NPC
+                lastAttackTime = Time.time;
+                //*******************
+                //NPC_Health npc_Health = npc.GetComponent<NPC_Health>();
+                //npc_Health.TakeDamage(attackDamage);
+            }
+        }
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        canAttack = false;
+
+        int randomAttackAnimation = Random.Range(0, attackAnimationCount);
+        animator.SetInteger("Index", randomAttackAnimation);
+        animator.SetTrigger("isAttack");
+
+        // Chờ cooldown trước khi có thể tấn công lần tiếp theo
+        yield return new WaitForSeconds(attackCooldown);
+        canAttack = true;
+
+        //canAttack = false; // Không thể tấn công liên tục
+
+        //int randomAttackAnimation = Random.Range(0, attackAnimationCount);
+        //animator.SetInteger("Index", randomAttackAnimation);
+        //animator.SetTrigger("isAttack");
+        ////Check va cham
+        //Collider[] hitNPCArray = Physics.OverlapSphere(transform.position, attackRange, npcLayer);
+        //foreach(Collider npc in hitNPCArray)
+        //{
+        //    if (npc != null)
+        //    {
+        //        //Cho thoi gian hien thi, ton tai HitBox  
+        //        yield return new WaitForSeconds(attackDuration);
+        //    }
+        //}
+        ////Cho thoi gian CoolDown
+        //yield return new WaitForSeconds(attackCooldown-attackDuration);
+        //canAttack = true; // Cho phép tấn công lại
+    }
+
+    void ActivateHitbox()
+    {
+        hitBox.ActivateHitbox();
+    }
+
+
+    void DeactivateHitbox()
+    {
+        hitBox.DeactivateHitbox();
+    }
+
+    //Hien thi attackRange trong Scene
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 [ExecuteAlways]
 public class LightingManager : MonoBehaviour
 {
+    public static LightingManager instance;
     //Scene References
     [SerializeField] private Light DirectionalLight;
     [SerializeField] private LightingPreset Preset;
@@ -21,6 +22,9 @@ public class LightingManager : MonoBehaviour
     [SerializeField, Range(0, 24)] public float TimeOfDay;
     private int day = 1;
 
+    public AudioSource openingDayAudio;
+    public TextMeshProUGUI TimeOfDayBig;
+
     private float secondsPerGameHour = 60f; // 60 giây thực tế = 1 giờ trong game
 
     public TextMeshProUGUI timeText;
@@ -28,8 +32,10 @@ public class LightingManager : MonoBehaviour
 
     private GameObject[] lights;
 
-    public bool isNight = false;
-
+    private void Awake()
+    {
+        instance = this;
+    }
     private void Start()
     {
         timeText.text = "Time: " + TimeOfDay;
@@ -51,6 +57,7 @@ public class LightingManager : MonoBehaviour
 
             UpdateLight();
             UpdateSkyBox();
+            TriggerSpecialEvent();
 
             if (TimeOfDay >= 24f)
             {
@@ -67,9 +74,30 @@ public class LightingManager : MonoBehaviour
         }
     }
 
+    void TriggerSpecialEvent()
+    {
+        int hours = Mathf.FloorToInt(TimeOfDay);
+        if (Mathf.FloorToInt((TimeOfDay - hours) * 60) > 0) return;
+        if (5 == hours)
+        {
+            GameManager.instance.ChangeGameState(GameManager.GameState.Texting);
+            if(!openingDayAudio.isPlaying)
+            openingDayAudio.Play();
+            TimeOfDayBig.gameObject.SetActive(false);
+            return;
+        }
+        if(24 == hours)
+        {
+            GameManager.instance.ChangeGameState(GameManager.GameState.Sleeping);
+            SystemNotify.instance.SendBigNoti("Bạn đang ngủ.....", Color.white);
+            TimeOfDayBig.gameObject.SetActive(true);
+            return;
+        }
+    }
+
     private void UpdateLight()
     {
-        if (TimeOfDay >= 7.5f && TimeOfDay < 20)
+        if (TimeOfDay >= 7.5f && TimeOfDay < 18f)
         {
             // Tắt đèn vào ban ngày
             foreach (var light in lights)
@@ -120,6 +148,7 @@ public class LightingManager : MonoBehaviour
         {
             RenderSettings.skybox = nightSkyBox; 
         }
+        
     }
 
 
@@ -171,6 +200,12 @@ public class LightingManager : MonoBehaviour
         int minutes = Mathf.FloorToInt((TimeOfDay - hours) * 60); // Lấy phần phút
 
         timeText.text = $"Time: {hours:D2}:{minutes:D2}";
+        TimeOfDayBig.text = $"{hours:D2}:{minutes:D2}";
         dayText.text = "Day: " + day;
+    }
+
+    public void SetDaySpeed(float speed)
+    {
+        secondsPerGameHour = speed;
     }
 }

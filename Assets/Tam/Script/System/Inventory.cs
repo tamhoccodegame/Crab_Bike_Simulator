@@ -11,9 +11,8 @@ public class Inventory
 
     public Inventory()
     {
-        inventoryItems.Add(new Food { foodType = Food.FoodType.Burger });
-        inventoryItems.Add(new Food { foodType = Food.FoodType.Soda });
-        inventoryItems.Add(new Furniture { type = Furniture.FurnitureType.Wardrobe });
+        //inventoryItems.Add(new Food { foodType = Food.FoodType.Burger });
+        //inventoryItems.Add(new Food { foodType = Food.FoodType.Soda });
     }
 
     public List<IShopItem> GetItemList()
