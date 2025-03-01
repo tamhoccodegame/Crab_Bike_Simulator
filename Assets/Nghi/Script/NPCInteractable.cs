@@ -136,8 +136,9 @@ public class NPCInteractable : MonoBehaviour
 
             Debug.Log($"{gameObject.name} được tương tác bởi {interactorTransform.name}");
 
-            bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Healed player!");
-            //HealPlayer();
+            
+            Doctor_Behavior doctor_Behavior = GetComponent<Doctor_Behavior>();
+            doctor_Behavior.HealPlayer();
             //^^^^^^^^^^^^^^^^^^^^^^^^^^^^
             
 

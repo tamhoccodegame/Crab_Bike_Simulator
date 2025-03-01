@@ -13,6 +13,9 @@ public class PlayerState : MonoBehaviour
     public event Action<float> OnHungerChange;
     public event Action<float> OnHygieneChange;
     public event Action<float> OnStrengthChange;
+
+
+    public float money = 50000; // Số tiền mặc định
     // Start is called before the first frame update
     void Start()
     {
