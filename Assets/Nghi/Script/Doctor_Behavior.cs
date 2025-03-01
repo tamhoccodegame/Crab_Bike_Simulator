@@ -49,8 +49,13 @@ public class Doctor_Behavior : MonoBehaviour
         float healAmount = Mathf.Min(missingHealth, maxHealableHP);
         float cost = (healAmount / 10) * healingCostPerHP;
 
-        playerState.currentHealth += healAmount;
+       // playerState.currentHealth += healAmount;
         playerState.money -= cost;
+
+        //// Gọi sự kiện cập nhật UI ngay sau khi hồi máu
+        playerState.AddHealth(healAmount); //Gọi AddHealth() để hồi máu và cập nhật UI
+        //playerState.OnHealthChange?.Invoke(playerState.currentHealth);
+
         bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Healed player!");
         Debug.Log($"Đã hồi {healAmount} máu với giá {cost} VND. Máu hiện tại: {playerState.currentHealth}, Tiền còn lại: {playerState.money}");
     }
