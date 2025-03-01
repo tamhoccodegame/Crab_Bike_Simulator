@@ -58,7 +58,7 @@ public class Animation_Random : MonoBehaviour
 
     private void OnDisable()
     {
-        GetComponent<Animator>().SetInteger("index", 0);
+        GetComponent<Animator>().SetInteger("Index", 0);
         StopAllCoroutines();
     }
 }

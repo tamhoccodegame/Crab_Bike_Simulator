@@ -66,7 +66,7 @@ public class CharacterNavigateController : MonoBehaviour
             }
         }
 
-        if (!Physics.Raycast(foot.position, transform.TransformDirection(Vector3.down), 0.1f))
+        if (!Physics.Raycast(foot.position, transform.TransformDirection(Vector3.down), 0.01f))
         {
             moveDirection.y += gravityStrength * Time.deltaTime;
         }
@@ -87,7 +87,6 @@ public class CharacterNavigateController : MonoBehaviour
 
     void DisableBehaviour()
     {
-        Debug.Log("Disable on: " + gameObject.name);
         animator.Play("Walking");
         foreach (var m in npcBehaviourScripts)
         {

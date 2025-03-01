@@ -43,7 +43,7 @@ public class NPC_Behavior : MonoBehaviour
         npcAgent = GetComponent<NavMeshAgent>();
         npc_Health = GetComponent<NPC_Health>();
         npcInteractable = GetComponent<NPCInteractable>();
-
+        playerTransform = GameObject.FindWithTag("Player").transform.Find("PlayerVisual");
        
     }
 
@@ -140,10 +140,11 @@ public class NPC_Behavior : MonoBehaviour
         }
 
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-        //Debug.Log($"Distance to Player: {distanceToPlayer} | Attack Range: {npcAttackRange}");
+        Debug.Log($"Distance to Player: {distanceToPlayer} | Attack Range: {npcAttackRange}");
 
-        if(distanceToPlayer > npcChaseRange)
+        if (distanceToPlayer > npcChaseRange)
         {
+            Debug.Log("Out of chase Range, enable CharacterNavigate");
             GetComponent<CharacterNavigateController>().enabled = true;
             isChasing = false;
             npc_Health.SetCombatLayerActive(false);

@@ -26,7 +26,7 @@ public class NPC_Health : MonoBehaviour
         SetCombatLayerActive(false); // Mặc định tắt Combat Layer
 
         npcCurrentHeath = npcMaxHeath;
-        Debug.Log($"{gameObject.name} khởi tạo với máu: {npcCurrentHeath}");
+        //Debug.Log($"{gameObject.name} khởi tạo với máu: {npcCurrentHeath}");
 
         animator = GetComponent<Animator>();
 

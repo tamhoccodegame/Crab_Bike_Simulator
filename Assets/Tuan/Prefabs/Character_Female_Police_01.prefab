@@ -2029,6 +2029,8 @@ GameObject:
   - component: {fileID: 2236515298239334115}
   - component: {fileID: -3435539190174032647}
   - component: {fileID: 5691624596063369295}
+  - component: {fileID: -5477353102196521022}
+  - component: {fileID: 6123105058233982357}
   m_Layer: 0
   m_Name: Character_Female_Police_01
   m_TagString: NPC
@@ -2226,7 +2228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cff6668f097d2d47b78db3c1775ab2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcType: 0
+  npcType: 1
   animator: {fileID: 3959675525391894269}
   attackAnimationCount: 0
   policeStationTransform: {fileID: 0}
@@ -2238,6 +2240,40 @@ MonoBehaviour:
   npcInteractable: {fileID: -3435539190174032647}
   hitBox: {fileID: 1563041061478166697}
   police_Behavior: {fileID: 0}
+--- !u!195 &-5477353102196521022
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6990728575009035438}
+  m_Enabled: 1
+  m_AgentTypeID: 658490984
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &6123105058233982357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6990728575009035438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2881c413416b51144834099048ec60bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7163039205869043292
 GameObject:
   m_ObjectHideFlags: 0

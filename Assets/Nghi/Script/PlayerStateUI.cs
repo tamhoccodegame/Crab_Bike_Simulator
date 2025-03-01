@@ -19,7 +19,7 @@ public class PlayerStateUI : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Registering OnHealthChange event..."); // Thêm dòng này để kiểm tra số lần đăng ký sự kiện
+        //Debug.Log("Registering OnHealthChange event..."); // Thêm dòng này để kiểm tra số lần đăng ký sự kiện
         player.OnHealthChange -= ChangeHealthUI; // Đảm bảo không bị đăng ký nhiều lần
         //player.OnHealthChange += ChangeHealthUI; // Đăng ký UI update khi máu thay đổi
 
@@ -38,7 +38,7 @@ public class PlayerStateUI : MonoBehaviour
         player.OnStrengthChange += ChangeStrengthUI;
         ChangeStrengthUI(player.currentStrength);
 
-        Debug.Log("OnHealthChange subscribed");//để xem có bị gọi nhiều lần không.
+        //Debug.Log("OnHealthChange subscribed");//để xem có bị gọi nhiều lần không.
 
     }
 
@@ -50,7 +50,7 @@ public class PlayerStateUI : MonoBehaviour
 
     public void ChangeHealthUI(float value)
     {
-        Debug.Log($"Updating Health UI: {value}"); // Debug kiểm tra UI có cập nhật không
+        //Debug.Log($"Updating Health UI: {value}"); // Debug kiểm tra UI có cập nhật không
         healthSlider.value = value;
 
         healthSlider.gameObject.SetActive(false); // Tắt nhanh rồi bật lại để Unity refresh
