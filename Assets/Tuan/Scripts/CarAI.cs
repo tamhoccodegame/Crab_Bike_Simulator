@@ -8,6 +8,7 @@ public class CarAI : MonoBehaviour
     public GameObject waypointsContainer;
     private TrafficLight trafficLight;
     public float speed = 10f;
+    public float waypointThreshold = 1f;
     private int currentWaypointIndex = 0;
     private bool TrafficZone = false;
     private bool isTrafficSystemActive = true;
@@ -45,31 +46,24 @@ public class CarAI : MonoBehaviour
 
     public void TrafficSystem()
     {
-        if (trafficLight != null)
+        if (trafficLight.currentLightState == TrafficLight.LightState.Red)
         {
-            Debug.Log("Current Traffic Light State: " + trafficLight.currentLightState);
-
-            if (trafficLight.currentLightState == TrafficLight.LightState.Red)
+            if (!agent.isStopped)
             {
-                if (!agent.isStopped)
-                {
-                    agent.isStopped = true;
-                }
-            }
-            else
-            {
-                if (agent.isStopped)
-                {
-                    agent.isStopped = false;
-                }
-
-                MoveToNextWaypoint();
+                agent.isStopped = true;
+                agent.velocity = Vector3.zero;
             }
         }
         else
         {
+            if (agent.isStopped)
+            {
+                agent.isStopped = false;
+            }
+
             MoveToNextWaypoint();
         }
+
     }
 
 
@@ -78,7 +72,7 @@ public class CarAI : MonoBehaviour
         if (waypoints.Length == 0)
            return;
 
-        if (!agent.pathPending && agent.remainingDistance < 1f)
+        if (!agent.pathPending && agent.remainingDistance < waypointThreshold)
         {
             if (!agent.isStopped)
             {
@@ -99,7 +93,6 @@ public class CarAI : MonoBehaviour
         if (other.CompareTag("Reverse"))
         {
             StartCoroutine(delayTraffic());
-            Debug.Log("Car is going in the opposite direction, ignoring traffic lights.");
         }
     }
 
@@ -113,24 +106,19 @@ public class CarAI : MonoBehaviour
             {
                 MoveToNextWaypoint();
             }
+            
         }
-        if (other.CompareTag("Reverse"))
-        {
-            Debug.Log("Exited Reverse Zone.");
-            StartCoroutine(ResumeTrafficSystem());
-        }
+        
+
+
+
     }
     IEnumerator delayTraffic()
     {
-        TrafficZone = false;
-        yield return new WaitForSeconds(1f);
-        TrafficZone = true;
-    }
-    IEnumerator ResumeTrafficSystem()
-    {
-        yield return new WaitForSeconds(1f); // Optional: Delay before resuming
-        TrafficZone = true;
-        Debug.Log("Resumed traffic system.");
+        isTrafficSystemActive = false;
+        yield return new WaitForSeconds(7f);
+        Debug.Log("Wait for return traffic");
+        isTrafficSystemActive = true;
     }
     Transform[] GetWaypoints(GameObject container)
     {

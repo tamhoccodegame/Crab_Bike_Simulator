@@ -46,7 +46,7 @@ public class StopDistanceCar : MonoBehaviour
                 if (!agent.isStopped)
                 {
                     agent.isStopped = true;
-                    Debug.Log("Car stopped due to car in front.");
+                    agent.velocity = Vector3.zero;
                 }
             }
             else
@@ -55,7 +55,6 @@ public class StopDistanceCar : MonoBehaviour
                 {
                     agent.isStopped = false;
                     carAI.MoveToNextWaypoint();
-                    Debug.Log("Car is moving to next waypoint.");
                 }
             }
         }
@@ -70,7 +69,6 @@ public class StopDistanceCar : MonoBehaviour
                 isCarInFront = true;
                 tag = "RearCar";
                 isRearCar = true;
-                Debug.Log("Car in front detected. Marked as rear car.");
             }
         }
     }
@@ -79,7 +77,6 @@ public class StopDistanceCar : MonoBehaviour
     {
         if (other.CompareTag("Car"))
         {
-            Debug.Log("Exit trigger with another car.");
 
             if (isRearCar)
             {
@@ -88,7 +85,6 @@ public class StopDistanceCar : MonoBehaviour
                 isRearCar = false;
                 agent.isStopped = false;
                 carAI.MoveToNextWaypoint();
-                Debug.Log("Rear car resumes moving to next waypoint.");
             }
         }
     }
