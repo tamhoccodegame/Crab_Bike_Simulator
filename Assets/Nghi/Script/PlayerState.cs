@@ -118,7 +118,13 @@ public class PlayerState : MonoBehaviour
 
     public void AddHealth(float amount)
     {
+        currentHealth += amount;
 
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+
+        Debug.Log($"Healing {amount}. Current Health: {currentHealth}");
+
+        OnHealthChange?.Invoke(currentHealth); // Gọi sự kiện để cập nhật UI
     }
 
     public void AddStrength(float amount)
