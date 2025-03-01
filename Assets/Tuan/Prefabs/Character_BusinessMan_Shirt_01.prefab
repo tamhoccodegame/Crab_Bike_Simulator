@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 9175093424409421677}
   m_Layer: 0
   m_Name: Character_BusinessMan_Shirt_01
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -261,7 +261,7 @@ Animator:
   m_GameObject: {fileID: 616958904626058608}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 897b34267f422c1499700402763d096e, type: 3}
-  m_Controller: {fileID: 9100000, guid: bd8b691304a28b04f9a67b9a00ee44ef, type: 2}
+  m_Controller: {fileID: 9100000, guid: 46eef517a38ac67468f06f0c43e3b092, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -322,11 +322,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 6803045311894206160}
-  cooldown: 5
-  timer: 0
-  scripts:
-  - {fileID: 5031712376797311705}
-  - {fileID: 6134318862071707614}
 --- !u!143 &4075172080998868386
 CharacterController:
   m_ObjectHideFlags: 0
@@ -365,8 +360,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b164e6202f5dbe9449c27a7d2107f613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  people: []
-  totalAnimations: 0
+  people:
+  - {fileID: 5225232969768613446}
+  totalAnimations: 5
 --- !u!114 &-5566291274186262415
 MonoBehaviour:
   m_ObjectHideFlags: 0

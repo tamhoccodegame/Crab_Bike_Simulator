@@ -19,8 +19,10 @@ public class CustomerBookCrab : MonoBehaviour
         if(isBooking || !CrabService.instance.isOnDuty) return;
         if (CrabService.instance.TryPingTrip(transform.position, OnTripAccepted))
         {
-            GetComponent<Animator>().SetBool("isWaiting", true);
+            GetComponent<Animator>().Play("Idle");
+            GetComponent<Animation_Random>().enabled = true;
             GetComponent<CharacterNavigateController>().enabled = false;
+            GetComponent<NPC_Behavior>().enabled = false;
             isBooking = true;
         }
     }

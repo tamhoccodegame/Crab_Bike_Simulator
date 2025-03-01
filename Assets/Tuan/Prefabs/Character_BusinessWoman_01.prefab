@@ -2470,7 +2470,7 @@ GameObject:
   - component: {fileID: -615803958523648884}
   m_Layer: 0
   m_Name: Character_BusinessWoman_01
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2513,7 +2513,7 @@ Animator:
   m_GameObject: {fileID: 8133067448799233645}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 897b34267f422c1499700402763d096e, type: 3}
-  m_Controller: {fileID: 9100000, guid: bd8b691304a28b04f9a67b9a00ee44ef, type: 2}
+  m_Controller: {fileID: 9100000, guid: 46eef517a38ac67468f06f0c43e3b092, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -2574,11 +2574,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 1984996519577315451}
-  cooldown: 5
-  timer: 0
-  scripts:
-  - {fileID: 5892870334644543001}
-  - {fileID: 7975916805409776090}
 --- !u!143 &-6899235941287321440
 CharacterController:
   m_ObjectHideFlags: 0
@@ -2617,8 +2612,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b164e6202f5dbe9449c27a7d2107f613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  people: []
-  totalAnimations: 0
+  people:
+  - {fileID: 8802779445646453634}
+  totalAnimations: 5
 --- !u!114 &-2718072784318222532
 MonoBehaviour:
   m_ObjectHideFlags: 0

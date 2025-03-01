@@ -1746,7 +1746,7 @@ GameObject:
   - component: {fileID: 2613945257550016444}
   m_Layer: 0
   m_Name: Character_Male_Police_01
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1789,7 +1789,7 @@ Animator:
   m_GameObject: {fileID: 6323393437929913309}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 897b34267f422c1499700402763d096e, type: 3}
-  m_Controller: {fileID: 9100000, guid: bd8b691304a28b04f9a67b9a00ee44ef, type: 2}
+  m_Controller: {fileID: 9100000, guid: 46eef517a38ac67468f06f0c43e3b092, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1848,11 +1848,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destination: {fileID: 8286822027527748193}
-  cooldown: 5
-  timer: 0
-  scripts:
-  - {fileID: 8432834360136674564}
-  - {fileID: 2312729106075171611}
 --- !u!143 &1888880984966203441
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1891,8 +1886,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b164e6202f5dbe9449c27a7d2107f613, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  people: []
-  totalAnimations: 0
+  people:
+  - {fileID: 4561955697200959854}
+  totalAnimations: 5
 --- !u!114 &-7860178692833728483
 MonoBehaviour:
   m_ObjectHideFlags: 0

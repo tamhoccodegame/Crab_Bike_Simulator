@@ -33,13 +33,10 @@ public class Destination : MonoBehaviour
             {
                 CrabService.instance.SetDestination();
                 Transform customerSitPosition = other.transform.Find("CustomerSitPosition");
-
                 Transform customer = transform.parent;
-                //customer.GetComponent<Animator>().SetBool("isOnTrip", true);
-                //customer.GetComponent<WaitingCustomer>().enabled = false;
-                customer.GetComponent<Collider>().enabled = false;
-                customer.GetComponent<Animator>().SetBool("isWaiting", false);
+                customer.GetComponent<CharacterController>().enabled = false;
                 customer.GetComponent<Animator>().SetLayerWeight(2, 1);
+                customer.GetComponent<Animation_Random>().enabled = false;
                 customer.transform.SetParent(customerSitPosition, true);
                 customer.transform.localPosition = Vector3.zero;
                 customer.transform.localRotation = Quaternion.Euler(0,0,0);
@@ -52,10 +49,10 @@ public class Destination : MonoBehaviour
                 _customer.transform.SetParent(null);
                 _customer.transform.position += new Vector3(0, 0, 2);
                 _customer.transform.rotation = Quaternion.Euler(0,0,0);
-                //_customer.GetComponent <WaitingCustomer>().enabled = true;
-                _customer.GetComponent<Collider>().enabled = true;
+                _customer.GetComponent<CharacterController>().enabled = true;
                 _customer.GetComponent<Animator>().SetLayerWeight(2, 0);
                 _customer.GetComponent<CharacterNavigateController>().enabled = true;
+                GetComponent<NPC_Behavior>().enabled = true;
             }
             gameObject.SetActive(false);
         }

@@ -733,15 +733,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
       propertyPath: npcToSpawn
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
       propertyPath: npcPrefab.Array.size
-      value: 3
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.size
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
       propertyPath: npcPrefab.Array.data[0]
@@ -754,7 +758,67 @@ PrefabInstance:
     - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
       propertyPath: npcPrefab.Array.data[2]
       value: 
+      objectReference: {fileID: 8133067448799233645, guid: 71729785a22b8ed41b22dc0565aa6cc0, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: npcPrefab.Array.data[3]
+      value: 
+      objectReference: {fileID: 941878789191149836, guid: 490abd70ace015242a7e3038b19f0103, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: npcPrefab.Array.data[4]
+      value: 
+      objectReference: {fileID: 6602435980870718036, guid: 561b10c8b692af7429a94d5117301523, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: npcPrefab.Array.data[5]
+      value: 
+      objectReference: {fileID: 6990728575009035438, guid: 1747cc8eebf99594ba8da002f3942c77, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: npcPrefab.Array.data[6]
+      value: 
+      objectReference: {fileID: 1218991783320681417, guid: 52a79105d8aac9f45ab14cb6f32c7d31, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: npcPrefab.Array.data[7]
+      value: 
       objectReference: {fileID: 1262689060353120996, guid: a4fdbd878881db84a96d218114574678, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: npcPrefab.Array.data[8]
+      value: 
+      objectReference: {fileID: 6323393437929913309, guid: 9fb1a6cf68036584c887ed3982748d4a, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[0]
+      value: 
+      objectReference: {fileID: 616958904626058608, guid: 6de4efc84b3fb63478e2ecd47432b425, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[1]
+      value: 
+      objectReference: {fileID: 7361073927660074428, guid: 7eb865fe2dbd1654a97e30467c9593b6, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[2]
+      value: 
+      objectReference: {fileID: 8133067448799233645, guid: 71729785a22b8ed41b22dc0565aa6cc0, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[3]
+      value: 
+      objectReference: {fileID: 941878789191149836, guid: 490abd70ace015242a7e3038b19f0103, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[4]
+      value: 
+      objectReference: {fileID: 6602435980870718036, guid: 561b10c8b692af7429a94d5117301523, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[5]
+      value: 
+      objectReference: {fileID: 6990728575009035438, guid: 1747cc8eebf99594ba8da002f3942c77, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[6]
+      value: 
+      objectReference: {fileID: 1218991783320681417, guid: 52a79105d8aac9f45ab14cb6f32c7d31, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[7]
+      value: 
+      objectReference: {fileID: 1262689060353120996, guid: a4fdbd878881db84a96d218114574678, type: 3}
+    - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: spawnedNPC.Array.data[8]
+      value: 
+      objectReference: {fileID: 6323393437929913309, guid: 9fb1a6cf68036584c887ed3982748d4a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1968,6 +2032,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 9526412, guid: 6412c6bdd410913469520a05a1632885, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 46eef517a38ac67468f06f0c43e3b092, type: 2}
     - target: {fileID: 412420073564254276, guid: 6412c6bdd410913469520a05a1632885, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -2716,19 +2784,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6828496748685282880, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.99370503
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6828496748685282880, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.044132967
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6828496748685282880, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.10286787
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6828496748685282880, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0045686522
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7050819365122662646, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalPosition.x

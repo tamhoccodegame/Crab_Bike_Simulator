@@ -25,8 +25,10 @@ public class CharacterNavigateController : MonoBehaviour
 
     private void OnEnable()
     {
+        isDelay = false; 
         DisableBehaviour();
     }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -50,7 +52,7 @@ public class CharacterNavigateController : MonoBehaviour
             destinationDirection.y = 0;
             
             float destinationDistance = destinationDirection.magnitude;
-            Debug.Log(destinationDistance);
+            //Debug.Log(destinationDistance);
             if(destinationDistance >= stopDistance)
             {
                 reachedDestination = false;
@@ -76,15 +78,16 @@ public class CharacterNavigateController : MonoBehaviour
     {
         isDelay = true;
         EnableBehaviour();
+        GetComponent<CustomerBookCrab>().BookCrab();
         yield return new WaitForSeconds(10f);
         reachedDestination = true;
-        GetComponent<CustomerBookCrab>().BookCrab();
         isDelay = false;
+        DisableBehaviour();
     }
 
     void DisableBehaviour()
     {
-        animator.SetInteger("index", 0);
+        Debug.Log("Disable on: " + gameObject.name);
         animator.Play("Walking");
         foreach (var m in npcBehaviourScripts)
         {
@@ -109,7 +112,7 @@ public class CharacterNavigateController : MonoBehaviour
 
     private void OnDisable()
     {
-
+        StopAllCoroutines();
     }
 
     public void SetDestination(Vector3 destination)
@@ -117,6 +120,5 @@ public class CharacterNavigateController : MonoBehaviour
         this.destination = destination;
         reachedDestination = false;
         SetRandomMovementSpeed();
-        DisableBehaviour();
     }
 }
