@@ -25,7 +25,7 @@ public class PlayerInteractor : MonoBehaviour
         Ray ray = new Ray(playerVisual.position + offset, cam.transform.forward);
 
         
-            if (Physics.Raycast(ray, out hit, 10f))
+            if (Physics.Raycast(ray, out hit, 3f))
             {
 
                 IInteractable interactable = hit.transform.GetComponent<IInteractable>();
@@ -42,7 +42,7 @@ public class PlayerInteractor : MonoBehaviour
             }
         
        
-        Debug.DrawRay(playerVisual.position + offset, cam.transform.forward * 10, Color.red);
+        Debug.DrawRay(playerVisual.position + offset, cam.transform.forward * 3f, Color.red);
     }
 
 }

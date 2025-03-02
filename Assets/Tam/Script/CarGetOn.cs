@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,15 +16,27 @@ public class CarGetOn : MonoBehaviour, IInteractable
 
     public KeyCode keyToInteract => KeyCode.F;
 
+    public GameObject prompt;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        prompt.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (prompt != null && prompt.activeSelf)
+        {
+            Vector3 direction = Camera.main.transform.position - prompt.transform.position;
+            direction.y = 0; // Giữ nguyên trục Y để không bị nghiêng
+            prompt.transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        if (hasPlayer) prompt.SetActive(false);
+
         if (Input.GetKeyDown(keyToInteract))
         {
             if (!hasPlayer && currentPlayer != null)
@@ -99,10 +111,12 @@ public class CarGetOn : MonoBehaviour, IInteractable
     {
         currentPlayer = player;
         hasPlayer = false;
+        prompt.SetActive(true);
     }
 
     public void ResetInteractState()
     {
         currentPlayer = null;
+        prompt.SetActive(false);
     }
 }

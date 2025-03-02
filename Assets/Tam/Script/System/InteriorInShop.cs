@@ -17,6 +17,8 @@ public class InteriorInShop : MonoBehaviour, IInteractable
     public Action<InteriorInShop> onInteriorBought;
     private Camera cam;
 
+    public GameObject prompt;
+
     KeyCode keyToInteract => KeyCode.E;
 
     KeyCode IInteractable.keyToInteract => throw new NotImplementedException();
@@ -29,12 +31,20 @@ public class InteriorInShop : MonoBehaviour, IInteractable
         informPanel.transform.localPosition = informPanelPrefab.transform.position;
         informPanel.transform.Find("Panel").Find("Price").GetComponent<TextMeshProUGUI>().text = interiorPrice.ToString();
         informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(false);
+        prompt.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(currentPlayer != null && Input.GetKeyDown(keyToInteract))
+        if (prompt != null && prompt.activeSelf)
+        {
+            Vector3 direction = Camera.main.transform.position - prompt.transform.position;
+            direction.y = 0; // Giữ nguyên trục Y để không bị nghiêng
+            prompt.transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        if (currentPlayer != null && Input.GetKeyDown(keyToInteract))
         {
             SystemNotify.instance.SendNotify("Mua nội thất", $"Bạn có muốn mua món đồ này với giá {interiorPrice} không?", BuyInterior, () => {  });
         }
@@ -50,6 +60,7 @@ public class InteriorInShop : MonoBehaviour, IInteractable
     public void ShowPrompt(PlayerInteractor player)
     {
         currentPlayer = player;
+        prompt.SetActive(true);
     }
 
     void BuyInterior()
@@ -76,5 +87,6 @@ public class InteriorInShop : MonoBehaviour, IInteractable
     public void ResetInteractState()
     {
         currentPlayer = null;
+        prompt.SetActive(false);
     }
 }

@@ -19,6 +19,8 @@ public class CarInShop : MonoBehaviour, IInteractable
     public Action<CarInShop> onCarBought;
     private Camera cam;
 
+    public GameObject prompt;
+
     public KeyCode keyToInteract => KeyCode.E;
 
     // Start is called before the first frame update
@@ -31,12 +33,20 @@ public class CarInShop : MonoBehaviour, IInteractable
         informPanel.transform.localPosition = informPanelPrefab.transform.position;
         informPanel.transform.Find("Panel").Find("Price").GetComponent<TextMeshProUGUI>().text = carPrice.ToString();
         informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(false);
+        prompt.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(informPanel != null && cam != null)
+        if (prompt != null && prompt.activeSelf)
+        {
+            Vector3 direction = Camera.main.transform.position - prompt.transform.position;
+            direction.y = 0; // Giữ nguyên trục Y để không bị nghiêng
+            prompt.transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        if (informPanel != null && cam != null)
         {
             Vector3 direction = cam.transform.position - informPanel.transform.position;
             direction.y = 0;
@@ -76,10 +86,12 @@ public class CarInShop : MonoBehaviour, IInteractable
     public void ShowPrompt(PlayerInteractor player)
     {
         currentPlayer = player;
+        prompt.SetActive(true);
     }
 
     public void ResetInteractState()
     {
-        currentPlayer = null; 
+        currentPlayer = null;
+        prompt.SetActive(false);
     }
 }
