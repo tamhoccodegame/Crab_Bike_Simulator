@@ -71,6 +71,26 @@ public class StopDistanceCar : MonoBehaviour
                 isRearCar = true;
             }
         }
+
+        if (other.CompareTag("Player"))
+        {
+            if (!isRearCar && !isCarInFront)
+            {
+                isCarInFront = true;
+                tag = "RearCar";
+                isRearCar = true;
+            }
+        }
+        if (other.CompareTag("NpcWalk"))
+        {
+            if (!isRearCar && !isCarInFront)
+            {
+                isCarInFront = true;
+                tag = "RearCar";
+                isRearCar = true;
+            }
+        }
+
     }
 
     void OnTriggerExit(Collider other)
@@ -87,5 +107,28 @@ public class StopDistanceCar : MonoBehaviour
                 carAI.MoveToNextWaypoint();
             }
         }
+        if (other.CompareTag("Player"))
+        {
+            if (isRearCar)
+            {
+                tag = "Car";
+                isCarInFront = false;
+                isRearCar = false;
+                agent.isStopped = false;
+                carAI.MoveToNextWaypoint();
+            }
+        }
+        if (other.CompareTag("NpcWalk"))
+        {
+            if (isRearCar)
+            {
+                tag = "Car";
+                isCarInFront = false;
+                isRearCar = false;
+                agent.isStopped = false;
+                carAI.MoveToNextWaypoint();
+            }
+        }
+
     }
 }

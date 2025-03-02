@@ -108,10 +108,6 @@ public class CarAI : MonoBehaviour
             }
             
         }
-        
-
-
-
     }
     IEnumerator delayTraffic()
     {
