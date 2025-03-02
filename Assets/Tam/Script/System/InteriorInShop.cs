@@ -16,6 +16,11 @@ public class InteriorInShop : MonoBehaviour, IInteractable
 
     public Action<InteriorInShop> onInteriorBought;
     private Camera cam;
+
+    KeyCode keyToInteract => KeyCode.E;
+
+    KeyCode IInteractable.keyToInteract => throw new NotImplementedException();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +34,11 @@ public class InteriorInShop : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
+        if(currentPlayer != null && Input.GetKeyDown(keyToInteract))
+        {
+            SystemNotify.instance.SendNotify("Mua nội thất", $"Bạn có muốn mua món đồ này với giá {interiorPrice} không?", BuyInterior, () => {  });
+        }
+
         if (informPanel != null && cam != null)
         {
             Vector3 direction = cam.transform.position - informPanel.transform.position;
@@ -37,20 +47,13 @@ public class InteriorInShop : MonoBehaviour, IInteractable
         }
     }
 
-    public void ShowPrompt()
-    {
-
-    }
-
-    public void OnInteract(PlayerInteractor player)
+    public void ShowPrompt(PlayerInteractor player)
     {
         currentPlayer = player;
-        SystemNotify.instance.SendNotify("Mua nội thất", $"Bạn có muốn mua món đồ này với giá {interiorPrice} không?", BuyInterior, () => { currentPlayer.QuitInteracting(); });
     }
 
     void BuyInterior()
     {
-        currentPlayer.QuitInteracting();
         informPanel.SetActive(false);
         currentPlayer = null;
         StopAllCoroutines();
@@ -68,6 +71,10 @@ public class InteriorInShop : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(3f);
         currentPlayer = null;
         informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(false);
-        player.QuitInteracting();
+    }
+
+    public void ResetInteractState()
+    {
+        currentPlayer = null;
     }
 }

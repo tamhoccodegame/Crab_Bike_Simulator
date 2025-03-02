@@ -14,8 +14,6 @@ public class PlayerState : MonoBehaviour
     public event Action<float> OnHygieneChange;
     public event Action<float> OnStrengthChange;
 
-
-    public float money = 50000; // Số tiền mặc định
     // Start is called before the first frame update
     void Start()
     {
@@ -29,8 +27,11 @@ public class PlayerState : MonoBehaviour
         InvokeRepeating(nameof(DecreaseHunger), 1f, 1f);
         InvokeRepeating(nameof(DecreaseHygiene), 2f, 2f);
 
-        //OnHealthChange?.Invoke(currentHealth);
-       
+        OnHealthChange?.Invoke(currentHealth);
+        OnHungerChange?.Invoke(currentHunger);
+        OnStrengthChange?.Invoke(currentStrength);
+        OnHygieneChange?.Invoke(currentHygiene);
+
     }
 
     // Update is called once per frame
@@ -75,22 +76,22 @@ public class PlayerState : MonoBehaviour
 
         currentHealth = Math.Clamp(currentHealth, 0, maxHealth);
 
-        Debug.Log($"Health changed: {currentHealth}"); // Debug kiểm tra giá trị máu
+        //Debug.Log($"Health changed: {currentHealth}"); // Debug kiểm tra giá trị máu
 
         if (OnHealthChange != null)
         {
-            Debug.Log("Invoking OnHealthChange event..."); // Kiểm tra sự kiện có được gọi
+            //Debug.Log("Invoking OnHealthChange event..."); // Kiểm tra sự kiện có được gọi
             OnHealthChange.Invoke(currentHealth);
         }
         else
         {
-            Debug.LogWarning("OnHealthChange is null, UI won't update!");
+            //Debug.LogWarning("OnHealthChange is null, UI won't update!");
         }
 
 
         if (currentHealth <= 0)
         {
-            Debug.Log("Player is Dead!");
+            //Debug.Log("Player is Dead!");
             CancelInvoke();
         }
     }
@@ -122,7 +123,7 @@ public class PlayerState : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
-        Debug.Log($"Healing {amount}. Current Health: {currentHealth}");
+        //Debug.Log($"Healing {amount}. Current Health: {currentHealth}");
 
         OnHealthChange?.Invoke(currentHealth); // Gọi sự kiện để cập nhật UI
     }

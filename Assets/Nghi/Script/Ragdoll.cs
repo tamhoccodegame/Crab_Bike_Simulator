@@ -63,11 +63,11 @@ public class Ragdoll : MonoBehaviour
 
     private void WalkingBehavior()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EnableRagdoll();
-            currentState = RagdollState.Ragdoll;
-        }
+        //if (Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    EnableRagdoll();
+        //    currentState = RagdollState.Ragdoll;
+        //}
     }
 
     private void RagdollBehavior()

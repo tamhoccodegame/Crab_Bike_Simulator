@@ -13,6 +13,7 @@ public class NPC_Health_UI : MonoBehaviour
     public GameObject NPCHealth_UI;
     private CanvasGroup canvasGroup; // Điều khiển độ trong suốt để ẩn/hiện thanh máu
 
+    public float showTime;
 
     private bool hasTakenDamage = false;
     // Start is called before the first frame update
@@ -71,17 +72,25 @@ public class NPC_Health_UI : MonoBehaviour
 
     public void UpdateHeathUI(float currentHealth, float maxHealth)
     {
-        if (!hasTakenDamage) // Đánh dấu NPC đã bị đánh lần đầu tiên
-        {
-            hasTakenDamage = true;
-            NPCHealth_UI.SetActive(true);
-        }
+        StopAllCoroutines();
+        StartCoroutine(ShowHealthBar());
+        //if (!hasTakenDamage) // Đánh dấu NPC đã bị đánh lần đầu tiên
+        //{
+        //    hasTakenDamage = true;
+        //}
 
         if (npcHealthSlider != null)
         {
             npcHealthSlider.value = currentHealth / maxHealth;
             //canvasGroup.alpha = 1; // Hiện thanh máu khi NPC bị đánh
         }
+    }
+
+    IEnumerator ShowHealthBar()
+    {
+        NPCHealth_UI.SetActive(true);
+        yield return new WaitForSeconds(showTime);
+        NPCHealth_UI.SetActive(false);
     }
 
     public void HideHealthBar()

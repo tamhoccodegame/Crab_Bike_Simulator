@@ -49,10 +49,12 @@ public class Destination : MonoBehaviour
                 _customer.transform.SetParent(null);
                 _customer.transform.position += new Vector3(0, 0, 2);
                 _customer.transform.rotation = Quaternion.Euler(0,0,0);
+                _customer.GetComponent<CustomerBookCrab>().TryPayCash();
                 _customer.GetComponent<CharacterController>().enabled = true;
+                _customer.GetComponent<NPC_Health>().enabled = true;
                 _customer.GetComponent<Animator>().SetLayerWeight(2, 0);
                 _customer.GetComponent<CharacterNavigateController>().enabled = true;
-                GetComponent<NPC_Behavior>().enabled = true;
+                _customer.GetComponent<NPC_Behavior>().enabled = true;
             }
             gameObject.SetActive(false);
         }

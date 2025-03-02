@@ -10,12 +10,13 @@ public class CrabService : MonoBehaviour
     public static CrabService instance;
 
     public Transform player;
-    private CashSystem cashSystem;
+    public CashSystem cashSystem;
     private PlayerCash playerCash;
 
     public string[] customersName;
 
     private System.Action onTripAccepted;
+    private System.Action onTripDenied;
 
     public List<Transform> destinationList;
     public Vector3 currentPickUpPosition;
@@ -105,17 +106,18 @@ public class CrabService : MonoBehaviour
     }
 
 
-    public bool TryPingTrip(Vector3 pickUpPosition, System.Action _onTripAccepted)
+    public bool TryPingTrip(Vector3 pickUpPosition, System.Action _onTripAccepted, System.Action _onTripDenied)
     {
         if(!notificationPanel.activeSelf)
         {
             PingTrip(pickUpPosition);
             totalRide++;
             onTripAccepted = _onTripAccepted;
+            onTripDenied = _onTripDenied;
             return true;
         }
         Debug.Log("Called by Complete TryPingTrip");
-        CustomerBookCrab.ResetBookCrab();
+        CustomerBookCrab.SetBooking(true);
         return false;
     }
 
@@ -190,7 +192,9 @@ public class CrabService : MonoBehaviour
         currentDropOffPoint.gameObject.SetActive(false);
         currentDropOffPoint = null;
         Debug.Log("Called by Cancel Trip");
-        CustomerBookCrab.ResetBookCrab();
+        onTripDenied?.Invoke();
+        onTripDenied = null;
+        CustomerBookCrab.SetBooking(false);
     }
 
     public void SetDestination()
@@ -212,9 +216,6 @@ public class CrabService : MonoBehaviour
         currentDropOffPoint = null;
         progressTripSlider.gameObject.SetActive(false);
         Debug.Log("Called by Complete Trip");
-        CustomerBookCrab.ResetBookCrab();
-        //Cộng tiền cho player
-        playerCash.AddMoney((int)cashSystem.currentPayment);
-        SystemNotify.instance.SendBigNoti($"+{((int)(cashSystem.currentPayment)).ToString("N0")}VND", Color.green);
+        CustomerBookCrab.SetBooking(false);
     }
 }

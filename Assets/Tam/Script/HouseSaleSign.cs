@@ -5,15 +5,17 @@ using UnityEngine;
 public class HouseSaleSign : MonoBehaviour, IInteractable
 {
     private PlayerInteractor currentPlayer;
-    public void OnInteract(PlayerInteractor player)
+
+    public KeyCode keyToInteract => KeyCode.E;
+
+    public void ResetInteractState()
     {
-        currentPlayer = player;
-        SystemNotify.instance.SendNotify($"Mua nhà", "Bạn có chắc muốn mua căn nhà này với giá {asd}", BuyHouse, () => { player.QuitInteracting(); });
+        currentPlayer = null;
     }
 
-    public void ShowPrompt()
+    public void ShowPrompt(PlayerInteractor player)
     {
-        
+        currentPlayer = player;
     }
 
     void BuyHouse()
@@ -21,7 +23,6 @@ public class HouseSaleSign : MonoBehaviour, IInteractable
         if (HouseManager.instance.BuyHouse(GetComponentInParent<House>()))
         {
             this.gameObject.SetActive(false);
-            currentPlayer.QuitInteracting();
             currentPlayer = null;
         }
     }
@@ -35,6 +36,9 @@ public class HouseSaleSign : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        
+        if(currentPlayer != null && Input.GetKeyDown(keyToInteract))
+        {
+            SystemNotify.instance.SendNotify($"Mua nhà", "Bạn có chắc muốn mua căn nhà này với giá {asd}", BuyHouse, () => { });
+        }
     }
 }

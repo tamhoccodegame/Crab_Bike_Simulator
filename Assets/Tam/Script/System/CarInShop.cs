@@ -18,6 +18,9 @@ public class CarInShop : MonoBehaviour, IInteractable
 
     public Action<CarInShop> onCarBought;
     private Camera cam;
+
+    public KeyCode keyToInteract => KeyCode.E;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,11 +42,11 @@ public class CarInShop : MonoBehaviour, IInteractable
             direction.y = 0;
             informPanel.transform.rotation = Quaternion.LookRotation(-direction);
         }
-    }
 
-    public void ShowPrompt()
-    {
-
+        if(currentPlayer != null && Input.GetKeyDown(keyToInteract))
+        {
+            SystemNotify.instance.SendNotify("Mua xe", $"Bạn có chắc muốn mua chiếc xe này với giá {carPrice} không?", BuyACar, () => { });
+        }
     }
 
     public void BuyACar()
@@ -53,15 +56,12 @@ public class CarInShop : MonoBehaviour, IInteractable
         //Logic Mua xe
         informPanel.SetActive(false);
         StopAllCoroutines();
-        currentPlayer.QuitInteracting();
         onCarBought?.Invoke(this);
     }
 
     public void OnInteract(PlayerInteractor player)
     {
-        player.QuitInteracting();
         StartCoroutine(SetPlayer(player));
-        SystemNotify.instance.SendNotify("Mua xe", $"Bạn có chắc muốn mua chiếc xe này với giá {carPrice} không?", BuyACar, () => { player.QuitInteracting(); });
     }
 
     IEnumerator SetPlayer(PlayerInteractor player)
@@ -71,7 +71,15 @@ public class CarInShop : MonoBehaviour, IInteractable
         yield return new WaitForSeconds(3f);
         currentPlayer = null;
         informPanel.transform.Find("Panel").Find("Confirm").gameObject.SetActive(false);
-        player.QuitInteracting();
     }
 
+    public void ShowPrompt(PlayerInteractor player)
+    {
+        currentPlayer = player;
+    }
+
+    public void ResetInteractState()
+    {
+        currentPlayer = null; 
+    }
 }

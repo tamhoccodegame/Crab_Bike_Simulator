@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class CustomerBookCrab : MonoBehaviour
@@ -7,6 +8,10 @@ public class CustomerBookCrab : MonoBehaviour
     public GameObject destination;
 
     public static bool isBooking;
+    private bool noPay;
+
+    public float debt;
+
 
     // Start is called before the first frame update
     void Start()
@@ -17,14 +22,36 @@ public class CustomerBookCrab : MonoBehaviour
     public void BookCrab()
     {
         if(isBooking || !CrabService.instance.isOnDuty) return;
-        if (CrabService.instance.TryPingTrip(transform.position, OnTripAccepted))
+        if (CrabService.instance.TryPingTrip(transform.position, OnTripAccepted, OnTripDenied))
         {
+            noPay = Random.value < 0.5f;
             GetComponent<Animator>().Play("Idle");
             GetComponent<Animation_Random>().enabled = true;
             GetComponent<CharacterNavigateController>().enabled = false;
             GetComponent<NPC_Behavior>().enabled = false;
-            isBooking = true;
+            GetComponent<NPC_Health>().enabled = false;
         }
+    }
+    public void CancelBookCrab()
+    {
+
+    }
+
+    public void TryPayCash()
+    {
+        if(noPay)
+        {
+            debt = (int)CrabService.instance.cashSystem.currentPayment;
+        }
+        PlayerCash.instance.AddMoney((int)CrabService.instance.cashSystem.currentPayment);
+        SystemNotify.instance.SendBigNoti($"+{((int)(CrabService.instance.cashSystem.currentPayment)).ToString("N0")}VND", Color.green);
+    }
+
+    public void ResetDebt()
+    {
+        SystemNotify.instance.SendBigNoti($"+{((int)(CrabService.instance.cashSystem.currentPayment)).ToString("N0")}VND", Color.green);
+        PlayerCash.instance.AddMoney((int)CrabService.instance.cashSystem.currentPayment);
+        debt = 0;
     }
 
     void OnTripAccepted()
@@ -32,9 +59,19 @@ public class CustomerBookCrab : MonoBehaviour
         destination.SetActive(true);
     }
 
-    public static void ResetBookCrab()
+    void OnTripDenied()
     {
-        isBooking = false;
+        destination.SetActive(false);
+        GetComponent<Animator>().Play("Walking");
+        GetComponent<Animation_Random>().enabled = false;
+        GetComponent<CharacterNavigateController>().enabled = true;
+        GetComponent<NPC_Behavior>().enabled = true;
+        GetComponent<NPC_Health>().enabled = true;
+    }
+
+    public static void SetBooking(bool enable)
+    {
+        isBooking = enable;
     }
 
 }

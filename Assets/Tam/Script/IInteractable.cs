@@ -4,6 +4,8 @@ using UnityEngine;
 
 public interface IInteractable
 {
-    void ShowPrompt();
-    void OnInteract(PlayerInteractor player);
+    void ShowPrompt(PlayerInteractor player);
+
+    void ResetInteractState();
+    KeyCode keyToInteract { get; }
 }

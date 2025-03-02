@@ -60,7 +60,7 @@ public class NPC_Health : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        npcHealth_UI.UpdateHeathUI(npcCurrentHeath, npcMaxHeath);
+        //npcHealth_UI.UpdateHeathUI(npcCurrentHeath, npcMaxHeath);
     }
 
     public void SetCombatLayerActive(bool active)
@@ -89,9 +89,9 @@ public class NPC_Health : MonoBehaviour
         {
             npcHealth_UI.UpdateHeathUI(npcCurrentHeath, npcMaxHeath);
         }
-
-        Debug.Log($"{gameObject.name} bị tấn công! Máu trước khi trừ: {npcCurrentHeath}, Sát thương nhận: {damage}");
-        Debug.Log($"{gameObject.name} sau khi bị tấn công! Máu còn lại: {npcCurrentHeath}");
+        Debug.Log(npcCurrentHeath);
+        //Debug.Log($"{gameObject.name} bị tấn công! Máu trước khi trừ: {npcCurrentHeath}, Sát thương nhận: {damage}");
+        //Debug.Log($"{gameObject.name} sau khi bị tấn công! Máu còn lại: {npcCurrentHeath}");
 
         if (isDead)
         {
@@ -108,16 +108,16 @@ public class NPC_Health : MonoBehaviour
 
     IEnumerator ReactAfterHurt()
     {
+        if (npcCurrentHeath <= 0)
+        {
+            Die();
+        }
         // Chờ animation "isHurt" chạy xong
         yield return new WaitForSeconds(1f);
 
         animator.SetTrigger("isBackToIdle");
 
-        if (npcCurrentHeath <= 0)
-        {
-            Die();
-        }
-        else
+        
         {
             //StartCoroutine(ReactAfterHurt());
             npc_Behavior.AttackOrReport();
@@ -129,12 +129,23 @@ public class NPC_Health : MonoBehaviour
     public void Die()
     {
         if (isDead) return;
+
+        if(TryGetComponent<CustomerBookCrab>(out CustomerBookCrab c) && c.debt > 0)
+        {
+            c.ResetDebt();
+        }
+
         Debug.Log($"{this.name} is Dead!");
         isDead = true;
 
         animator.enabled = false;
         GetComponent<Collider>().enabled = false;
-        
+        GetComponent<NavMeshAgent>().enabled = false;
+
+        foreach(var m in GetComponents<MonoBehaviour>())
+        {
+            m.enabled = false;
+        }
         //agent.enabled = false;
 
         Ragdoll ragdoll = GetComponent<Ragdoll>();

@@ -14,37 +14,7 @@ public class CarGetOn : MonoBehaviour, IInteractable
 
     private bool hasPlayer = false;
 
-    public void OnInteract(PlayerInteractor player)
-    {
-        motorSound.Play();
-        currentPlayer = player;
-        currentPlayer.GetComponent<TPlayerController>().enabled = false;
-        currentPlayer.GetComponent<CharacterController>().enabled = false;
-        currentPlayer.transform.SetParent(sitPosition.transform, true);
-        currentPlayer.transform.position = sitPosition.position;
-        currentPlayer.transform.rotation = sitPosition.rotation;
-        currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 1);
-        currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;
-        currentPlayer.GetComponent<IKHandler>().rightHandTarget = rightHand;
-
-        if(parent != null)
-        parent.GetComponent<BaseCarController>().enabled = true;
-        else GetComponent<BaseCarController>().enabled = true;
-
-        currentPlayer.enabled = false;
-        StartCoroutine(DelaySetPlayer());
-    }
-
-    IEnumerator DelaySetPlayer()
-    {
-        yield return null;
-        hasPlayer = true;
-    }
-
-    public void ShowPrompt()
-    {
-        
-    }
+    public KeyCode keyToInteract => KeyCode.F;
 
     // Start is called before the first frame update
     void Start()
@@ -55,11 +25,19 @@ public class CarGetOn : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
-        if (!hasPlayer) return;
-
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(keyToInteract))
         {
-            ExitCar();
+            if (!hasPlayer && currentPlayer != null)
+            {
+                EnterCar();
+                hasPlayer = true;
+                return;
+            }
+            else if (hasPlayer)
+            {
+                ExitCar();
+                return;
+            }
         }
 
         if(parent == null || !hasPlayer) return;
@@ -75,13 +53,31 @@ public class CarGetOn : MonoBehaviour, IInteractable
 
     }
 
+    public void EnterCar()
+    {
+        motorSound.Play();
+        currentPlayer.GetComponent<TPlayerController>().enabled = false;
+        currentPlayer.GetComponent<CharacterController>().enabled = false;
+        currentPlayer.transform.SetParent(sitPosition.transform, true);
+        currentPlayer.transform.position = sitPosition.position;
+        currentPlayer.transform.rotation = sitPosition.rotation;
+        currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 1);
+        currentPlayer.GetComponent<IKHandler>().leftHandTarget = leftHand;
+        currentPlayer.GetComponent<IKHandler>().rightHandTarget = rightHand;
+
+        if (parent != null)
+            parent.GetComponent<BaseCarController>().enabled = true;
+        else GetComponent<BaseCarController>().enabled = true;
+
+        currentPlayer.enabled = false;
+    }
+
 
     public void ExitCar()
     {
         motorSound.Stop();
         hasPlayer = false;
         currentPlayer.enabled = true;
-        currentPlayer.QuitInteracting();
         currentPlayer.transform.SetParent(null);
         currentPlayer.transform.position += -currentPlayer.transform.right * 1.5f;
         currentPlayer.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -96,6 +92,17 @@ public class CarGetOn : MonoBehaviour, IInteractable
         currentPlayer.GetComponent<IKHandler>().leftHandTarget = null;
         currentPlayer.GetComponent<IKHandler>().rightHandTarget = null;
         currentPlayer.currentInteractable = null;
+        currentPlayer = null;
+    }
+
+    public void ShowPrompt(PlayerInteractor player)
+    {
+        currentPlayer = player;
+        hasPlayer = false;
+    }
+
+    public void ResetInteractState()
+    {
         currentPlayer = null;
     }
 }
