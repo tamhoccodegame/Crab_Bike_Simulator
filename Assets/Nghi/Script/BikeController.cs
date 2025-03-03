@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class BikeController : MonoBehaviour
+public class BikeController : BaseCarController
 {
     RaycastHit hit;
     float moveInput, steerInput, rayLength;
@@ -13,7 +13,9 @@ public class BikeController : MonoBehaviour
     public float maxSpeed, accelaration, steerStrength, gravity, bikeXTiltIncrement, xTiltAngle = 45f, tyreRotSpeed = 1000f;
     public GameObject handle;
     public GameObject frontTyre;
-    public GameObject backTyre;
+    public GameObject rearTyre;
+    public GameObject carSmoke;
+
     public float handleRotVal = 30f, handleRotSpeed = 0.15f;
     [Range(1f, 10f)]
     public float brakingFactor;
@@ -63,13 +65,14 @@ public class BikeController : MonoBehaviour
     {
         Movement();
         EngineSound();
+        carSmoke.SetActive(velocity.magnitude > 0.1f);
         transform.position = sphereRb.transform.position;
 
         velocity = bikeBody.transform.InverseTransformDirection(bikeBody.velocity);
         currentVelocityOffset = bikeBody.velocity.magnitude / maxSpeed;
 
-        //frontTyre.transform.Rotate(Vector3.forward, Time.deltaTime * tyreRotSpeed * currentVelocityOffset,Space.Self);
-        //backTyre.transform.Rotate(Vector3.forward, Time.deltaTime * tyreRotSpeed * currentVelocityOffset, Space.Self);
+        frontTyre.transform.Rotate(Vector3.forward * velocity.magnitude * 200 * Time.fixedDeltaTime);
+        rearTyre.transform.Rotate(Vector3.forward * velocity.magnitude * 200 * Time.fixedDeltaTime);
 
     }
 

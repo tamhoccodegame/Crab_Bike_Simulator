@@ -5,11 +5,18 @@ using UnityEngine.UI;
 
 public class UIInventory : MonoBehaviour
 {
+    public static UIInventory instance;
     private Inventory inventory;
     public Transform itemSlotTemplate;
     public Transform itemSlotContainer;
     public Button useButton;
 
+
+    private void Awake()
+    {
+        instance = this;
+        gameObject.SetActive(false);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -23,14 +30,7 @@ public class UIInventory : MonoBehaviour
 
     }
 
-    public void SetInventory(Inventory _inventory)
-    {
-        inventory = _inventory;
-        inventory.onInventoryChanged += RefreshInventoryUI;
-        RefreshInventoryUI();
-    }
-
-    void RefreshInventoryUI()
+    public void RefreshInventoryUI()
     {
         foreach (Transform child in itemSlotContainer)
         {
@@ -43,7 +43,7 @@ public class UIInventory : MonoBehaviour
         }
 
 
-        foreach (IShopItem item in inventory.GetItemList())
+        foreach (IShopItem item in PlayerInventory.instance.GetItems())
         {
             RectTransform itemSlotRectTransform = Instantiate(itemSlotTemplate, itemSlotContainer).GetComponent<RectTransform>();
             itemSlotRectTransform.gameObject.SetActive(true);
@@ -55,9 +55,10 @@ public class UIInventory : MonoBehaviour
             itemSlotRectTransform.GetComponent<Button>().onClick.AddListener(() =>
             {
                 useButton.gameObject.SetActive(true);
+                useButton.onClick.RemoveAllListeners();
                 useButton.onClick.AddListener(() =>
                 {
-                    inventory.UseItem(item);
+                    PlayerInventory.instance.UseItem(item);
                 });
             });
         }

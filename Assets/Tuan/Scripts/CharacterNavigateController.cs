@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CharacterNavigateController : MonoBehaviour
 {
@@ -11,26 +12,32 @@ public class CharacterNavigateController : MonoBehaviour
     public float stopDistance = 0.5f;    
     public Vector3 destination;         
     public bool reachedDestination = false;
-    private Rigidbody rb;
+    private Transform foot;
+    private CharacterController controller;
+    Vector3 moveDirection;
 
+    [Header("NPC_Behaviour Controller")]
+    public float delayTime;
+    private bool isDelay;
+    public MonoBehaviour[] npcBehaviourScripts;
+    public Animator animator;
+
+
+    private void OnEnable()
+    {
+        isDelay = false; 
+        DisableBehaviour();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        SetRandomMovementSpeed();
-        if (rb != null && applyGravity)
-        {
-            rb.useGravity = false;
-        }
+        foot = transform.Find("Foot");
+        controller = GetComponent<CharacterController>();
     }
     void FixedUpdate()
     {
-        if (applyGravity && rb != null)
-        {
-            Vector3 gravityForce = new Vector3(0, gravityStrength, 0);
-            rb.AddForce(gravityForce, ForceMode.Acceleration);
-        }
+       
     }
     void SetRandomMovementSpeed()
     {
@@ -38,29 +45,75 @@ public class CharacterNavigateController : MonoBehaviour
     }
     void Update()
     {
+        if (isDelay) return;
         if (transform.position != destination)
         {
             Vector3 destinationDirection = destination - transform.position;
             destinationDirection.y = 0;
             
             float destinationDistance = destinationDirection.magnitude;
-
-            if(destinationDistance >= stopDistance )
+            //Debug.Log(destinationDistance);
+            if(destinationDistance >= stopDistance)
             {
                 reachedDestination = false;
                 Quaternion targetRotation = Quaternion.LookRotation( destinationDirection );
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-                Vector3 moveDirection = destinationDirection.normalized * movementSpeed * Time.deltaTime;
-                rb.MovePosition(rb.position + moveDirection);
+                moveDirection = destinationDirection.normalized * movementSpeed * Time.deltaTime;
             }
             else
             {
-                reachedDestination = true;
+                StartCoroutine(DelaySetWayPoint());
             }
         }
-      
-      
+
+        if (!Physics.Raycast(foot.position, transform.TransformDirection(Vector3.down), 0.01f))
+        {
+            moveDirection.y += gravityStrength * Time.deltaTime;
+        }
+        controller.Move(moveDirection);
+
     }
+
+    IEnumerator DelaySetWayPoint()
+    {
+        isDelay = true;
+        EnableBehaviour();
+        GetComponent<CustomerBookCrab>().BookCrab();
+        yield return new WaitForSeconds(10f);
+        reachedDestination = true;
+        isDelay = false;
+        DisableBehaviour();
+    }
+
+    void DisableBehaviour()
+    {
+        animator.Play("Walking");
+        foreach (var m in npcBehaviourScripts)
+        {
+            if (m.enabled)
+            {
+                m.enabled = false;
+            }
+        }
+    }
+
+    void EnableBehaviour()
+    {
+        animator.Play("Idle");
+        foreach (var m in npcBehaviourScripts)
+        {
+            if (!m.enabled)
+            {
+                m.enabled = true;
+            }
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
+    }
+
     public void SetDestination(Vector3 destination)
     {
         this.destination = destination;

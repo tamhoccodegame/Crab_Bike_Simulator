@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 131404872550860219}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.044134177, y: -0.10286478, z: 0.0045686103, w: 0.99370533}
+  m_LocalRotation: {x: 0.044134174, y: -0.102864705, z: 0.0045686075, w: 0.9937053}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 5000
+    FarClipPlane: 800
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -104,8 +104,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 233528446285492335}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.0949014, y: 0.8837368, z: -0.20450702, w: 0.41009748}
-  m_LocalPosition: {x: -11.345785, y: 7.7015285, z: 3.9324813}
+  m_LocalRotation: {x: -0.09968849, y: 0.8737492, z: -0.20122989, w: -0.4314291}
+  m_LocalPosition: {x: -6.376574, y: 7.7073307, z: 3.8246813}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -136,7 +136,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 5000
+    FarClipPlane: 800
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -290,6 +290,7 @@ GameObject:
   - component: {fileID: 2119450851971198543}
   - component: {fileID: 7328723419960452608}
   - component: {fileID: 6090125591812485692}
+  - component: {fileID: 1707597888994957170}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -345,14 +346,14 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.1
-  far clip plane: 5000
+  far clip plane: 800
   field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 511
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -406,6 +407,18 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1707597888994957170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1819706511470366414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c62877156eb08784aa4928fd9e3a5163, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1933297868835235031
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,7 +571,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2794436664575534172}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.044134177, y: -0.10286478, z: 0.0045686103, w: 0.99370533}
+  m_LocalRotation: {x: 0.044134166, y: -0.10286469, z: 0.0045686048, w: 0.9937053}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -597,7 +610,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 5000
+    FarClipPlane: 800
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -672,7 +685,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 5000
+    FarClipPlane: 800
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -777,7 +790,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4373681003466891755}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.013025907, y: -0.10295735, z: -0.0013483944, w: 0.99459964}
+  m_LocalRotation: {x: -0.013025918, y: -0.10295724, z: -0.0013483946, w: 0.9945996}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -816,7 +829,7 @@ MonoBehaviour:
     FieldOfView: 60
     OrthographicSize: 10
     NearClipPlane: 0.1
-    FarClipPlane: 5000
+    FarClipPlane: 800
     Dutch: 0
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
@@ -1138,10 +1151,6 @@ MonoBehaviour:
   - m_Hash: 81563449
     m_ParentHash: 756556552
   - m_Hash: -827840423
-    m_ParentHash: 756556552
-  - m_Hash: -1132490487
-    m_ParentHash: 756556552
-  - m_Hash: 1215820239
     m_ParentHash: 756556552
   - m_Hash: -402061451
     m_ParentHash: 756556552

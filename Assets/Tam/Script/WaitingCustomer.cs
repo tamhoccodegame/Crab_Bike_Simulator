@@ -16,6 +16,7 @@ public class WaitingCustomer : MonoBehaviour
         animator = GetComponent<Animator>();
         changeAnimTimer = timeToChangeAnim;
 		string animToPlay = animationsName[Random.Range(0, animationsName.Length)];
+        animator.SetLayerWeight(2, 1);
 		animator.Play(animToPlay);
 	}
 

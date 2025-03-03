@@ -9,6 +9,7 @@ public class VehicleManager : MonoBehaviour
     public static VehicleManager instance;
     public UIVehicleManager uIVehicleManager;
     public List<GameObject> ownVehicles; //Prefab của những chiếc xe có component Vehicle
+    public List<GameObject> allVehiclesPrefab;
     public GameObject activeVehicle;
     public Action onVehicleChange;
 
@@ -17,6 +18,7 @@ public class VehicleManager : MonoBehaviour
     {
         instance = this;
         uIVehicleManager.SetVehicleManager(this);
+        DeliVehicle(ownVehicles[0], PlayerInventory.instance.transform.position);
     }
 
     // Update is called once per frame

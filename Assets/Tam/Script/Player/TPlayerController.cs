@@ -1,11 +1,13 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
-public class TPlayerController : MonoBehaviour
+public class TPlayerController : Controller
 {
+    public static TPlayerController instance;
     public float rotationSpeed;
     public float walkSpeed;
     public float runSpeed;
@@ -19,17 +21,33 @@ public class TPlayerController : MonoBehaviour
     private Camera cam;
 
     private Animator animator;
-    private GameManager gameManager;
+
+    public HitBox hitBox;
+
+    public enum PlayerMode
+    {
+        Normal,
+        Shopping,
+    }
+
+    public PlayerMode playerMode = PlayerMode.Normal;
+
+    [Header("Attack")]
+    private Coroutine attackCoroutine;
+    public float attackCooldown;
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        gameManager = GameManager.instance;
         controller = GetComponent<CharacterController>();
         animator = GetComponent<Animator>();
         cam = Camera.main;
 
-        gameManager.onGameStateChange += OnGameStateChange;
         currentSpeed = walkSpeed;
 
         //Cursor.lockState = CursorLockMode.Locked;
@@ -39,8 +57,19 @@ public class TPlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (attackCoroutine != null)
+        {
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            attackCoroutine = StartCoroutine(AttackCoroutine());
+        }
+
         if (!canMove)
         {
+            movement = Vector3.zero;    
             animator.SetBool("Walking", false);
             animator.SetBool("Running", false);
             return;
@@ -50,8 +79,31 @@ public class TPlayerController : MonoBehaviour
         CalculateMove();
 	}
 
+    IEnumerator AttackCoroutine()
+    {
+        animator.SetTrigger("isAttack");
+        movement = Vector3.zero;
+        yield return new WaitForSeconds(attackCooldown);
+        attackCoroutine = null;
+    }
+
+    void ActivateHitbox()
+    {
+        hitBox.ActivateHitbox();
+    }
+
+    void DeactivateHitbox()
+    {
+        hitBox.DeactivateHitbox();
+    }
+
     private void FixedUpdate()
     {
+        if (attackCoroutine != null)
+        {
+            return;
+        }
+
         if (movement.magnitude > Mathf.Epsilon)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movement);
@@ -66,21 +118,27 @@ public class TPlayerController : MonoBehaviour
         controller.Move(movement * currentSpeed * Time.deltaTime);
     }
 
-    void OnGameStateChange(GameManager.GameState gameState)
+    public void ChangePlayerMode(PlayerMode newMode)
     {
-        if(gameState == GameManager.GameState.Menu)
+        if(playerMode != newMode)
         {
-            canMove = false;
+            playerMode = newMode;
+            switch(playerMode)
+            {
+                case PlayerMode.Normal:
+                    canMove = true;
+                    break;
+                case PlayerMode.Shopping:
+                    canMove = false; 
+                    break;
+            }
         }
-        else if(gameState == GameManager.GameState.Playing)
-        {
-            canMove = true;
-		}
-	}
+    }
 
     public void Footstep()
     {
-        GetComponent<AudioSource>().Play();
+        int index = Random.Range(1, 9);
+        AudioManager.instance.PlaySound($"Footstep_{index}");
     }
 
     void ChangeSpeed()

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -9,10 +9,11 @@ public class NPCHeadLookAt : MonoBehaviour
     [SerializeField] private Transform headLookAtTransform;
 
     private bool isLookingAtPosition;
+    private float stopLookDelay = 3f; // Thời gian NPC nhìn trước khi quay lại trạng thái bình thường
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -27,5 +28,21 @@ public class NPCHeadLookAt : MonoBehaviour
     {
         isLookingAtPosition = true;
         headLookAtTransform.position = lookAtPosition;
+
+        // Sau 3 giây sẽ tự động dừng nhìn
+        //CancelInvoke(nameof(StopLooking)); // Đảm bảo không có lệnh dừng cũ bị chồng chéo
+        //Invoke(nameof(StopLooking), stopLookDelay);
+        StartCoroutine(StopLookingAfterDelay(4f));
+    }
+
+    //public void StopLooking()
+    //{
+    //    isLookingAtPosition = false;
+    //}
+
+    private IEnumerator StopLookingAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        isLookingAtPosition = false;
     }
 }

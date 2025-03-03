@@ -12,7 +12,6 @@ public class Food : IShopItem
 
     public FoodType foodType;
 
-
     public Sprite GetSprite()
     {
         switch(foodType)
@@ -40,13 +39,6 @@ public class Food : IShopItem
 
     public GameObject GetPrefab()
     {
-        switch(foodType)
-        {
-            case FoodType.Burger:
-                return ItemSpriteAssets.instance.burgerPrefab;
-            case FoodType.Soda:
-                return ItemSpriteAssets.instance.sodaPrefab;
-            default: return null;
-        }
+        return null;
     }
 }
