@@ -59,11 +59,6 @@ public class NPCInteractable : MonoBehaviour
     //*************
     private float detectBuffer = 0.3f; // Thêm một khoảng buffer để tránh chớp nháy
 
-
-
-
-    public float healPrice;
-    public float healAmount;
     // Start is called before the first frame update
     void Start()
     {
@@ -125,31 +120,8 @@ public class NPCInteractable : MonoBehaviour
 
         // Xóa Dialogue Box Chat ngay lập tức nếu nó đang hiển thị
         ClearDialogueBox();
-
-        if (gameObject.layer == LayerMask.NameToLayer("Doctor"))
-        {
-            if (interactorTransform == null)
-            {
-                Debug.LogWarning("InteractorTransform is NULL!");
-                return;
-            }
-
-            Debug.Log($"{gameObject.name} được tương tác bởi {interactorTransform.name}");
-
-            
-            Doctor_Behavior doctor_Behavior = GetComponent<Doctor_Behavior>();
-            doctor_Behavior.HealPlayer();
-            //^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-            
-
-
-        }
-        else
-        {
-            bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
-        }
         
-        //bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
+        bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
 
         animator.SetTrigger("isWaving");
 
