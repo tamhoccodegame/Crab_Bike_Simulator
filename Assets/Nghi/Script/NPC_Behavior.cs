@@ -44,6 +44,7 @@ public class NPC_Behavior : MonoBehaviour
         npc_Health = GetComponent<NPC_Health>();
         npcInteractable = GetComponent<NPCInteractable>();
         playerTransform = GameObject.FindWithTag("Player").transform.Find("PlayerVisual");
+        policeStationTransform = GameObject.FindWithTag("PoliceStation").transform;
        
     }
 
@@ -117,6 +118,7 @@ public class NPC_Behavior : MonoBehaviour
         {
             yield return null;
         }
+
         //Khi tới nơi, ngừng chạy và giữ animation "hoảng sợ"
         animator.SetBool("isRun", false);
         Debug.Log($"{gameObject.name} đã chạy đến đồn cảnh sát...");

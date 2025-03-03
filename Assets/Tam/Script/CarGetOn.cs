@@ -52,7 +52,7 @@ public class CarGetOn : MonoBehaviour, IInteractable
             }
         }
 
-        if(parent == null || !hasPlayer) return;
+        if (parent == null || !hasPlayer) return;
 
         if (parent.GetComponent<BikeController>().currentVelocityOffset > 0.01f)
         {
@@ -63,6 +63,37 @@ public class CarGetOn : MonoBehaviour, IInteractable
             currentPlayer.GetComponent<Animator>().SetBool("Stopping", true);
         }
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        NPC_Health npc = collision.gameObject.GetComponent<NPC_Health>();
+        if (npc == null) return;
+
+        if (parent.GetComponent<BikeController>().currentVelocityOffset > 0.3f)
+        {
+            npc.TakeDamage(999f);
+
+            // Đẩy NPC ra sau
+            CharacterController npcController = collision.gameObject.GetComponent<CharacterController>();
+            if (npcController != null)
+            {
+                Vector3 hitDirection = (collision.transform.position - transform.position).normalized;
+                hitDirection.y = 0; // Đảm bảo không đẩy lên trời
+                StartCoroutine(PushNPC(npcController, hitDirection, 0.2f)); // Đẩy trong 0.2 giây
+            }
+        }
+    }
+
+    private IEnumerator PushNPC(CharacterController npcController, Vector3 direction, float duration)
+    {
+        float timer = 0f;
+        while (timer < duration)
+        {
+            npcController.Move(direction * 5f * Time.deltaTime); // Điều chỉnh tốc độ đẩy
+            timer += Time.deltaTime;
+            yield return null;
+        }
     }
 
     public void EnterCar()
@@ -96,8 +127,8 @@ public class CarGetOn : MonoBehaviour, IInteractable
         currentPlayer.GetComponent<TPlayerController>().enabled = true;
         currentPlayer.GetComponent<CharacterController>().enabled = true;
 
-        if(parent != null)
-        parent.GetComponent<BaseCarController>().enabled = false;
+        if (parent != null)
+            parent.GetComponent<BaseCarController>().enabled = false;
         else GetComponent<BaseCarController>().enabled = false;
 
         currentPlayer.GetComponent<Animator>().SetLayerWeight(1, 0);

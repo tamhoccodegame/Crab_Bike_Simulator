@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NPCInteractable : MonoBehaviour
+public class NPCInteractable : MonoBehaviour, IInteractable
 {
     //Start Adding 
     public BubbleChat bubbleChatInstance;
@@ -64,6 +64,13 @@ public class NPCInteractable : MonoBehaviour
 
     public float healPrice;
     public float healAmount;
+
+    [Header("Tam IInteractable")]
+    public GameObject prompt;
+    private PlayerInteractor currentPlayer;
+    public KeyCode keyToInteract => KeyCode.E;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,11 +81,21 @@ public class NPCInteractable : MonoBehaviour
         dialogueDictionary[NPCState.Normal] = normalDialogues;
         dialogueDictionary[NPCState.Angry] = angryDialogues;
         dialogueDictionary[NPCState.Scared] = scaredDialogues;
+
+        if(prompt != null)
+        {
+            prompt.SetActive(false);
+        }
     }
 
     private void Update()
     {
         //FindPlayerAndDecide();
+
+        if(currentPlayer != null && Input.GetKeyDown(keyToInteract))
+        {
+            Interact(currentPlayer.transform);
+        }
 
         if (playerTransform == null) return;
 
@@ -146,7 +163,7 @@ public class NPCInteractable : MonoBehaviour
         }
         else
         {
-            bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
+            bubbleChatInstance.Create(transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Chào bạn nhé! Một ngày tốt lành");
         }
         
         //bubbleChatInstance.Create(transform.transform, new Vector3(0.8f, 2.3f, 0f), BubbleChat.IconType.Happy, "Hello there! Nice to meet you!");
@@ -253,4 +270,23 @@ public class NPCInteractable : MonoBehaviour
         }
     }
 
+    public void ShowPrompt(PlayerInteractor player)
+    {
+        currentPlayer = player;
+        isInteracting = false;
+        prompt.SetActive(true);
+        
+    }
+
+    public void ResetInteractState()
+    {
+        currentPlayer = null;
+        prompt.SetActive(false);
+        StopAllCoroutines();
+    }
+
+    private void OnDisable()
+    {
+        ClearDialogueBox();
+    }
 }

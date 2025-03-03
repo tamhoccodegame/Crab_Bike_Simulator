@@ -32,6 +32,7 @@ public class Police_Behavior : MonoBehaviour
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
         SetCombatLayer(false);
+        playerTransform = GameObject.FindWithTag("Player").transform;
 
         //^^^^^^^^^^^^^^^^^
         // Đăng ký cảnh sát này vào PoliceManager

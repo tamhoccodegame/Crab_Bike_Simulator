@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -31,6 +32,10 @@ public class TPlayerController : Controller
 
     public PlayerMode playerMode = PlayerMode.Normal;
 
+    [Header("Attack")]
+    private Coroutine attackCoroutine;
+    public float attackCooldown;
+
     private void Awake()
     {
         instance = this;
@@ -52,9 +57,14 @@ public class TPlayerController : Controller
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (attackCoroutine != null)
         {
-            animator.SetTrigger("isAttack");
+            return;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            attackCoroutine = StartCoroutine(AttackCoroutine());
         }
 
         if (!canMove)
@@ -69,6 +79,14 @@ public class TPlayerController : Controller
         CalculateMove();
 	}
 
+    IEnumerator AttackCoroutine()
+    {
+        animator.SetTrigger("isAttack");
+        movement = Vector3.zero;
+        yield return new WaitForSeconds(attackCooldown);
+        attackCoroutine = null;
+    }
+
     void ActivateHitbox()
     {
         hitBox.ActivateHitbox();
@@ -81,6 +99,11 @@ public class TPlayerController : Controller
 
     private void FixedUpdate()
     {
+        if (attackCoroutine != null)
+        {
+            return;
+        }
+
         if (movement.magnitude > Mathf.Epsilon)
         {
             Quaternion targetRotation = Quaternion.LookRotation(movement);

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class CustomerBookCrab : MonoBehaviour
@@ -42,15 +43,18 @@ public class CustomerBookCrab : MonoBehaviour
         if(noPay)
         {
             debt = (int)CrabService.instance.cashSystem.currentPayment;
+            return;
         }
         PlayerCash.instance.AddMoney((int)CrabService.instance.cashSystem.currentPayment);
         SystemNotify.instance.SendBigNoti($"+{((int)(CrabService.instance.cashSystem.currentPayment)).ToString("N0")}VND", Color.green);
+        AudioManager.instance.PlaySound("Cash");
     }
 
     public void ResetDebt()
     {
         SystemNotify.instance.SendBigNoti($"+{((int)(CrabService.instance.cashSystem.currentPayment)).ToString("N0")}VND", Color.green);
-        PlayerCash.instance.AddMoney((int)CrabService.instance.cashSystem.currentPayment);
+        PlayerCash.instance.AddMoney((int)debt);
+        AudioManager.instance.PlaySound("Cash");
         debt = 0;
     }
 

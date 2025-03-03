@@ -130,6 +130,8 @@ public class NPC_Health : MonoBehaviour
     {
         if (isDead) return;
 
+        GetComponent<AudioSource>().Play();
+
         if(TryGetComponent<CustomerBookCrab>(out CustomerBookCrab c) && c.debt > 0)
         {
             c.ResetDebt();
@@ -139,11 +141,12 @@ public class NPC_Health : MonoBehaviour
         isDead = true;
 
         animator.enabled = false;
-        GetComponent<Collider>().enabled = false;
+        StartCoroutine(DisableCollider());
         GetComponent<NavMeshAgent>().enabled = false;
 
         foreach(var m in GetComponents<MonoBehaviour>())
         {
+            if (m == this) continue;
             m.enabled = false;
         }
         //agent.enabled = false;
@@ -158,6 +161,13 @@ public class NPC_Health : MonoBehaviour
             Debug.LogError("Ragdoll component is missing on " + gameObject.name);
         }
 
+    }
+
+    IEnumerator DisableCollider()
+    {
+        yield return new WaitForSeconds(1f);
+        GetComponent<Collider>().enabled = false;
+        this.enabled = false;
     }
 
 

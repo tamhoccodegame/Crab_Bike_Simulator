@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class HitBox : MonoBehaviour
 {
     public enum TargetType { Player, NPC }  // Xác định hitbox này đánh ai
@@ -13,6 +14,13 @@ public class HitBox : MonoBehaviour
    
     //public List<Collider> listDamage = new List<Collider>();  // Danh sách mục tiêu đã bị đánh
     public List<Transform> listDamage = new List<Transform>();  // Danh sách mục tiêu đã bị đánh
+
+    private void Awake()
+    {
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.Stop();
+    }
 
     private void Start()
     {
@@ -28,6 +36,8 @@ public class HitBox : MonoBehaviour
 
         Debug.Log($"Hitbox {gameObject.name} va chạm với {other.name}"); // Kiểm tra số lần gọi
 
+        
+
         // Kiểm tra xem hitbox này đánh ai (Player hoặc NPC)
         if (targetType == TargetType.Player && other.CompareTag("Player"))
         {
@@ -39,7 +49,7 @@ public class HitBox : MonoBehaviour
                 Debug.Log($"{gameObject.name} đã gây {damage} sát thương lên {other.name}"); // Kiểm tra số lần gây damage
 
                 listDamage.Add(rootTransform);// Chỉ thêm root vào danh sách để tránh trùng lặp
-
+                GetComponent<AudioSource>().Play();
             }
         }
         else if (targetType == TargetType.NPC && other.CompareTag("NPC"))
@@ -59,6 +69,7 @@ public class HitBox : MonoBehaviour
                 Debug.Log($"{gameObject.name} đã gây {damage} sát thương lên cảnh sát {other.name}");
                 listDamage.Add(rootTransform);
             }
+            GetComponent<AudioSource>().Play();
         }
     }
 
