@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
@@ -65,6 +64,7 @@ public class GameManager : MonoBehaviour
         InvokeRepeating(nameof(UpdateFPS), 1f, 1f);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        Save();
     }
 
     void UpdateFPS()

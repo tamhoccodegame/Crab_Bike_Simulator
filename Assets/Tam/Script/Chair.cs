@@ -33,6 +33,13 @@ public class Chair : MonoBehaviour, IInteractable
     // Update is called once per frame
     void Update()
     {
+        if(prompt != null)
+        {
+            Vector3 direction = Camera.main.transform.position - prompt.transform.position;
+            direction.y = 0;
+            prompt.transform.rotation = Quaternion.LookRotation(direction);
+        }
+
         if(hasPlayer && prompt != null)
         {
             prompt.SetActive(false);

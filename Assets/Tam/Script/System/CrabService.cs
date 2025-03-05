@@ -48,6 +48,7 @@ public class CrabService : MonoBehaviour
     public TextMeshProUGUI kmCountText;
     public TextMeshProUGUI acceptRateText;
 
+    private bool isOnTrip = false;  
 
     private void Awake()
     {
@@ -124,12 +125,13 @@ public class CrabService : MonoBehaviour
 
     public bool TryPingTrip(Vector3 pickUpPosition, System.Action _onTripAccepted, System.Action _onTripDenied)
     {
-        if(!notificationPanel.activeSelf)
+        if(!notificationPanel.activeSelf && !isOnTrip)
         {
             PingTrip(pickUpPosition);
             totalRide++;
             onTripAccepted = _onTripAccepted;
             onTripDenied = _onTripDenied;
+            isOnTrip = true;
             return true;
         }
         Debug.Log("Called by Complete TryPingTrip");
@@ -208,6 +210,7 @@ public class CrabService : MonoBehaviour
         currentDropOffPoint.gameObject.SetActive(false);
         currentDropOffPoint = null;
         Debug.Log("Called by Cancel Trip");
+        isOnTrip = false;
         onTripDenied?.Invoke();
         onTripDenied = null;
         CustomerBookCrab.SetBooking(false);
@@ -231,6 +234,7 @@ public class CrabService : MonoBehaviour
         currentDropOffPoint.gameObject.SetActive(false);
         currentDropOffPoint = null;
         progressTripSlider.gameObject.SetActive(false);
+        isOnTrip = false;
         Debug.Log("Called by Complete Trip");
         CustomerBookCrab.SetBooking(false);
     }

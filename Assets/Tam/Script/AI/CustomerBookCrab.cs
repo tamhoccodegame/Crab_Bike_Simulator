@@ -26,6 +26,7 @@ public class CustomerBookCrab : MonoBehaviour
         if (CrabService.instance.TryPingTrip(transform.position, OnTripAccepted, OnTripDenied))
         {
             noPay = Random.value < 0.5f;
+            if(noPay) debt = (int)CrabService.instance.cashSystem.currentPayment;
             GetComponent<Animator>().Play("Idle");
             GetComponent<Animation_Random>().enabled = true;
             GetComponent<CharacterNavigateController>().enabled = false;
@@ -40,9 +41,8 @@ public class CustomerBookCrab : MonoBehaviour
 
     public void TryPayCash()
     {
-        if(noPay)
+        if(debt > 0)
         {
-            debt = (int)CrabService.instance.cashSystem.currentPayment;
             return;
         }
         PlayerCash.instance.AddMoney((int)CrabService.instance.cashSystem.currentPayment);
