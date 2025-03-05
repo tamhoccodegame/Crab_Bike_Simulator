@@ -23,6 +23,7 @@ public class CarAI : MonoBehaviour
         agent.speed = speed;
 
         waypoints = GetWaypoints(waypointsContainer);
+
     }
         
 
