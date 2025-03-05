@@ -2975,6 +2975,7 @@ MonoBehaviour:
   playerTransform: {fileID: 1305460086}
   healPrice: 0
   healAmount: 0
+  prompt: {fileID: 0}
 --- !u!114 &299243961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3215,6 +3216,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3323059074638905270, guid: 6de4efc84b3fb63478e2ecd47432b425, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650231014178403032, guid: 6de4efc84b3fb63478e2ecd47432b425, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3650231014178403032, guid: 6de4efc84b3fb63478e2ecd47432b425, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5031712376797311705, guid: 6de4efc84b3fb63478e2ecd47432b425, type: 3}
@@ -6605,6 +6614,7 @@ GameObject:
   - component: {fileID: 794315728}
   - component: {fileID: 794315727}
   - component: {fileID: 794315726}
+  - component: {fileID: 794315729}
   m_Layer: 9
   m_Name: HitBox
   m_TagString: NPC
@@ -6627,6 +6637,7 @@ MonoBehaviour:
   targetType: 0
   hitboxCollider: {fileID: 794315727}
   damage: 10
+  bloodEffect: {fileID: 0}
   listDamage: []
 --- !u!65 &794315727
 BoxCollider:
@@ -6664,6 +6675,102 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2024780747}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &794315729
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 794315725}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &800940804
 GameObject:
   m_ObjectHideFlags: 0
@@ -7296,6 +7403,7 @@ GameObject:
   - component: {fileID: 924927562}
   - component: {fileID: 924927560}
   - component: {fileID: 924927561}
+  - component: {fileID: 924927563}
   m_Layer: 0
   m_Name: HitBox
   m_TagString: Untagged
@@ -7318,6 +7426,7 @@ MonoBehaviour:
   targetType: 0
   hitboxCollider: {fileID: 924927561}
   damage: 10
+  bloodEffect: {fileID: 0}
   listDamage: []
 --- !u!65 &924927561
 BoxCollider:
@@ -7355,6 +7464,102 @@ Transform:
   m_Children: []
   m_Father: {fileID: 299243958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &924927563
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924927559}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &929252014
 GameObject:
   m_ObjectHideFlags: 0
@@ -11039,6 +11244,7 @@ MonoBehaviour:
   playerTransform: {fileID: 1305460086}
   healPrice: 0
   healAmount: 0
+  prompt: {fileID: 0}
 --- !u!136 &1287503346
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -11481,7 +11687,6 @@ MonoBehaviour:
   currentHunger: 0
   currentHygiene: 0
   currentStrength: 0
-  money: 50000
 --- !u!114 &1305460089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11522,7 +11727,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe89bfcbd3d1fb149811ae39ef879cab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHeath: 100
   animator: {fileID: 1305460085}
   playerState: {fileID: 1305460088}
 --- !u!114 &1305460092
@@ -14496,6 +14700,7 @@ GameObject:
   - component: {fileID: 1612578310}
   - component: {fileID: 1612578311}
   - component: {fileID: 1612578312}
+  - component: {fileID: 1612578313}
   m_Layer: 8
   m_Name: HitBox
   m_TagString: Player
@@ -14533,6 +14738,7 @@ MonoBehaviour:
   targetType: 1
   hitboxCollider: {fileID: 1612578312}
   damage: 20
+  bloodEffect: {fileID: 0}
   listDamage: []
 --- !u!65 &1612578312
 BoxCollider:
@@ -14555,6 +14761,102 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.46, y: 1.63, z: 0.5}
   m_Center: {x: 0, y: -0.42, z: 0.18}
+--- !u!82 &1612578313
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612578309}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1615589842
 GameObject:
   m_ObjectHideFlags: 0
@@ -16038,6 +16340,7 @@ GameObject:
   - component: {fileID: 1706462445}
   - component: {fileID: 1706462443}
   - component: {fileID: 1706462444}
+  - component: {fileID: 1706462446}
   m_Layer: 9
   m_Name: HitBox
   m_TagString: Untagged
@@ -16060,6 +16363,7 @@ MonoBehaviour:
   targetType: 0
   hitboxCollider: {fileID: 1706462444}
   damage: 10
+  bloodEffect: {fileID: 0}
   listDamage: []
 --- !u!65 &1706462444
 BoxCollider:
@@ -16097,6 +16401,102 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1287503349}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &1706462446
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706462442}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &1707680131 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 452532, guid: 6412c6bdd410913469520a05a1632885, type: 3}
@@ -20581,6 +20981,7 @@ MonoBehaviour:
   playerTransform: {fileID: 1305460086}
   healPrice: 100
   healAmount: 5
+  prompt: {fileID: 0}
 --- !u!195 &2021359567
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -20748,6 +21149,7 @@ MonoBehaviour:
   healingCostPerHP: 5000
   perHP: 10
   bubbleChatInstance: {fileID: 7552590563328377833, guid: c0d7fb3ec8d721c4e99ffaa32a2b0887, type: 3}
+  prompt: {fileID: 0}
 --- !u!1 &2023080936
 GameObject:
   m_ObjectHideFlags: 0
@@ -20917,6 +21319,7 @@ MonoBehaviour:
   playerTransform: {fileID: 1305460086}
   healPrice: 0
   healAmount: 0
+  prompt: {fileID: 0}
 --- !u!114 &2024780749
 MonoBehaviour:
   m_ObjectHideFlags: 0

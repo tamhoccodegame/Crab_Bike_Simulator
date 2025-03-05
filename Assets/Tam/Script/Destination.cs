@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
 using System.Linq;
@@ -57,6 +57,17 @@ public class Destination : MonoBehaviour
                 _customer.GetComponent<NPC_Behavior>().enabled = true;
             }
             gameObject.SetActive(false);
+        }
+        else if (other.CompareTag("Player"))
+        {
+            if (isThisPickUpPoint)
+            {
+                SystemNotify.instance.SendBigNoti("Bạn cần trên xe để đón khách", Color.yellow);
+            }
+            else
+            {
+                SystemNotify.instance.SendBigNoti("Bạn cần chở khách đến điểm này", Color.yellow);
+            }
         }
     }
 }

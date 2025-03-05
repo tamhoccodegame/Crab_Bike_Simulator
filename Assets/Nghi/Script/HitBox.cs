@@ -11,6 +11,7 @@ public class HitBox : MonoBehaviour
 
     public Collider hitboxCollider;  // Collider dùng làm hitbox
     public int damage;  // Sát thương gây ra
+    public GameObject bloodEffect;
    
     //public List<Collider> listDamage = new List<Collider>();  // Danh sách mục tiêu đã bị đánh
     public List<Transform> listDamage = new List<Transform>();  // Danh sách mục tiêu đã bị đánh
@@ -36,8 +37,6 @@ public class HitBox : MonoBehaviour
 
         Debug.Log($"Hitbox {gameObject.name} va chạm với {other.name}"); // Kiểm tra số lần gọi
 
-        
-
         // Kiểm tra xem hitbox này đánh ai (Player hoặc NPC)
         if (targetType == TargetType.Player && other.CompareTag("Player"))
         {
@@ -50,6 +49,8 @@ public class HitBox : MonoBehaviour
 
                 listDamage.Add(rootTransform);// Chỉ thêm root vào danh sách để tránh trùng lặp
                 GetComponent<AudioSource>().Play();
+                if(bloodEffect != null) 
+                Instantiate(bloodEffect, other.ClosestPoint(transform.position), Quaternion.identity);
             }
         }
         else if (targetType == TargetType.NPC && other.CompareTag("NPC"))
@@ -69,6 +70,9 @@ public class HitBox : MonoBehaviour
                 Debug.Log($"{gameObject.name} đã gây {damage} sát thương lên cảnh sát {other.name}");
                 listDamage.Add(rootTransform);
             }
+
+            if (bloodEffect != null)
+                Instantiate(bloodEffect, other.ClosestPoint(transform.position), Quaternion.identity);
             GetComponent<AudioSource>().Play();
         }
     }
