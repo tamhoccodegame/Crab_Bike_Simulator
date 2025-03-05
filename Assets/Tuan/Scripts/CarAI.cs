@@ -12,6 +12,7 @@ public class CarAI : MonoBehaviour
     private int currentWaypointIndex = 0;
     private bool TrafficZone = false;
     private bool isTrafficSystemActive = true;
+    bool isCoroutineRunning = false;
     private NavMeshAgent agent;
     private Transform[] waypoints;
 
@@ -23,6 +24,7 @@ public class CarAI : MonoBehaviour
         agent.speed = speed;
 
         waypoints = GetWaypoints(waypointsContainer);
+
     }
         
 
@@ -111,10 +113,12 @@ public class CarAI : MonoBehaviour
     }
     IEnumerator delayTraffic()
     {
+        if (isCoroutineRunning) yield break;
+        isCoroutineRunning = true;
         isTrafficSystemActive = false;
         yield return new WaitForSeconds(7f);
-        Debug.Log("Wait for return traffic");
         isTrafficSystemActive = true;
+        isCoroutineRunning = false;
     }
     Transform[] GetWaypoints(GameObject container)
     {

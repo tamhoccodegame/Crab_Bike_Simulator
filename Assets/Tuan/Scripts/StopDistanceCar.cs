@@ -81,7 +81,7 @@ public class StopDistanceCar : MonoBehaviour
                 isRearCar = true;
             }
         }
-        if (other.CompareTag("NpcWalk"))
+        if (other.CompareTag("NPC"))
         {
             if (!isRearCar && !isCarInFront)
             {
@@ -90,7 +90,6 @@ public class StopDistanceCar : MonoBehaviour
                 isRearCar = true;
             }
         }
-
     }
 
     void OnTriggerExit(Collider other)
@@ -118,7 +117,7 @@ public class StopDistanceCar : MonoBehaviour
                 carAI.MoveToNextWaypoint();
             }
         }
-        if (other.CompareTag("NpcWalk"))
+        if (other.CompareTag("NPC"))
         {
             if (isRearCar)
             {
@@ -129,6 +128,5 @@ public class StopDistanceCar : MonoBehaviour
                 carAI.MoveToNextWaypoint();
             }
         }
-
     }
 }
