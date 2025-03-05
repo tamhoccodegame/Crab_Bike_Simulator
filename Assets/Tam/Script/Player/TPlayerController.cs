@@ -49,8 +49,18 @@ public class TPlayerController : Controller
 
         currentSpeed = walkSpeed;
 
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Cursor.visible = false;
+        if (GameManager.instance.playerSavedPosition != Vector3.zero)
+        {
+            GetComponent<CharacterController>().enabled = false;
+            transform.position = GameManager.instance.playerSavedPosition;
+            GetComponent<CharacterController>().enabled = true;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+
     }
 
     // Update is called once per frame
@@ -68,7 +78,7 @@ public class TPlayerController : Controller
 
         if (!canMove)
         {
-            movement = Vector3.zero;    
+            movement = Vector3.zero;
             animator.SetBool("Walking", false);
             animator.SetBool("Running", false);
             return;
@@ -76,7 +86,7 @@ public class TPlayerController : Controller
 
         ChangeSpeed();
         CalculateMove();
-	}
+    }
 
     IEnumerator AttackCoroutine()
     {
@@ -119,16 +129,16 @@ public class TPlayerController : Controller
 
     public void ChangePlayerMode(PlayerMode newMode)
     {
-        if(playerMode != newMode)
+        if (playerMode != newMode)
         {
             playerMode = newMode;
-            switch(playerMode)
+            switch (playerMode)
             {
                 case PlayerMode.Normal:
                     canMove = true;
                     break;
                 case PlayerMode.Shopping:
-                    canMove = false; 
+                    canMove = false;
                     break;
             }
         }
@@ -144,7 +154,7 @@ public class TPlayerController : Controller
     {
         if (Input.GetKey(KeyCode.LeftShift) && movement.magnitude > 0.1f)
         {
-            if(currentSpeed < runSpeed)
+            if (currentSpeed < runSpeed)
             {
                 currentSpeed += Time.deltaTime * accelaration;
             }
@@ -158,16 +168,16 @@ public class TPlayerController : Controller
         }
     }
 
-	void CalculateMove()
+    void CalculateMove()
     {
-		float horizontalMove = Input.GetAxisRaw("Horizontal");
-		float verticalMove = Input.GetAxisRaw("Vertical");
+        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        float verticalMove = Input.GetAxisRaw("Vertical");
 
-		Vector3 camForward = cam.transform.forward;
-		Vector3 camRight = cam.transform.right;
-		camForward.y = 0;
-		camRight.y = 0;
+        Vector3 camForward = cam.transform.forward;
+        Vector3 camRight = cam.transform.right;
+        camForward.y = 0;
+        camRight.y = 0;
 
-		movement = camForward * verticalMove + camRight * horizontalMove;
-	}
+        movement = camForward * verticalMove + camRight * horizontalMove;
+    }
 }

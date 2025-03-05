@@ -16,7 +16,22 @@ public class HouseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+        House[] allHouses = FindObjectsOfType<House>();
+        foreach (House house in allHouses)
+        {
+            if (house.id == data.ownHouseId)
+            {
+                currentOwnHouse = house;
+                currentOwnHouse.isOwned = true;
+                currentOwnHouse.houseDoor.enabled = true;
+                break;
+            }
+        }
     }
 
     // Update is called once per frame

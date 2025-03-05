@@ -39,7 +39,14 @@ public class PlayerStateUI : MonoBehaviour
         ChangeStrengthUI(player.currentStrength);
 
         //Debug.Log("OnHealthChange subscribed");//để xem có bị gọi nhiều lần không.
+        player = FindObjectOfType<PlayerState>();
 
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+        player = FindObjectOfType<PlayerState>();
     }
 
     // Update is called once per frame

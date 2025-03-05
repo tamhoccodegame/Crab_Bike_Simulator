@@ -330,6 +330,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BikePivot (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6640671179944825827, guid: bf2e74c8c0520124d8015a2a6f1082f2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -892,6 +896,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Waypoints
       objectReference: {fileID: 0}
+    - target: {fileID: 5274258567502926839, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7709364258356925041, guid: f6c0042c06e7ac84694317fb6bb6b504, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1001,6 +1009,10 @@ PrefabInstance:
     - target: {fileID: 3228489710058411993, guid: fdc65f75edbb730488e71ab557521ca2, type: 3}
       propertyPath: m_Name
       value: PoliceCar
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228489710058411993, guid: fdc65f75edbb730488e71ab557521ca2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8239180531722467265, guid: fdc65f75edbb730488e71ab557521ca2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2017,6 +2029,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Brat Stand up Set
       objectReference: {fileID: 0}
+    - target: {fileID: 159240, guid: 44e7f5e473d61e144bfb79b854a743c4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 467888, guid: 44e7f5e473d61e144bfb79b854a743c4, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.5
@@ -2584,14 +2600,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2100634809892934905, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2367767921619905214, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2475011541487993241, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1678.8967
@@ -2632,14 +2640,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2675038211659936368, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3322065669069446274, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4370492936264153286, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
       propertyPath: playerPosition
       value: 
@@ -2668,10 +2668,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6256049242356708820, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
-      propertyPath: TimeOfDay
-      value: 8.49
-      objectReference: {fileID: 0}
     - target: {fileID: 6363895328288614343, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
       propertyPath: player
       value: 
@@ -2679,10 +2675,6 @@ PrefabInstance:
     - target: {fileID: 6725414450282547697, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
       propertyPath: m_Name
       value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 6725414450282547697, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7462704740828000654, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
       propertyPath: player
@@ -2704,14 +2696,6 @@ PrefabInstance:
       propertyPath: destinationList.Array.data[3]
       value: 
       objectReference: {fileID: 1688571587}
-    - target: {fileID: 8129215305115064000, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8490061217121501938, guid: 1d6bf825d9768e64f93dd19f24dcc4c1, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2944,6 +2928,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2328807201900970120, guid: 20d2fbd136c119946ab6b078c92c4238, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4642714375591523577, guid: 20d2fbd136c119946ab6b078c92c4238, type: 3}
       propertyPath: m_Name
       value: House
@@ -3236,19 +3224,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6828496748685282880, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.99370533
       objectReference: {fileID: 0}
     - target: {fileID: 6828496748685282880, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.044134174
       objectReference: {fileID: 0}
     - target: {fileID: 6828496748685282880, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.10286439
       objectReference: {fileID: 0}
     - target: {fileID: 6828496748685282880, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.0045685754
       objectReference: {fileID: 0}
     - target: {fileID: 7050819365122662646, guid: 6897430602085b0459dee7594f43bef9, type: 3}
       propertyPath: m_LocalPosition.x

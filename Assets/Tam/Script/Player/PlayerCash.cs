@@ -19,6 +19,12 @@ public class PlayerCash : MonoBehaviour
     {
         currentCash = 500000;
         playerCashText.text = currentCash.ToString("N0");
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+        currentCash = data.playerCash;
     }
 
     // Update is called once per frame

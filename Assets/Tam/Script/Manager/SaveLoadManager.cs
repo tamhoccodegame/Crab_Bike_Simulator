@@ -18,6 +18,9 @@ public class SaveData
     public List<InventoryReplace> inventoryItems;
     public List<string> ownVehiclesName;
     public int ownHouseId;
+
+    public int day;
+    public float TimeOfDay;
 }
 
 public class SaveLoadManager
@@ -25,6 +28,10 @@ public class SaveLoadManager
     public void SaveGame()
     {
         SaveData data = new SaveData();
+
+        data.day = LightingManager.instance.day;
+        data.TimeOfDay = LightingManager.instance.TimeOfDay;
+
         data.playerPosition = TPlayerController.instance.transform.position;
         data.playerCash = PlayerCash.instance.currentCash;
         data.inventoryItems = new List<InventoryReplace>();

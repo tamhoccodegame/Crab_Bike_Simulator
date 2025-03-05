@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -13,7 +13,7 @@ public class Sound
     public float volume;
     [Range(0, 2f)]
     public float pitch;
-    [HideInInspector]
+    //[HideInInspector]
     public AudioSource source;
 }
 public class AudioManager : MonoBehaviour
@@ -41,6 +41,22 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.outputAudioMixerGroup = audioMixer.FindMatchingGroups("SFX")[0];
         }
+
+        GameManager.instance.onScenePreLoad += OnScenePreload;
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnScenePreload()
+    {
+        //foreach(var s in GetComponents<AudioSource>())
+        //{
+        //    //Destroy(s);
+        //}
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+
     }
 
     // Update is called once per frame
@@ -52,7 +68,7 @@ public class AudioManager : MonoBehaviour
     public void PlaySound(string soundName)
     {
         Sound sound = sounds.Find(s => s.soundName == soundName);
-        if (sound != null)
+        if (sound != null && sound.source != null)
         {
             sound.source.Play();
         }

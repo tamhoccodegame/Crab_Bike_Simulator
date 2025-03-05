@@ -58,15 +58,31 @@ public class CrabService : MonoBehaviour
     void Start()
     {
         cashSystem = new CashSystem();
-        playerCash = FindObjectOfType<PlayerCash>();
+        playerCash = PlayerCash.instance;
+        player = GameObject.FindWithTag("Player").transform;
         rideCount = 0;
         totalRide = 0;
         kmCount = 0;
+
+        GameManager.instance.onScenePreLoad += OnScenePreLoad;
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnScenePreLoad()
+    {
+        player = null;
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+        playerCash = PlayerCash.instance;
+        player = GameObject.FindWithTag("Player").transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(player == null) return;
         if(isOnDuty && !GameManager.instance.phoneUI.activeSelf)
         {
             minimap.SetActive(true);

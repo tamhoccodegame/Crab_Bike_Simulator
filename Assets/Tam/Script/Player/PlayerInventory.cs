@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,6 +23,30 @@ public class PlayerInventory : MonoBehaviour
         inventory.onItemUsed += OnItemUsed;
         playerState = GetComponent<PlayerState>();
         objectPlacement.SetInventory(inventory);
+
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+        inventory.ClearInventory();
+
+        List<InventoryReplace> replaces = data.inventoryItems;
+        foreach (InventoryReplace replace in replaces)
+        {
+            if (replace.typeName == "Food")
+            {
+                Food.FoodType type;
+                if (Enum.TryParse(replace.itemName, out type))
+                    AddItem(new Food { foodType = type });
+            }
+            else if (replace.typeName == "Furniture")
+            {
+                Furniture.FurnitureType type;
+                if (Enum.TryParse(replace.itemName, out type))
+                    AddItem(new Furniture { type = type });
+            }
+        }
     }
 
     public void AddItem(IShopItem item)

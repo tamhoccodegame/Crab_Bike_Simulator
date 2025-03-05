@@ -4,9 +4,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -15,9 +18,18 @@ public class GameManager : MonoBehaviour
     public GameObject inventoryUI;
     public GameObject pauseUI;
 
+    [Header("Loading Session")]
+    public GameObject loadingScreen;
+    public Slider loadingSlider;
+
+    public event Action onScenePreLoad;
+    public event Action<SaveData> onSceneLoaded;
+
     public GameObject blackScreen;
 
     public AudioMixer audioMixer;
+
+    public Vector3 playerSavedPosition;
 
     public enum GameState
     {
@@ -207,56 +219,37 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Load")]
     public void Load()
     {
-        StartCoroutine(BlackScreenCoroutine(5f));
+        loadingScreen.SetActive(true);
+        StartCoroutine(LoadSceneAsync());
+    }
+
+    IEnumerator LoadSceneAsync()
+    {
         SaveLoadManager saveSys = new SaveLoadManager();
         SaveData data = saveSys.LoadGame();
-
-        TPlayerController.instance.GetComponent<CharacterController>().enabled = false;
-        TPlayerController.instance.transform.position = data.playerPosition;
-        TPlayerController.instance.GetComponent<CharacterController>().enabled = true;
-        PlayerCash.instance.currentCash = data.playerCash;
-
-        List<InventoryReplace> replaces = data.inventoryItems;
-        foreach (InventoryReplace replace in replaces)
+        playerSavedPosition = data.playerPosition;
+        onScenePreLoad?.Invoke();
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+        loadOperation.allowSceneActivation = false;
+        while(!loadOperation.isDone)
         {
-            if (replace.typeName == "Food")
-            {
-                Food.FoodType type;
-                if (Enum.TryParse(replace.itemName, out type))
-                    PlayerInventory.instance.AddItem(new Food { foodType = type });
-            }
-            else if (replace.typeName == "Furniture")
-            {
-                Furniture.FurnitureType type;
-                if (Enum.TryParse(replace.itemName, out type))
-                    PlayerInventory.instance.AddItem(new Furniture { type = type });
-            }
-        }
+            float progressValue = Mathf.Clamp01(loadOperation.progress / 0.9f);
+            loadingSlider.value = progressValue;
 
-
-        VehicleManager vehicleManager = VehicleManager.instance;
-        vehicleManager.ownVehicles.Clear();
-        foreach (string vehicleName in data.ownVehiclesName)
-        {
-            GameObject prefab = vehicleManager.allVehiclesPrefab.Find(v => v.name == vehicleName);
-            if (prefab != null)
+            if (loadOperation.progress >= 0.9f) // Scene đã load xong
             {
-                vehicleManager.ownVehicles.Add(prefab);
+                yield return new WaitForSeconds(4f); // Chờ 1 giây để chắc chắn mọi thứ đã khởi tạo
+                loadOperation.allowSceneActivation = true;
             }
-        }
 
-        House[] allHouses = FindObjectsOfType<House>();
-        foreach (House house in allHouses)
-        {
-            if (house.id == data.ownHouseId)
-            {
-                HouseManager h = HouseManager.instance;
-                h.currentOwnHouse = house;
-                h.currentOwnHouse.isOwned = true;
-                h.currentOwnHouse.houseDoor.enabled = true;
-                break;
-            }
+            yield return null;
         }
+        controllerList.Clear();
+
+        onSceneLoaded?.Invoke(data);
+        loadingScreen.SetActive(false);
+
         ChangeGameState(GameState.Playing);
+
     }
 }

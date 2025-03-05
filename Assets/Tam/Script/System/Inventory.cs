@@ -34,4 +34,9 @@ public class Inventory
         onItemUsed?.Invoke(item);
         onInventoryChanged?.Invoke();
     }
+
+    public void ClearInventory()
+    {
+        inventoryItems.Clear();
+    }
 }

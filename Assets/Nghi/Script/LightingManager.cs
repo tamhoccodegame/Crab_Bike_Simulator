@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,7 @@ public class LightingManager : MonoBehaviour
     //[SerializeField] private Mater
     //Variables
     [SerializeField, Range(0, 24)] public float TimeOfDay;
-    private int day = 1;
+    public int day = 1;
 
     public AudioSource openingDayAudio;
     public TextMeshProUGUI TimeOfDayBig;
@@ -30,7 +31,7 @@ public class LightingManager : MonoBehaviour
     public TextMeshProUGUI timeText;
     public TextMeshProUGUI dayText;
 
-    private GameObject[] lights;
+    private List<GameObject> lights;
 
     private void Awake()
     {
@@ -40,7 +41,21 @@ public class LightingManager : MonoBehaviour
     {
         timeText.text = "Time: " + TimeOfDay;
         dayText.text = "Day: " + day;
-        lights = GameObject.FindGameObjectsWithTag("Light");
+        lights = GameObject.FindGameObjectsWithTag("Light").ToList();
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+        GameManager.instance.onScenePreLoad += OnScenePreLoad;
+    }
+
+    private void OnScenePreLoad()
+    {
+        lights.Clear();
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+        lights = GameObject.FindGameObjectsWithTag("Light").ToList();
+        day = data.day;
+        TimeOfDay = data.TimeOfDay;
     }
 
     private void Update()
@@ -97,6 +112,7 @@ public class LightingManager : MonoBehaviour
 
     private void UpdateLight()
     {
+        if(lights.Count <= 0) return;
         if (TimeOfDay >= 7.5f && TimeOfDay < 18f)
         {
             // Tắt đèn vào ban ngày

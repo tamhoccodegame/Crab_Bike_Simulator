@@ -19,6 +19,20 @@ public class VehicleManager : MonoBehaviour
         instance = this;
         uIVehicleManager.SetVehicleManager(this);
         DeliVehicle(ownVehicles[0], PlayerInventory.instance.transform.position);
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(SaveData data)
+    {
+        ownVehicles.Clear();
+        foreach (string vehicleName in data.ownVehiclesName)
+        {
+            GameObject prefab = allVehiclesPrefab.Find(v => v.name == vehicleName);
+            if (prefab != null)
+            {
+                ownVehicles.Add(prefab);
+            }
+        }
     }
 
     // Update is called once per frame
