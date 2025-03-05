@@ -74,6 +74,7 @@ public class StopDistanceCar : MonoBehaviour
 
         if (other.CompareTag("Player"))
         {
+            Debug.Log("Hit Player");
             if (!isRearCar && !isCarInFront)
             {
                 isCarInFront = true;
