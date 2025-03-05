@@ -4,18 +4,24 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public Transform objectToFollow;
-    public Vector3 offset;
+    private float initYPosition;
+    private Quaternion initRotation;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        initYPosition = transform.position.y;
+        initRotation = transform.rotation;
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void LateUpdate()
     {
-        transform.position = objectToFollow.position + offset;
+        Vector3 position = transform.position;
+        position.y = initYPosition;
+
+        transform.position = position;
+        transform.rotation = Quaternion.Euler(90, 0, 0);
     }
 }

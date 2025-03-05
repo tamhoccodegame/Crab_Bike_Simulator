@@ -7,6 +7,7 @@ public class LimitCamera : MonoBehaviour
     public Camera mainCamera;
     private Quaternion initRotation;
     public Transform player;
+    public float initYPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -18,8 +19,9 @@ public class LimitCamera : MonoBehaviour
     void Update()
     {
         transform.rotation = initRotation;
+
         Vector3 position = player.position;
-        position.y = transform.position.y;
+        position.y = initYPosition;
 
         transform.position = position;
     }

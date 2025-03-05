@@ -10,12 +10,13 @@ public class UIInventory : MonoBehaviour
     public Transform itemSlotTemplate;
     public Transform itemSlotContainer;
     public Button useButton;
+    public GameObject bagUI;
 
 
     private void Awake()
     {
         instance = this;
-        gameObject.SetActive(false);
+        bagUI.SetActive(false);
     }
 
     // Start is called before the first frame update
