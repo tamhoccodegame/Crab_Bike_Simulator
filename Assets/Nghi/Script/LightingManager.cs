@@ -33,6 +33,14 @@ public class LightingManager : MonoBehaviour
 
     private List<GameObject> lights;
 
+    [Header("WeatherControl")]
+    [SerializeField] private GameObject weather;
+    [SerializeField] private ParticleSystem rain;
+    public float weatherCoolDown;
+    public float weatherTimer;
+    public bool willItRain;
+    public float rainingDuration;
+
     private void Awake()
     {
         instance = this;
@@ -42,8 +50,10 @@ public class LightingManager : MonoBehaviour
         timeText.text = "Time: " + TimeOfDay;
         dayText.text = "Day: " + day;
         lights = GameObject.FindGameObjectsWithTag("Light").ToList();
+        weather = GameObject.FindWithTag("Weather");
         GameManager.instance.onSceneLoaded += OnSceneLoaded;
         GameManager.instance.onScenePreLoad += OnScenePreLoad;
+        weatherTimer = weatherCoolDown;
     }
 
     private void OnScenePreLoad()
@@ -54,12 +64,39 @@ public class LightingManager : MonoBehaviour
     private void OnSceneLoaded(SaveData data)
     {
         lights = GameObject.FindGameObjectsWithTag("Light").ToList();
+        weather = GameObject.FindWithTag("Weather");
         day = data.day;
         TimeOfDay = data.TimeOfDay;
+        weatherTimer = weatherCoolDown;
     }
 
     private void Update()
     {
+        if (rainingDuration > 0)
+        {
+            rainingDuration -= Time.deltaTime;
+        }
+        else if (weatherTimer > 0)
+        {
+            weatherTimer -= Time.deltaTime;
+        }
+        else
+        {
+            rain.Stop();
+            willItRain = Random.value < 0.5f;
+            weatherTimer = weatherCoolDown;
+
+            if (willItRain)
+            {
+                weather.SetActive(true);
+                rain = weather.GetComponentInChildren<ParticleSystem>();
+                rainingDuration = Random.Range(60, 300);
+                var main = rain.main;
+                main.duration = rainingDuration;
+                rain.Play();
+            }
+        }
+
         UpdateTimeOnUI();
         if (Preset == null)
             return;
