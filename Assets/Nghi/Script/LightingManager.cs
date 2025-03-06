@@ -68,6 +68,28 @@ public class LightingManager : MonoBehaviour
         day = data.day;
         TimeOfDay = data.TimeOfDay;
         weatherTimer = weatherCoolDown;
+
+        if (DirectionalLight != null)
+            return;
+
+        //Search for lighting tab sun
+        if (RenderSettings.sun != null)
+        {
+            DirectionalLight = RenderSettings.sun;
+        }
+
+        //Search scene for light that fits criteria (directional)
+        else
+        {
+            foreach (var light in lights)
+            {
+                if (light.TryGetComponent<Light>(out Light l) && l.type == LightType.Directional)
+                {
+                    DirectionalLight = l;
+                    return;
+                }
+            }
+        }
     }
 
     private void Update()
