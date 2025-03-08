@@ -41,12 +41,33 @@ public class PlayerStateUI : MonoBehaviour
         //Debug.Log("OnHealthChange subscribed");//để xem có bị gọi nhiều lần không.
         player = FindObjectOfType<PlayerState>();
 
+        GameManager.instance.onScenePreLoad += OnScenePreLoad;
         GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnScenePreLoad()
+    {
+        player.OnHealthChange -= ChangeHealthUI;
+        player.OnHungerChange -= ChangeHungerUI;
+        player.OnHygieneChange -= ChangeHygieneUI;
+        player.OnStrengthChange -= ChangeStrengthUI;
     }
 
     private void OnSceneLoaded(SaveData data)
     {
         player = FindObjectOfType<PlayerState>();
+
+        player.OnHealthChange += ChangeHealthUI;
+        ChangeHealthUI(player.currentHealth);
+
+        player.OnHungerChange += ChangeHungerUI;
+        ChangeHungerUI(player.currentHunger);
+
+        player.OnHygieneChange += ChangeHygieneUI;
+        ChangeHygieneUI(player.currentHygiene);
+
+        player.OnStrengthChange += ChangeStrengthUI;
+        ChangeStrengthUI(player.currentStrength);
     }
 
     // Update is called once per frame
@@ -59,9 +80,6 @@ public class PlayerStateUI : MonoBehaviour
     {
         //Debug.Log($"Updating Health UI: {value}"); // Debug kiểm tra UI có cập nhật không
         healthSlider.value = value;
-
-        healthSlider.gameObject.SetActive(false); // Tắt nhanh rồi bật lại để Unity refresh
-        healthSlider.gameObject.SetActive(true);
     }
 
     public void ChangeHungerUI(float value)

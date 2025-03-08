@@ -13,6 +13,8 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+
+    [Header("UI")]
     public GameObject phoneUI;
     public GameObject inventoryUI;
     public GameObject pauseUI;
@@ -20,10 +22,11 @@ public class GameManager : MonoBehaviour
     [Header("Loading Session")]
     public GameObject loadingScreen;
     public Slider loadingSlider;
-
     public event Action onScenePreLoad;
     public event Action<SaveData> onSceneLoaded;
 
+    
+    public TextMeshProUGUI TimeOfDayBig;
     public GameObject blackScreen;
 
     public AudioMixer audioMixer;
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour
         InvokeRepeating(nameof(UpdateFPS), 1f, 1f);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        Save();
+        Invoke(nameof(Save), 1f);
     }
 
     void UpdateFPS()
@@ -75,7 +78,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        if (currentState == GameState.Sleeping) return;
         if (Input.GetKeyDown(KeyCode.P))
         {
             if (!phoneUI.activeSelf)
@@ -126,8 +129,10 @@ public class GameManager : MonoBehaviour
         switch (currentState)
         {
             case GameState.Sleeping:
+                SystemNotify.instance.SendBigNoti("Bạn đang ngủ.....", Color.white);
+                //TimeOfDayBig.gameObject.SetActive(true);
                 TPlayerController.instance.canMove = false;
-                StartCoroutine(BlackScreenCoroutine(25f));
+                ShowBlackScreen();
                 LightingManager.instance.SetDaySpeed(3);
                 break;
 
@@ -140,6 +145,7 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Playing:
+                HideBlackScreen();
                 phoneUI.SetActive(false);
                 pauseUI.SetActive(false);
                 inventoryUI.SetActive(false);

@@ -35,6 +35,8 @@ public class CrabService : MonoBehaviour
     private Vector3 currentDestination;
     private float tripLong;
 
+    public GameObject notiText;
+
     //[Header("RatingTab")]
     //public TextMeshProUGUI ratingStar;
     //public Transform ratingBoxTemplate;
@@ -84,7 +86,15 @@ public class CrabService : MonoBehaviour
     void Update()
     {
         if(player == null) return;
-        if(isOnDuty && !GameManager.instance.phoneUI.activeSelf)
+        if(LightingManager.instance.TimeOfDay >= 22f || LightingManager.instance.TimeOfDay < 5f)
+        {
+            notiText.SetActive(true);
+        }
+        else
+        {
+            notiText.SetActive(false);
+        }
+        if (isOnDuty && !GameManager.instance.phoneUI.activeSelf)
         {
             minimap.SetActive(true);
         }

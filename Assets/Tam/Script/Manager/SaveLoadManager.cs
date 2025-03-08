@@ -34,34 +34,38 @@ public class SaveLoadManager
 
         data.playerPosition = TPlayerController.instance.transform.position;
         data.playerCash = PlayerCash.instance.currentCash;
-        data.inventoryItems = new List<InventoryReplace>();
+
 
         List<IShopItem> items = PlayerInventory.instance.GetItems();
-
-        foreach (IShopItem item in items)
+        if (items.Count > 0)
         {
-            if(item is Food food)
+            data.inventoryItems = new List<InventoryReplace>();
+            foreach (IShopItem item in items)
             {
-                data.inventoryItems.Add(new InventoryReplace { typeName = "Food", itemName = food.foodType.ToString() });
-            }
-            else if(item is Furniture furniture)
-            {
-                data.inventoryItems.Add(new InventoryReplace { typeName = "Furniture", itemName = furniture.type.ToString() });
+                if (item is Food food)
+                {
+                    data.inventoryItems.Add(new InventoryReplace { typeName = "Food", itemName = food.foodType.ToString() });
+                }
+                else if (item is Furniture furniture)
+                {
+                    data.inventoryItems.Add(new InventoryReplace { typeName = "Furniture", itemName = furniture.type.ToString() });
+                }
             }
         }
 
+
         data.ownVehiclesName = new List<string>();
 
-        foreach(GameObject vehicle in VehicleManager.instance.ownVehicles)
+        foreach (GameObject vehicle in VehicleManager.instance.ownVehicles)
         {
             data.ownVehiclesName.Add(vehicle.name);
         }
 
-        if(HouseManager.instance.currentOwnHouse != null)
-        data.ownHouseId = HouseManager.instance.currentOwnHouse.id;
+        if (HouseManager.instance.currentOwnHouse != null)
+            data.ownHouseId = HouseManager.instance.currentOwnHouse.id;
 
         string json = JsonUtility.ToJson(data, true);
-            File.WriteAllText(Application.persistentDataPath + "/save.json", json);
+        File.WriteAllText(Application.persistentDataPath + "/save.json", json);
     }
 
     public SaveData LoadGame()

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static GameManager;
 
 public class SystemNotify : MonoBehaviour
 {
@@ -43,6 +44,7 @@ public class SystemNotify : MonoBehaviour
 
     public void SendNotify(string _title, string _content, Action yesAction, Action noAction)
     {
+        GameManager.instance.ChangeGameState(GameState.Menu);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -55,6 +57,7 @@ public class SystemNotify : MonoBehaviour
         
         yesButton.onClick.AddListener(() =>
         {
+            GameManager.instance.ChangeGameState(GameState.Playing);
             yesAction?.Invoke();
             systemNotiPanel.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;
@@ -62,6 +65,7 @@ public class SystemNotify : MonoBehaviour
         });
         noButton.onClick.AddListener(() =>
         {
+            GameManager.instance.ChangeGameState(GameState.Playing);
             noAction?.Invoke();
             systemNotiPanel.SetActive(false);
             Cursor.lockState = CursorLockMode.Locked;

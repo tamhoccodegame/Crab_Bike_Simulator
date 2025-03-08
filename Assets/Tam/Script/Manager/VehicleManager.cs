@@ -13,17 +13,29 @@ public class VehicleManager : MonoBehaviour
     public GameObject activeVehicle;
     public Action onVehicleChange;
 
+
+    private void Awake()
+    {
+        instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        instance = this;
         uIVehicleManager.SetVehicleManager(this);
         DeliVehicle(ownVehicles[0], PlayerInventory.instance.transform.position);
+        GameManager.instance.onScenePreLoad += OnScenePreLoad;
         GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnScenePreLoad()
+    {
+        DepositVehicle();
     }
 
     private void OnSceneLoaded(SaveData data)
     {
+        uIVehicleManager.SetVehicleManager(this);
+
         ownVehicles.Clear();
         foreach (string vehicleName in data.ownVehiclesName)
         {

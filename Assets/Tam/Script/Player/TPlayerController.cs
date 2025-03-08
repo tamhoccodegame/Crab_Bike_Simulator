@@ -71,7 +71,7 @@ public class TPlayerController : Controller
             return;
         }
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(2))
         {
             attackCoroutine = StartCoroutine(AttackCoroutine());
         }

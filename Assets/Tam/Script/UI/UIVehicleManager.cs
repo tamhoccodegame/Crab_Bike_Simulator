@@ -16,7 +16,12 @@ public class UIVehicleManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameManager.instance.onSceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(SaveData obj)
+    {
+        playerPosition = GameObject.FindWithTag("Player").transform;
     }
 
     // Update is called once per frame

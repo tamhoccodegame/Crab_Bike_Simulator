@@ -24,7 +24,6 @@ public class LightingManager : MonoBehaviour
     public int day = 1;
 
     public AudioSource openingDayAudio;
-    public TextMeshProUGUI TimeOfDayBig;
 
     private float secondsPerGameHour = 60f; // 60 giây thực tế = 1 giờ trong game
 
@@ -94,31 +93,7 @@ public class LightingManager : MonoBehaviour
 
     private void Update()
     {
-        if (rainingDuration > 0)
-        {
-            rainingDuration -= Time.deltaTime;
-        }
-        else if (weatherTimer > 0)
-        {
-            weatherTimer -= Time.deltaTime;
-        }
-        else
-        {
-            rain.Stop();
-            willItRain = Random.value < 0.5f;
-            weatherTimer = weatherCoolDown;
-
-            if (willItRain)
-            {
-                weather.SetActive(true);
-                rain = weather.GetComponentInChildren<ParticleSystem>();
-                rainingDuration = Random.Range(60, 300);
-                var main = rain.main;
-                main.duration = rainingDuration;
-                rain.Play();
-            }
-        }
-
+        RandomWeather();
         UpdateTimeOnUI();
         if (Preset == null)
             return;
@@ -148,6 +123,34 @@ public class LightingManager : MonoBehaviour
         }
     }
 
+    void RandomWeather()
+    {
+        if (rainingDuration > 0)
+        {
+            rainingDuration -= Time.deltaTime;
+        }
+        else if (weatherTimer > 0)
+        {
+            weatherTimer -= Time.deltaTime;
+        }
+        else
+        {
+            rain.Stop();
+            willItRain = Random.value < 0.5f;
+            weatherTimer = weatherCoolDown;
+
+            if (willItRain)
+            {
+                weather.SetActive(true);
+                rain = weather.GetComponentInChildren<ParticleSystem>();
+                rainingDuration = Random.Range(60, 300);
+                var main = rain.main;
+                main.duration = rainingDuration;
+                rain.Play();
+            }
+        }
+    }
+
     void TriggerSpecialEvent()
     {
         int hours = Mathf.FloorToInt(TimeOfDay);
@@ -157,14 +160,6 @@ public class LightingManager : MonoBehaviour
             GameManager.instance.ChangeGameState(GameManager.GameState.Texting);
             if(!openingDayAudio.isPlaying)
             openingDayAudio.Play();
-            TimeOfDayBig.gameObject.SetActive(false);
-            return;
-        }
-        if(24 == hours)
-        {
-            GameManager.instance.ChangeGameState(GameManager.GameState.Sleeping);
-            SystemNotify.instance.SendBigNoti("Bạn đang ngủ.....", Color.white);
-            TimeOfDayBig.gameObject.SetActive(true);
             return;
         }
     }
@@ -275,7 +270,6 @@ public class LightingManager : MonoBehaviour
         int minutes = Mathf.FloorToInt((TimeOfDay - hours) * 60); // Lấy phần phút
 
         timeText.text = $"Time: {hours:D2}:{minutes:D2}";
-        TimeOfDayBig.text = $"{hours:D2}:{minutes:D2}";
         dayText.text = "Day: " + day;
     }
 

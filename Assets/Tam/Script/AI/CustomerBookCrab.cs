@@ -22,6 +22,7 @@ public class CustomerBookCrab : MonoBehaviour
 
     public void BookCrab()
     {
+        if (LightingManager.instance.TimeOfDay >= 22f || LightingManager.instance.TimeOfDay <= 5) return;
         if(isBooking || !CrabService.instance.isOnDuty) return;
         if (CrabService.instance.TryPingTrip(transform.position, OnTripAccepted, OnTripDenied))
         {
